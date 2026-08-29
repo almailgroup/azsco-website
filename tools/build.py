@@ -8,7 +8,7 @@ OUT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '
 SITE = "AZSCO Security"
 PHONE = "(+965) 1808606"
 PHONE_HREF = "+9651808606"
-EMAIL = "admin@azsco.com"
+EMAIL = "info@azsco.com"
 ADDRESS = "Floor 27, Kuwait Building Tower,<br>Fahad Al Salem St., Qibla, Kuwait"
 ADDRESS_1L = "Floor 27, Kuwait Building Tower, Fahad Al Salem St., Qibla, Kuwait"
 
