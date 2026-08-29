@@ -27,7 +27,7 @@ served from any static host (GitHub Pages, S3, Netlify, nginx) by copying the re
 ├── assets/
 │   ├── css/style.css     # all styling (design tokens, layout, components, responsive)
 │   ├── js/main.js        # nav, mobile drawer, scroll reveal, counters, accordions, form validation
-│   └── img/favicon.svg   # shield mark
+│   └── img/               # brand lockup, white variant, favicons
 ├── tools/build.py        # regenerates the HTML pages from shared templates
 ├── robots.txt
 ├── sitemap.xml
@@ -56,6 +56,29 @@ python3 tools/build.py
 CSS and JavaScript are edited directly in `assets/` — the builder does not touch them.
 
 Site-wide details (phone, email, address) are defined once at the top of `tools/build.py`.
+
+## Brand and palette
+
+The palette is strictly black and white — no hue anywhere in the stylesheet. Colour is
+handled by four contextual custom properties (`--accent`, `--accent-strong`, `--accent-soft`,
+`--accent-ink`) declared once on `:root` for light surfaces, then re-declared on every dark
+surface (`.hero`, `.cta`, `.stats`, `.site-footer`, `.div-card`, …). Components reference the
+tokens rather than literal colours, so a button, icon or badge inverts automatically depending
+on which surface it sits on.
+
+Because hue can no longer distinguish anything, two conventions do that work instead: inline
+prose links are underlined, and form errors are marked with weight, a heavier border, an inset
+rule and a warning glyph rather than red.
+
+Brand assets in `assets/img/`:
+
+| File | Use |
+| --- | --- |
+| `AZSCO_Logo.png` | Supplied lockup — header, Open Graph image |
+| `AZSCO_Logo_white.png` | White version of the same artwork, for dark backgrounds (footer) |
+| `favicon-32.png`, `favicon-192.png`, `apple-touch-icon.png` | Generated from the shield mark in the supplied logo |
+
+All text meets WCAG AA contrast (verified programmatically against composited backgrounds).
 
 ## Notes
 

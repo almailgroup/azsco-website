@@ -51,16 +51,12 @@ I = {
 "whatsapp":'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-3-.2-.3A8 8 0 1 1 12 20zm4.4-5.8c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7 1-.3.2-.5.1a6.6 6.6 0 0 1-3.2-2.8c-.2-.4.2-.4.6-1.2a.5.5 0 0 0 0-.5l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4 5 5 0 0 0 2.3.5 2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>',
 }
 
-LOGO = '''<svg class="brand-mark" viewBox="0 0 48 48" role="img" aria-label="AZSCO shield emblem">
-  <defs><linearGradient id="lg{u}" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#d4a437"/><stop offset="1" stop-color="#b98c25"/></linearGradient></defs>
-  <path d="M24 2 6 8.6v13.7C6 33.4 14 41.9 24 46c10-4.1 18-12.6 18-23.7V8.6z" fill="url(#lg{u})"/>
-  <path d="M24 6.6 10 11.7v10.6c0 8.9 6.3 15.9 14 19.4 7.7-3.5 14-10.5 14-19.4V11.7z" fill="#0a1b2a"/>
-  <path d="M24 13.5 31.6 31h-4.3l-1.3-3.3h-4l-1.3 3.3h-4.3zm0 7.4-1.2 3.2h2.4z" fill="#d4a437"/>
-</svg>'''
-
-def logo(u="a"):
-    return LOGO.replace("{u}", u)
+def logo(variant="dark"):
+    """Brand lockup. `dark` is the black artwork for light backgrounds;
+    `light` is the white artwork used on dark backgrounds (the footer)."""
+    src = "AZSCO_Logo_white.png" if variant == "light" else "AZSCO_Logo.png"
+    return ('<img class="brand-logo" src="assets/img/%s" '
+            'alt="AZSCO Security" width="1730" height="798">' % src)
 
 # ---------------------------------------------------------------- nav model
 NAV = [
@@ -114,7 +110,7 @@ def head(title, desc, canonical):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title>
 <meta name="description" content="{desc}">
-<meta name="theme-color" content="#0a1b2a">
+<meta name="theme-color" content="#0d0d0d">
 <link rel="canonical" href="https://www.azsco.com/{canonical}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AZSCO Security">
@@ -122,7 +118,10 @@ def head(title, desc, canonical):
 <meta property="og:description" content="{desc}">
 <meta property="og:url" content="https://www.azsco.com/{canonical}">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<meta property="og:image" content="https://www.azsco.com/assets/img/AZSCO_Logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -154,11 +153,7 @@ def header():
 <header class="site-header">
   <div class="wrap">
     <a class="brand" href="index.html" aria-label="AZSCO Security — home">
-      {logo("h")}
-      <span class="brand-text">
-        <span class="brand-name">AZ<span>SCO</span></span>
-        <span class="brand-tag">Security &amp; Systems</span>
-      </span>
+      {logo("dark")}
     </a>
 
     <nav aria-label="Main navigation">
@@ -187,11 +182,7 @@ def footer():
     <div class="footer-grid">
       <div>
         <a class="brand" href="index.html" aria-label="AZSCO Security — home">
-          {logo("f")}
-          <span class="brand-text">
-            <span class="brand-name">AZ<span>SCO</span></span>
-            <span class="brand-tag">Security &amp; Systems</span>
-          </span>
+          {logo("light")}
         </a>
         <p>AZSCO is committed to providing unparalleled security services that ensure the safety and peace of mind of our clients across Kuwait — combining professionally trained manpower with advanced electronic security systems.</p>
         <div class="footer-social">
@@ -326,13 +317,13 @@ def partner_grid():
 
 HERO_SVG = '''<svg viewBox="0 0 320 300" role="img" aria-label="Illustration of a monitored, protected building">
 <defs><linearGradient id="hg" x1="0" y1="0" x2="0" y2="1">
-<stop offset="0" stop-color="#d4a437"/><stop offset="1" stop-color="#b98c25"/></linearGradient></defs>
+<stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#9a9a9a"/></linearGradient></defs>
 <rect x="70" y="70" width="180" height="180" rx="10" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="2"/>
-<rect x="100" y="100" width="120" height="120" rx="8" fill="rgba(212,164,55,.12)" stroke="url(#hg)" stroke-width="2"/>
+<rect x="100" y="100" width="120" height="120" rx="8" fill="rgba(255,255,255,.10)" stroke="url(#hg)" stroke-width="2"/>
 <path d="M160 118l38 14v26c0 24-16 42-38 50-22-8-38-26-38-50v-26z" fill="none" stroke="url(#hg)" stroke-width="3"/>
-<path d="m148 168 9 9 20-20" fill="none" stroke="#d4a437" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-<circle cx="70" cy="70" r="7" fill="#d4a437"/><circle cx="250" cy="70" r="7" fill="#d4a437"/>
-<circle cx="70" cy="250" r="7" fill="#d4a437"/><circle cx="250" cy="250" r="7" fill="#d4a437"/>
+<path d="m148 168 9 9 20-20" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="70" cy="70" r="7" fill="#ffffff"/><circle cx="250" cy="70" r="7" fill="#ffffff"/>
+<circle cx="70" cy="250" r="7" fill="#ffffff"/><circle cx="250" cy="250" r="7" fill="#ffffff"/>
 <path d="M40 160h30M250 160h30M160 40v30M160 250v30" stroke="rgba(255,255,255,.28)" stroke-width="2" stroke-linecap="round"/>
 </svg>'''
 
@@ -516,10 +507,10 @@ page("index.html",
 # ================================================================= ABOUT
 ABOUT_SVG = '''<svg viewBox="0 0 320 300" role="img" aria-label="Illustration of AZSCO security operations">
 <defs><linearGradient id="ag" x1="0" y1="0" x2="1" y2="1">
-<stop offset="0" stop-color="#d4a437"/><stop offset="1" stop-color="#b98c25"/></linearGradient></defs>
-<rect x="46" y="96" width="70" height="130" rx="6" fill="rgba(212,164,55,.14)" stroke="url(#ag)" stroke-width="2"/>
-<rect x="126" y="56" width="70" height="170" rx="6" fill="rgba(212,164,55,.22)" stroke="url(#ag)" stroke-width="2"/>
-<rect x="206" y="120" width="70" height="106" rx="6" fill="rgba(212,164,55,.10)" stroke="url(#ag)" stroke-width="2"/>
+<stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#9a9a9a"/></linearGradient></defs>
+<rect x="46" y="96" width="70" height="130" rx="6" fill="rgba(255,255,255,.16)" stroke="url(#ag)" stroke-width="2"/>
+<rect x="126" y="56" width="70" height="170" rx="6" fill="rgba(255,255,255,.24)" stroke="url(#ag)" stroke-width="2"/>
+<rect x="206" y="120" width="70" height="106" rx="6" fill="rgba(255,255,255,.09)" stroke="url(#ag)" stroke-width="2"/>
 <g fill="rgba(255,255,255,.35)">
 <rect x="58" y="112" width="16" height="14" rx="2"/><rect x="86" y="112" width="16" height="14" rx="2"/>
 <rect x="58" y="140" width="16" height="14" rx="2"/><rect x="86" y="140" width="16" height="14" rx="2"/>
@@ -527,8 +518,8 @@ ABOUT_SVG = '''<svg viewBox="0 0 320 300" role="img" aria-label="Illustration of
 <rect x="138" y="104" width="16" height="14" rx="2"/><rect x="166" y="104" width="16" height="14" rx="2"/>
 <rect x="218" y="140" width="16" height="14" rx="2"/><rect x="246" y="140" width="16" height="14" rx="2"/>
 </g>
-<path d="M161 150l30 11v21c0 19-13 33-30 40-17-7-30-21-30-40v-21z" fill="#0a1b2a" stroke="url(#ag)" stroke-width="3"/>
-<path d="m150 182 8 8 17-17" fill="none" stroke="#d4a437" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M161 150l30 11v21c0 19-13 33-30 40-17-7-30-21-30-40v-21z" fill="#0d0d0d" stroke="url(#ag)" stroke-width="3"/>
+<path d="m150 182 8 8 17-17" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M30 236h260" stroke="rgba(255,255,255,.25)" stroke-width="3" stroke-linecap="round"/>
 </svg>'''
 
@@ -722,7 +713,7 @@ def service_sections():
         </div>
       </div>
       <div class="split-visual reveal" data-delay="120">
-        <div class="visual-frame"><div style="color:#d4a437;width:160px;max-width:60%">{I[icon]}</div></div>
+        <div class="visual-frame"><div style="color:#fff;width:160px;max-width:60%">{I[icon]}</div></div>
       </div>
     </div>
   </div>
@@ -771,7 +762,7 @@ body = banner("AZSCO Security",
         </div>
       </div>
       <div class="split-visual reveal" data-delay="120">
-        <div class="visual-frame"><div style="color:#d4a437;width:170px;max-width:60%">{I["users"]}</div></div>
+        <div class="visual-frame"><div style="color:#fff;width:170px;max-width:60%">{I["users"]}</div></div>
         <div class="visual-badge"><b>24/7</b><span>On Duty</span></div>
       </div>
     </div>
@@ -824,7 +815,7 @@ body = banner("AZSCO Systems",
   <div class="wrap">
     <div class="split">
       <div class="split-visual reveal">
-        <div class="visual-frame"><div style="color:#d4a437;width:170px;max-width:60%">{I["cog"]}</div></div>
+        <div class="visual-frame"><div style="color:#fff;width:170px;max-width:60%">{I["cog"]}</div></div>
         <div class="visual-badge"><b>ISO</b><span>Standards Led</span></div>
       </div>
       <div class="reveal" data-delay="120">
@@ -876,7 +867,7 @@ body = banner("AZSCO Systems",
         </div>
       </div>
       <div class="split-visual reveal" data-delay="120">
-        <div class="visual-frame"><div style="color:#d4a437;width:130px;max-width:45%">{I["phone-app"]}</div></div>
+        <div class="visual-frame"><div style="color:#fff;width:130px;max-width:45%">{I["phone-app"]}</div></div>
       </div>
     </div>
   </div>
@@ -949,7 +940,7 @@ body = banner("Our Partners",
         </div>
       </div>
       <div class="split-visual reveal" data-delay="120">
-        <div class="visual-frame"><div style="color:#d4a437;width:160px;max-width:55%">{I["link"]}</div></div>
+        <div class="visual-frame"><div style="color:#fff;width:160px;max-width:55%">{I["link"]}</div></div>
       </div>
     </div>
   </div>
