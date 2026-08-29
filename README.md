@@ -80,6 +80,25 @@ Brand assets in `assets/img/`:
 
 All text meets WCAG AA contrast (verified programmatically against composited backgrounds).
 
+## Mobile
+
+The phone layout is not just the desktop layout stacked. Breakpoints at 768px, 640px and
+400px change the shape of the page:
+
+- **Short, scannable blocks stay in columns** rather than becoming one long list — partners
+  and statistics go two-up, and the footer's Company and Services link lists sit side by side.
+- **Process steps become rows** (number beside the text) instead of stacked blocks.
+- **The hero tightens** — smaller headline, tighter leading and less padding — so the first
+  screen carries the message and the buttons rather than only the headline.
+- **The nav drawer groups its sections.** Services and Divisions collapse behind toggles, one
+  open at a time, and the group matching the current page opens automatically. Collapsed
+  links are `visibility:hidden`, so they stay out of the tab order and the accessibility tree.
+- **A persistent Call / Get a Quote bar** sits at the bottom of the viewport, with page
+  padding and a raised back-to-top button so it never covers content, and `env(safe-area-inset-bottom)`
+  respected on notched devices.
+- **Every standalone link is at least 44px tall.** Links inside a sentence are deliberately
+  left inline so prose is not broken up.
+
 ## Notes
 
 - **Contact form**: client-side validation only. It shows a confirmation message and does not

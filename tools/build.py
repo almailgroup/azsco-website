@@ -93,11 +93,20 @@ def desktop_nav():
     return "\n        ".join(out)
 
 def mobile_nav():
-    out = ['<ul>']
-    for label, href, subs in NAV:
-        out.append(f'<li><a href="{href}">{label}</a></li>')
-        for s_label, s_href in subs:
-            out.append(f'<li class="sub"><a href="{s_href}">{s_label}</a></li>')
+    """Drawer navigation. Sections with children collapse behind a toggle so the
+    whole list stays reachable without a long scroll."""
+    out = ['<ul class="m-nav">']
+    for n, (label, href, subs) in enumerate(NAV):
+        if subs:
+            out.append(f'<li class="m-group">')
+            out.append(f'<button class="m-toggle" type="button" aria-expanded="false" '
+                       f'aria-controls="m-sub-{n}">{label}{I["caret"]}</button>')
+            out.append(f'<ul class="m-sub" id="m-sub-{n}">')
+            for s_label, s_href in subs:
+                out.append(f'<li><a href="{s_href}">{s_label}</a></li>')
+            out.append('</ul></li>')
+        else:
+            out.append(f'<li><a href="{href}">{label}</a></li>')
     out.append('</ul>')
     return "\n      ".join(out)
 
@@ -169,9 +178,16 @@ def header():
 
 <div class="backdrop"></div>
 <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
-  <button class="close" type="button" aria-label="Close menu">{I["close"]}</button>
+  <div class="mobile-nav-head">
+    <img class="brand-logo" src="assets/img/AZSCO_Logo.png" alt="AZSCO Security" width="1730" height="798">
+    <button class="close" type="button" aria-label="Close menu">{I["close"]}</button>
+  </div>
       {mobile_nav()}
-  <a class="btn btn-primary" href="contact.html">Request a Consultation</a>
+  <div class="mobile-nav-foot">
+    <a class="btn btn-primary" href="contact.html">Request a Consultation</a>
+    <a class="m-contact" href="tel:{PHONE_HREF}">{I["phone"]}<span>{PHONE}</span></a>
+    <a class="m-contact" href="mailto:{EMAIL}">{I["mail"]}<span>{EMAIL}</span></a>
+  </div>
 </nav>
 '''
 
@@ -239,6 +255,11 @@ def footer():
 </footer>
 
 <button class="to-top" type="button" aria-label="Back to top">{I["up"]}</button>
+
+<div class="mobile-bar">
+  <a class="mobile-bar-call" href="tel:{PHONE_HREF}">{I["phone"]}<span>Call Now</span></a>
+  <a class="mobile-bar-quote" href="contact.html">{I["mail"]}<span>Get a Quote</span></a>
+</div>
 <script src="assets/js/main.js"></script>
 </body>
 </html>

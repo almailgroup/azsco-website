@@ -53,7 +53,31 @@
       if (e.key === 'Escape' && drawer.classList.contains('is-open')) { setState(false); burger.focus(); }
     });
     on(window, 'resize', function () {
-      if (window.innerWidth > 960 && drawer.classList.contains('is-open')) setState(false);
+      if (window.innerWidth > 1100 && drawer.classList.contains('is-open')) setState(false);
+    });
+  }
+
+  /* ---------- collapsible groups inside the mobile drawer ---------- */
+  function mobileGroups() {
+    var groups = all('.m-group');
+    if (!groups.length) return;
+
+    function setOpen(group, open) {
+      var btn = group.querySelector('.m-toggle');
+      group.classList.toggle('is-open', open);
+      if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    groups.forEach(function (group) {
+      var btn = group.querySelector('.m-toggle');
+      // start expanded when the group contains the page being viewed
+      if (group.querySelector('.is-active, [aria-current]')) setOpen(group, true);
+      on(btn, 'click', function () {
+        var open = !group.classList.contains('is-open');
+        // one open group at a time keeps the drawer short
+        if (open) groups.forEach(function (g) { if (g !== group) setOpen(g, false); });
+        setOpen(group, open);
+      });
     });
   }
 
@@ -210,6 +234,7 @@
     markActive();
     stickyHeader();
     mobileNav();
+    mobileGroups();
     reveal();
     counters();
     accordions();
