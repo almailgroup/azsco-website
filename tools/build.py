@@ -11,6 +11,7 @@ PHONE_HREF = "+9651808606"
 EMAIL = "info@azsco.com"
 ADDRESS = "Floor 27, Kuwait Building Tower,<br>Fahad Al Salem St., Qibla, Kuwait"
 ADDRESS_1L = "Floor 27, Kuwait Building Tower, Fahad Al Salem St., Qibla, Kuwait"
+MAPS_URL = "https://maps.app.goo.gl/BN2Byxt6BCJ62XV26"
 
 # ---------------------------------------------------------------- icons
 I = {
@@ -145,7 +146,7 @@ def header():
 <div class="topbar">
   <div class="wrap">
     <ul class="topbar-list">
-      <li class="hide-sm">{I["pin"]}<span>{ADDRESS_1L}</span></li>
+      <li class="hide-sm">{I["pin"]}<a href="{MAPS_URL}" target="_blank" rel="noopener noreferrer" aria-label="AZSCO office location on Google Maps (opens in a new tab)">{ADDRESS_1L}</a></li>
       <li>{I["phone"]}<a href="tel:{PHONE_HREF}">{PHONE}</a></li>
       <li class="hide-md">{I["mail"]}<a href="mailto:{EMAIL}">{EMAIL}</a></li>
       <li class="hide-md">{I["clock"]}<span>24/7 Response</span></li>
