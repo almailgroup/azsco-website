@@ -586,14 +586,19 @@ li{margin-bottom:.45em}
 /* ==========================================================================
    Partners
    ========================================================================== */
-.partners{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:20px}
+.partners{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
 .partner{
-  display:grid;place-items:center;height:96px;padding:16px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  min-height:150px;padding:30px 24px;text-align:center;
   border:1px solid var(--line);border-radius:var(--radius-lg);background:#fff;
-  font-family:var(--display);font-size:1.02rem;letter-spacing:.05em;text-transform:uppercase;
-  color:var(--muted);font-weight:700;transition:all .3s var(--ease);text-align:center;line-height:1.2;
+  transition:all .3s var(--ease);
 }
-.partner:hover{color:var(--ink);border-color:var(--accent);transform:translateY(-4px);box-shadow:var(--shadow-sm)}
+.partner:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:var(--shadow)}
+.partner-name{
+  font-family:var(--display);font-size:1.9rem;font-weight:700;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--ink);line-height:1;
+}
+.partner-note{font-size:.86rem;line-height:1.5;color:var(--body);max-width:24ch}
 
 /* ==========================================================================
    Accordion (FAQ)
@@ -775,7 +780,6 @@ li{margin-bottom:.45em}
 @media (max-width:1180px){
   .nav > li > a{padding:12px 10px;font-size:.75rem}
   .topbar-list li.hide-md{display:none}
-  .partners{grid-template-columns:repeat(3,minmax(0,1fr))}
   .hero-grid{gap:44px}
 }
 
@@ -811,8 +815,9 @@ li{margin-bottom:.45em}
   .grid-2,.grid-3,.grid-4,.division{grid-template-columns:1fr}
 
   /* keep short, scannable blocks side by side rather than one long column */
-  .partners{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-  .partner{height:76px;font-size:.95rem;letter-spacing:.04em;padding:10px}
+  .partners{grid-template-columns:1fr;gap:14px}
+  .partner{min-height:0;padding:22px 20px;gap:6px}
+  .partner-name{font-size:1.6rem}
   .stats .grid-4{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 12px}
   .stat+.stat::before{display:none}
   .stat{padding:14px 6px}
@@ -911,7 +916,7 @@ li{margin-bottom:.45em}
 @media (max-width:400px){
   .wrap{padding:0 16px}
   .brand-logo{height:44px}
-  .partner{height:70px;font-size:.88rem;overflow-wrap:anywhere}
+  .partner-name{font-size:1.45rem;overflow-wrap:anywhere}
   .card{padding:22px 18px}
   .mobile-bar a{font-size:.74rem;letter-spacing:.06em;gap:7px}
 }

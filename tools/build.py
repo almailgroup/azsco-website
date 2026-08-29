@@ -330,12 +330,18 @@ def service_cards(limit=None):
       </article>''')
     return "\n".join(out)
 
-PARTNER_NAMES = ["Bosch", "Honeywell", "Hikvision", "Notifier", "Dahua", "Paradox",
-                 "Ajax Systems", "Suprema", "ZKTeco", "Milestone", "Hochiki", "Axis"]
+PARTNERS = [
+    ("Ajax", "Wireless intrusion detection &amp; alarm systems"),
+    ("Hikvision", "CCTV cameras &amp; video surveillance"),
+    ("Rasilient", "Forensic-grade video storage"),
+]
 
 def partner_grid():
     return "\n".join(
-        f'      <div class="partner reveal" data-delay="{i*40}">{name}</div>' for i, name in enumerate(PARTNER_NAMES))
+        f'      <div class="partner reveal" data-delay="{i*80}">'
+        f'<span class="partner-name">{name}</span>'
+        f'<span class="partner-note">{note}</span></div>'
+        for i, (name, note) in enumerate(PARTNERS))
 
 HERO_SVG = '''<svg viewBox="0 0 320 300" role="img" aria-label="Illustration of a monitored, protected building">
 <defs><linearGradient id="hg" x1="0" y1="0" x2="0" y2="1">
@@ -613,7 +619,7 @@ body = banner("About AZSCO",
       <div class="stat reveal"><span class="num"><span data-count="24">0</span>/<span data-count="7">0</span></span><span class="label">Operations Coverage</span></div>
       <div class="stat reveal" data-delay="80"><span class="num"><span data-count="500">0</span>+</span><span class="label">Systems Installed</span></div>
       <div class="stat reveal" data-delay="160"><span class="num"><span data-count="300">0</span>+</span><span class="label">Security Personnel</span></div>
-      <div class="stat reveal" data-delay="240"><span class="num"><span data-count="12">0</span>+</span><span class="label">Technology Partners</span></div>
+      <div class="stat reveal" data-delay="240"><span class="num"><span data-count="3">0</span></span><span class="label">Technology Partners</span></div>
     </div>
   </div>
 </section>

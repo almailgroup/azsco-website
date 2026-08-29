@@ -105,7 +105,9 @@ The phone layout is not just the desktop layout stacked. Breakpoints at 768px, 6
   submit anywhere. Point the `<form>` at a backend endpoint or form service to make it live.
 - **Social links**: placeholder `#` hrefs in the top bar and footer — replace with the real
   profile URLs.
-- **Partner names**: shown as text tiles. Swap in official logo files when licensing allows.
+- **Partners**: Ajax, Hikvision and Rasilient, defined in `PARTNERS` in `tools/build.py`.
+  They render as text tiles with the product category each supplies; drop the official logo
+  files into `assets/img/` and swap the tiles for images when licensing allows.
 - **Map**: the contact page uses a styled address panel rather than an embedded map, so the
   page loads without third-party scripts. Replace with a map embed if required.
 - **Statistics** (systems installed, personnel, partners) are illustrative placeholders and
