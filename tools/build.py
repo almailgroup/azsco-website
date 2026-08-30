@@ -440,10 +440,10 @@ body = f'''
 <section class="section section--tight stats">
   <div class="wrap">
     <div class="grid grid-4">
-      <div class="stat reveal"><span class="num"><span data-count="24">0</span>/<span data-count="7">0</span></span><span class="label">Monitoring &amp; Support</span></div>
-      <div class="stat reveal" data-delay="80"><span class="num"><span data-count="500">0</span>+</span><span class="label">Systems Installed</span></div>
-      <div class="stat reveal" data-delay="160"><span class="num"><span data-count="300">0</span>+</span><span class="label">Security Personnel</span></div>
-      <div class="stat reveal" data-delay="240"><span class="num"><span data-count="100">0</span>%</span><span class="label">Client Commitment</span></div>
+      <div class="stat reveal"><span class="num"><span data-count="{FOUNDED}" data-plain>0</span></span><span class="label">Established in Kuwait</span></div>
+      <div class="stat reveal" data-delay="80"><span class="num"><span data-years-since="{FOUNDED}" data-count="{YEARS}">0</span>+</span><span class="label">Years of Experience</span></div>
+      <div class="stat reveal" data-delay="160"><span class="num"><span data-count="24">0</span>/<span data-count="7">0</span></span><span class="label">Monitoring &amp; Response</span></div>
+      <div class="stat reveal" data-delay="240"><span class="num"><span data-count="3">0</span></span><span class="label">Technology Partners</span></div>
     </div>
   </div>
 </section>
@@ -1140,7 +1140,7 @@ body = banner("Privacy Policy",
     <div class="rich reveal">
       <span class="updated">Last updated: January 2026</span>
 
-      <p class="lead">AZSCO Security Services Company (&ldquo;AZSCO&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) respects your privacy. This policy explains what personal information we collect through this website and our services, how we use it, and the choices available to you.</p>
+      <p class="lead">{COMPANY} (&ldquo;AZSCO&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) respects your privacy. This policy explains what personal information we collect through this website and our services, how we use it, and the choices available to you.</p>
 
       <h2>Information We Collect</h2>
       <p>We collect information that you provide directly to us, and a limited amount of technical information collected automatically when you visit this website.</p>
@@ -1191,7 +1191,7 @@ body = banner("Privacy Policy",
       <h2>Contact Us</h2>
       <p>If you have questions about this Privacy Policy or how we handle your information, please contact us:</p>
       <ul>
-        <li><b>AZSCO Security Services Company</b></li>
+        <li><b>{COMPANY}</b></li>
         <li>{ADDRESS_1L}</li>
         <li>Telephone: <a href="tel:{PHONE_HREF}">{PHONE}</a></li>
         <li>Email: <a href="mailto:{EMAIL}">{EMAIL}</a></li>
