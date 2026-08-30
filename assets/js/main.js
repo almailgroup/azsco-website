@@ -108,13 +108,16 @@
 
     function run(el) {
       var target = parseFloat(el.getAttribute('data-count'));
+      // years and other bare numbers must not get a thousands separator
+      var plain = el.hasAttribute('data-plain');
       var dur = 1600;
       var start = null;
       function frame(ts) {
         if (start === null) start = ts;
         var p = Math.min((ts - start) / dur, 1);
         var eased = 1 - Math.pow(1 - p, 3);
-        el.textContent = Math.round(target * eased).toLocaleString('en-US');
+        var v = Math.round(target * eased);
+        el.textContent = plain ? String(v) : v.toLocaleString('en-US');
         if (p < 1) requestAnimationFrame(frame);
       }
       requestAnimationFrame(frame);
@@ -225,6 +228,19 @@
     });
   }
 
+  /* ---------- keep "years of experience" current without a rebuild ---------- */
+  function yearsSince() {
+    all('[data-years-since]').forEach(function (el) {
+      var from = parseInt(el.getAttribute('data-years-since'), 10);
+      if (!from) return;
+      var n = new Date().getFullYear() - from;
+      if (n < 0) return;
+      // the counter animation reads data-count, so update that too
+      el.setAttribute('data-count', String(n));
+      el.textContent = String(n);
+    });
+  }
+
   /* ---------- current year in footer ---------- */
   function year() {
     all('[data-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
@@ -236,6 +252,7 @@
     mobileNav();
     mobileGroups();
     reveal();
+    yearsSince();   // must run before counters() so it animates to the right figure
     counters();
     accordions();
     backToTop();

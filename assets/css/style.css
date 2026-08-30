@@ -586,15 +586,15 @@ li{margin-bottom:.45em}
 /* ==========================================================================
    Partners
    ========================================================================== */
-.partners{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
-.partner{
+.partners,.clients{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.partner,.client{
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
   min-height:150px;padding:30px 24px;text-align:center;
   border:1px solid var(--line);border-radius:var(--radius-lg);background:#fff;
   transition:all .3s var(--ease);
 }
-.partner:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:var(--shadow)}
-.partner-name{
+.partner:hover,.client:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:var(--shadow)}
+.partner-name,.client-name{
   font-family:var(--display);font-size:1.9rem;font-weight:700;
   letter-spacing:.09em;text-transform:uppercase;color:var(--ink);line-height:1;
 }
@@ -620,6 +620,23 @@ li{margin-bottom:.45em}
 .acc.is-open .acc-btn .pm svg{transform:rotate(45deg)}
 .acc-panel{max-height:0;overflow:hidden;transition:max-height .35s var(--ease)}
 .acc-panel .inner{padding:0 26px 24px;font-size:.97rem}
+
+/* ==========================================================================
+   Pull quote (CEO's message)
+   ========================================================================== */
+.quote{
+  max-width:820px;margin:0 auto;padding:0 0 0 28px;
+  border-left:3px solid var(--accent);
+}
+.quote p{font-size:1.06rem;line-height:1.85;color:#c4c4c4}
+.quote .quote-line{
+  font-family:var(--display);font-size:1.35rem;letter-spacing:.06em;
+  text-transform:uppercase;color:#fff;margin-top:26px;margin-bottom:.5em;
+}
+.quote-by{
+  margin-top:26px;font-size:.78rem;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--accent);
+}
 
 /* ==========================================================================
    CTA band
@@ -815,9 +832,12 @@ li{margin-bottom:.45em}
   .grid-2,.grid-3,.grid-4,.division{grid-template-columns:1fr}
 
   /* keep short, scannable blocks side by side rather than one long column */
-  .partners{grid-template-columns:1fr;gap:14px}
-  .partner{min-height:0;padding:22px 20px;gap:6px}
-  .partner-name{font-size:1.6rem}
+  .partners,.clients{grid-template-columns:1fr;gap:14px}
+  .partner,.client{min-height:0;padding:22px 20px;gap:6px}
+  .partner-name,.client-name{font-size:1.6rem}
+  .quote{padding-left:18px}
+  .quote p{font-size:1rem;line-height:1.75}
+  .quote .quote-line{font-size:1.2rem}
   .stats .grid-4{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 12px}
   .stat+.stat::before{display:none}
   .stat{padding:14px 6px}
@@ -916,7 +936,7 @@ li{margin-bottom:.45em}
 @media (max-width:400px){
   .wrap{padding:0 16px}
   .brand-logo{height:44px}
-  .partner-name{font-size:1.45rem;overflow-wrap:anywhere}
+  .partner-name,.client-name{font-size:1.45rem;overflow-wrap:anywhere}
   .card{padding:22px 18px}
   .mobile-bar a{font-size:.74rem;letter-spacing:.06em;gap:7px}
 }

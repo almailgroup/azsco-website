@@ -110,8 +110,11 @@ The phone layout is not just the desktop layout stacked. Breakpoints at 768px, 6
   files into `assets/img/` and swap the tiles for images when licensing allows.
 - **Map**: the contact page uses a styled address panel rather than an embedded map, so the
   page loads without third-party scripts. Replace with a map embed if required.
-- **Statistics** (systems installed, personnel, partners) are illustrative placeholders and
-  should be confirmed before the site goes live.
+- **Statistics** now come from AZSCO's own copy: founding year, years of experience
+  (recalculated each year by `data-years-since`, so it never goes stale), 24/7 response and
+  the partner count. No invented figures remain.
+- **Clients** (`CLIENTS` in `tools/build.py`) render as text tiles; swap for logo files when
+  licensing allows.
 - **Fonts**: Inter and Barlow Condensed are loaded from Google Fonts, with system-font
   fallbacks if that request is blocked.
 

@@ -11,6 +11,17 @@ PHONE_HREF = "+9651808606"
 EMAIL = "info@azsco.com"
 ADDRESS = "Floor 27, Kuwait Building Tower,<br>Fahad Al Salem St., Qibla, Kuwait"
 ADDRESS_1L = "Floor 27, Kuwait Building Tower, Fahad Al Salem St., Qibla, Kuwait"
+COMPANY = "AZSCO for Facility Guard Services"
+FOUNDED = 2008
+YEARS = __import__("datetime").date.today().year - FOUNDED
+
+CLIENTS = ["Xcite", "Millennium Hotels and Resorts", "Alnasser"]
+
+def client_grid():
+    return "\n".join(
+        f'      <div class="client reveal" data-delay="{i*80}">'
+        f'<span class="client-name">{name}</span></div>'
+        for i, name in enumerate(CLIENTS))
 MAPS_URL = "https://maps.app.goo.gl/BN2Byxt6BCJ62XV26"
 
 # ---------------------------------------------------------------- icons
@@ -246,7 +257,7 @@ def footer():
     </div>
 
     <div class="footer-bottom">
-      <p>&copy; <span data-year>2026</span> AZSCO Security Services Company. All rights reserved.</p>
+      <p>&copy; <span data-year>2026</span> {COMPANY}. All rights reserved.</p>
       <ul>
         <li><a href="privacy-policy.html">Privacy Policy</a></li>
         <li><a href="contact.html">Contact</a></li>
@@ -559,14 +570,14 @@ body = banner("About AZSCO",
     <div class="split">
       <div class="split-visual reveal">
         <div class="visual-frame">{ABOUT_SVG}</div>
-        <div class="visual-badge"><b>KWT</b><span>Serving Kuwait</span></div>
+        <div class="visual-badge"><b>2008</b><span>Established</span></div>
       </div>
       <div class="reveal" data-delay="120">
-        <p class="eyebrow">Who We Are</p>
-        <h2>Security You Can Build On</h2>
-        <p class="lead">AZSCO is committed to providing unparalleled security services that ensure the safety and peace of mind of our clients. We are a leading provider of security services in Kuwait with a strong reputation for quality and reliability.</p>
-        <p>We offer a comprehensive range of security services, including guarding, patrol services, event security and security consulting. Our team of highly trained and experienced security professionals is equipped with the latest technology and equipment to ensure the safety of your property and assets.</p>
-        <p>Alongside our manpower services, AZSCO designs and installs advanced fire alarm systems, intrusion detection, CCTV and access control &mdash; so a single accountable partner covers both the people and the technology protecting your site.</p>
+        <p class="eyebrow">Our Story</p>
+        <h2>Protecting Kuwait Since 2008</h2>
+        <p class="lead">AZSCO for facility guard services was established in 2008 and is headquartered in Qibla, Kuwait. Since its inception, AZSCO has been committed to providing its customers with state of the art security and prosperity bringing peace to places that are vulnerable. Additionally, AZSCO&rsquo;s team works on improving the security solutions that is offered to our beloved customers.</p>
+        <p>AZSCO is distinguished in offering security services such as security guards for apartments, malls, banks, stores and much more. AZSCO has partnerships with many global brands to provide unique products and solutions for projects.</p>
+        <p>AZSCO is committed to building long-term relationships with its clients in both the public and private sectors, based on trust, cooperation, and development, with a focus on executing its projects with efficiency and high quality. Its success and continuous growth testify to its commitment to excellence and innovation in providing solutions and products to its clients.</p>
         <div class="btn-row">
           <a class="btn btn-dark" href="contact.html">Talk to Our Team {I["arrow"]}</a>
         </div>
@@ -613,12 +624,41 @@ body = banner("About AZSCO",
   </div>
 </section>
 
+<section class="section section--dark">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <p class="eyebrow">A Word From Our Leadership</p>
+      <h2>CEO&rsquo;s Message</h2>
+    </div>
+    <blockquote class="quote reveal">
+      <p>Our commitment goes beyond merely achieving success and profitability at Almail Group. We believe in the importance of upholding our principles and values towards our employees, customers, and the community. Therefore, the owners of Almail Group prioritize the well-being and comfort of our employees and the development of our products and services.</p>
+      <p>The employees of Almail Group are partners in our success and a fundamental part of achieving it. We always strive to provide a comfortable work environment without focusing on cost. We also work on continuous development and adopting modern technologies despite their high cost, as they enhance work efficiency and quality and contribute to delivering distinguished products and solutions to serve the community, thereby building strong and sustainable relationships with our customers.</p>
+      <p class="quote-line">(Our Employees &mdash; Our Customers)</p>
+      <p>Thank you for your trust in us, we thrive because of you.</p>
+      <footer class="quote-by">CEO, Almail Group</footer>
+    </blockquote>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <p class="eyebrow">Our Clients</p>
+      <h2>Trusted Across Kuwait</h2>
+      <p>AZSCO is committed to building long-term relationships with its clients in both the public and private sectors.</p>
+    </div>
+    <div class="clients">
+{client_grid()}
+    </div>
+  </div>
+</section>
+
 <section class="section section--tight stats">
   <div class="wrap">
     <div class="grid grid-4">
-      <div class="stat reveal"><span class="num"><span data-count="24">0</span>/<span data-count="7">0</span></span><span class="label">Operations Coverage</span></div>
-      <div class="stat reveal" data-delay="80"><span class="num"><span data-count="500">0</span>+</span><span class="label">Systems Installed</span></div>
-      <div class="stat reveal" data-delay="160"><span class="num"><span data-count="300">0</span>+</span><span class="label">Security Personnel</span></div>
+      <div class="stat reveal"><span class="num"><span data-count="{FOUNDED}" data-plain>0</span></span><span class="label">Established in Kuwait</span></div>
+      <div class="stat reveal" data-delay="80"><span class="num"><span data-years-since="{FOUNDED}" data-count="{YEARS}">0</span>+</span><span class="label">Years of Experience</span></div>
+      <div class="stat reveal" data-delay="160"><span class="num"><span data-count="24">0</span>/<span data-count="7">0</span></span><span class="label">Monitoring &amp; Response</span></div>
       <div class="stat reveal" data-delay="240"><span class="num"><span data-count="3">0</span></span><span class="label">Technology Partners</span></div>
     </div>
   </div>
@@ -1012,7 +1052,7 @@ body = banner("Contact Us",
         <div class="map-embed" style="margin-top:32px">
           <div class="pin">
             {I["pin"]}
-            <h4>AZSCO Security Services Company</h4>
+            <h4>{COMPANY}</h4>
             <p>{ADDRESS_1L}</p>
           </div>
         </div>
