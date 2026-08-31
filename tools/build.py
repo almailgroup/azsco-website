@@ -76,16 +76,12 @@ NAV = [
     ("About", "about.html", []),
     ("Services", "services.html", [
         ("All Services", "services.html"),
-        ("Security Manpower", "services.html#manpower"),
-        ("Fire Alarm Systems", "services.html#fire"),
-        ("Intrusion Detection", "services.html#intrusion"),
-        ("CCTV &amp; Surveillance", "services.html#cctv"),
-        ("Access Control", "services.html#access"),
-        ("Smart Home &amp; Automation", "services.html#smart"),
-    ]),
-    ("Divisions", "security.html", [
-        ("AZSCO Security", "security.html"),
-        ("AZSCO Systems", "systems.html"),
+        ("Manned Guarding", "services.html#guarding"),
+        ("Mobile Patrols", "services.html#patrols"),
+        ("Event &amp; VIP Security", "services.html#events"),
+        ("Reception &amp; Concierge", "services.html#reception"),
+        ("Security Consulting", "services.html#consulting"),
+        ("Supervision &amp; Reporting", "services.html#supervision"),
     ]),
     ("Partners", "partners.html", []),
     ("Contact", "contact.html", []),
@@ -212,7 +208,7 @@ def footer():
         <a class="brand" href="index.html" aria-label="AZSCO Security — home">
           {logo("light")}
         </a>
-        <p>AZSCO is committed to providing unparalleled security services that ensure the safety and peace of mind of our clients across Kuwait — combining professionally trained manpower with advanced electronic security systems.</p>
+        <p>AZSCO for facility guard services has been protecting premises, assets and people across Kuwait since 2008, with professionally trained, licensed and closely supervised security personnel.</p>
         <div class="footer-social">
           <a href="#" aria-label="AZSCO on Facebook">{I["facebook"]}</a>
           <a href="#" aria-label="AZSCO on X">{I["x"]}</a>
@@ -226,8 +222,7 @@ def footer():
         <ul class="footer-links">
           <li><a href="index.html">Home</a></li>
           <li><a href="about.html">About AZSCO</a></li>
-          <li><a href="security.html">AZSCO Security</a></li>
-          <li><a href="systems.html">AZSCO Systems</a></li>
+          <li><a href="services.html">Our Services</a></li>
           <li><a href="partners.html">Our Partners</a></li>
           <li><a href="contact.html">Contact Us</a></li>
         </ul>
@@ -236,12 +231,12 @@ def footer():
       <div>
         <h4>Services</h4>
         <ul class="footer-links">
-          <li><a href="services.html#manpower">Security Manpower</a></li>
-          <li><a href="services.html#fire">Fire Alarm Systems</a></li>
-          <li><a href="services.html#intrusion">Intrusion Detection</a></li>
-          <li><a href="services.html#cctv">CCTV &amp; Surveillance</a></li>
-          <li><a href="services.html#access">Access Control</a></li>
-          <li><a href="services.html#smart">Smart Home &amp; Automation</a></li>
+          <li><a href="services.html#guarding">Manned Guarding</a></li>
+          <li><a href="services.html#patrols">Mobile Patrols</a></li>
+          <li><a href="services.html#events">Event &amp; VIP Security</a></li>
+          <li><a href="services.html#reception">Reception &amp; Concierge</a></li>
+          <li><a href="services.html#consulting">Security Consulting</a></li>
+          <li><a href="services.html#supervision">Supervision &amp; Reporting</a></li>
         </ul>
       </div>
 
@@ -315,18 +310,18 @@ def page(fname, title, desc, body):
 
 # ================================================================= HOME
 SERVICE_CARDS = [
-    ("manpower", "users", "Security Manpower",
-     "Highly trained and professional security personnel to safeguard your premises, assets and people. Our manpower services are tailored to meet the specific requirements of each client."),
-    ("fire", "flame", "Fire Alarm Systems",
-     "Advanced fire alarm systems to protect lives and property. We provide cutting-edge fire detection and alarm solutions tailored to meet the unique needs of various establishments."),
-    ("intrusion", "alarm", "Intrusion Detection",
-     "Intrusion systems designed to detect and prevent unauthorized access to your property, using state-of-the-art technology to deliver robust intrusion detection solutions."),
-    ("cctv", "camera", "CCTV &amp; Surveillance",
-     "Professional CCTV design, installation and maintenance — with high-definition coverage, intelligent recording and remote viewing from any device, anywhere."),
-    ("access", "lock", "Access Control",
-     "Control exactly who goes where, and when. Card, PIN and biometric access control that integrates with your intrusion, CCTV and fire systems."),
-    ("smart", "home", "Smart Home &amp; Automation",
-     "Integration and management of smart home devices — lights, locks, thermostats and more — brought together in one secure, easy-to-use application."),
+    ("guarding", "shield", "Manned Guarding",
+     "Highly trained and professional security officers safeguarding your premises, assets and people &mdash; security guards for apartments, malls, banks, stores and much more."),
+    ("patrols", "route", "Mobile Patrols",
+     "Scheduled and random patrols, perimeter checks and lock-and-unlock services that keep a visible, unpredictable security presence across your site."),
+    ("events", "calendar", "Event &amp; VIP Security",
+     "Crowd management, access screening, stewarding and close protection for exhibitions, conferences, private functions and VIP visits."),
+    ("reception", "users", "Reception &amp; Concierge",
+     "Front-of-house officers who combine entry control and visitor management with the courtesy your staff, residents and guests expect."),
+    ("consulting", "file", "Security Consulting",
+     "Site surveys, risk assessments, post orders and deployment planning, so your security spend goes where the risk actually is."),
+    ("supervision", "headset", "Supervision &amp; Reporting",
+     "Field supervisors, shift audits and documented incident reporting, with a team available 24 hours a day, 7 days a week."),
 ]
 
 def service_cards(limit=None):
@@ -341,18 +336,28 @@ def service_cards(limit=None):
       </article>''')
     return "\n".join(out)
 
-PARTNERS = [
-    ("Ajax", "Wireless intrusion detection &amp; alarm systems"),
-    ("Hikvision", "CCTV cameras &amp; video surveillance"),
-    ("Rasilient", "Forensic-grade video storage"),
+SECTORS = [
+    ("home", "Apartments &amp; Compounds"),
+    ("grid", "Malls &amp; Retail"),
+    ("wallet", "Banks &amp; Financial"),
+    ("file", "Offices &amp; Corporate"),
+    ("cog", "Industrial &amp; Logistics"),
+    ("calendar", "Events &amp; Exhibitions"),
 ]
+
+def sector_grid():
+    return "\n".join(
+        f'      <div class="sector reveal" data-delay="{i*60}">'
+        f'<span class="ico">{I[icon]}</span><span>{label}</span></div>'
+        for i, (icon, label) in enumerate(SECTORS))
+
+PARTNERS = ["Ajax", "Hikvision", "Rasilient"]
 
 def partner_grid():
     return "\n".join(
         f'      <div class="partner reveal" data-delay="{i*80}">'
-        f'<span class="partner-name">{name}</span>'
-        f'<span class="partner-note">{note}</span></div>'
-        for i, (name, note) in enumerate(PARTNERS))
+        f'<span class="partner-name">{name}</span></div>'
+        for i, name in enumerate(PARTNERS))
 
 HERO_SVG = '''<svg viewBox="0 0 320 300" role="img" aria-label="Illustration of a monitored, protected building">
 <defs><linearGradient id="hg" x1="0" y1="0" x2="0" y2="1">
@@ -373,25 +378,25 @@ body = f'''
       <div>
         <span class="hero-badge">{I["shield-check"]} Licensed Security Provider &mdash; Kuwait</span>
         <h1>Professional Security<em>Services for Kuwait</em></h1>
-        <p class="lead">AZSCO is committed to providing unparalleled security services that ensure the safety and peace of mind of our clients &mdash; combining highly trained security personnel with advanced fire, intrusion and surveillance systems.</p>
+        <p class="lead">AZSCO is committed to providing unparalleled security services that ensure the safety and peace of mind of our clients &mdash; delivered by highly trained, licensed and closely supervised security personnel.</p>
         <div class="btn-row">
           <a class="btn btn-primary" href="contact.html">Request a Consultation {I["arrow"]}</a>
           <a class="btn btn-outline" href="services.html">Explore Our Services</a>
         </div>
         <ul class="hero-points">
-          <li>{I["check"]} 24/7 monitoring &amp; response</li>
+          <li>{I["check"]} Guarding Kuwait since 2008</li>
           <li>{I["check"]} Licensed &amp; vetted personnel</li>
-          <li>{I["check"]} Certified system integration</li>
+          <li>{I["check"]} 24/7 supervision &amp; response</li>
         </ul>
       </div>
 
       <aside class="hero-card reveal" data-delay="120">
-        <h3>What We Protect</h3>
-        <p>One partner for manpower and technology &mdash; across every kind of premises.</p>
+        <h3>What We Guard</h3>
+        <p>Security officers for every kind of premises across Kuwait.</p>
         <ul class="hero-card-list">
-          <li><span class="ico">{I["flame"]}</span><span><b>Fire Alarm Systems</b><span>Cutting-edge detection and alarm solutions.</span></span></li>
-          <li><span class="ico">{I["alarm"]}</span><span><b>Intrusion Systems</b><span>Detect and prevent unauthorized access.</span></span></li>
-          <li><span class="ico">{I["users"]}</span><span><b>Security Manpower</b><span>Trained personnel for premises, assets and people.</span></span></li>
+          <li><span class="ico">{I["shield"]}</span><span><b>Manned Guarding</b><span>Static officers for apartments, malls, banks and stores.</span></span></li>
+          <li><span class="ico">{I["route"]}</span><span><b>Mobile Patrols</b><span>Scheduled and random patrols, day and night.</span></span></li>
+          <li><span class="ico">{I["calendar"]}</span><span><b>Event &amp; VIP Security</b><span>Crowd management, screening and close protection.</span></span></li>
         </ul>
       </aside>
     </div>
@@ -402,8 +407,8 @@ body = f'''
   <div class="wrap">
     <div class="sec-head center reveal">
       <p class="eyebrow">Our Services</p>
-      <h2>Complete Security Solutions</h2>
-      <p>From manned guarding to fully integrated electronic security, AZSCO delivers protection that is tailored, certified and monitored around the clock.</p>
+      <h2>Our Security Services</h2>
+      <p>From manned guarding to mobile patrols and event security, every deployment is tailored to the specific requirements of each client.</p>
     </div>
     <div class="grid grid-3">
 {service_cards()}
@@ -423,7 +428,7 @@ body = f'''
       <div class="reveal" data-delay="120">
         <p class="eyebrow">About AZSCO</p>
         <h2>A Leading Provider of Security Services in Kuwait</h2>
-        <p class="lead">AZSCO is a leading provider of security services in Kuwait with a strong reputation for quality and reliability. Our team of highly trained and experienced security professionals is equipped with the latest technology and equipment to ensure the safety of your property and assets.</p>
+        <p class="lead">AZSCO for facility guard services was established in 2008 and is headquartered in Qibla, Kuwait. Our team of highly trained and experienced security professionals is equipped with the latest technology and equipment to ensure the safety of your property and assets.</p>
         <ul class="check-list">
           <li><span class="ico">{I["check"]}</span><span><b>Customized solutions</b><span>We understand that every client has unique security needs, and tailor our solutions to the specific requirements of each site.</span></span></li>
           <li><span class="ico">{I["check"]}</span><span><b>Cost-effective and efficient</b><span>Our goal is to provide the highest level of security and peace of mind, while keeping our services efficient and affordable.</span></span></li>
@@ -451,36 +456,12 @@ body = f'''
 <section class="section">
   <div class="wrap">
     <div class="sec-head center reveal">
-      <p class="eyebrow">Our Divisions</p>
-      <h2>Two Divisions, One Standard</h2>
-      <p>AZSCO brings together professional security manpower and certified systems engineering under a single accountable partner.</p>
+      <p class="eyebrow">Where We Guard</p>
+      <h2>Sectors We Protect</h2>
+      <p>AZSCO is distinguished in offering security services such as security guards for apartments, malls, banks, stores and much more.</p>
     </div>
-    <div class="division">
-      <article class="div-card reveal">
-        <span class="tag">Division 01</span>
-        <h3>AZSCO Security</h3>
-        <p>A comprehensive range of security services, including guarding, patrol services, event security and security consulting &mdash; delivered by professionals equipped with the latest technology and equipment.</p>
-        <ul class="div-list">
-          <li>{I["check"]} Manned guarding &amp; static posts</li>
-          <li>{I["check"]} Mobile patrol services</li>
-          <li>{I["check"]} Event &amp; VIP security</li>
-          <li>{I["check"]} Security consulting &amp; risk assessment</li>
-        </ul>
-        <a class="btn btn-primary" href="security.html">Explore AZSCO Security {I["arrow"]}</a>
-      </article>
-
-      <article class="div-card reveal" data-delay="120">
-        <span class="tag">Division 02</span>
-        <h3>AZSCO Systems</h3>
-        <p>Design, supply, installation and maintenance of electronic security &mdash; fire alarm, intrusion detection, CCTV, access control and smart home integration, engineered to international standards.</p>
-        <ul class="div-list">
-          <li>{I["check"]} Fire detection &amp; alarm systems</li>
-          <li>{I["check"]} Intrusion &amp; perimeter protection</li>
-          <li>{I["check"]} CCTV, access control &amp; integration</li>
-          <li>{I["check"]} Smart home &amp; building automation</li>
-        </ul>
-        <a class="btn btn-primary" href="systems.html">Explore AZSCO Systems {I["arrow"]}</a>
-      </article>
+    <div class="sectors">
+{sector_grid()}
     </div>
   </div>
 </section>
@@ -495,7 +476,7 @@ body = f'''
     <div class="grid grid-3">
       <div class="tile reveal"><span class="ico">{I["award"]}</span><div><h4>Proven Reputation</h4><p>A leading provider of security services in Kuwait, trusted for quality and reliability across commercial, industrial and residential sites.</p></div></div>
       <div class="tile reveal" data-delay="80"><span class="ico">{I["users"]}</span><div><h4>Trained Professionals</h4><p>Highly trained and experienced security personnel, screened, licensed and supervised to a consistent operating standard.</p></div></div>
-      <div class="tile reveal" data-delay="160"><span class="ico">{I["cog"]}</span><div><h4>Latest Technology</h4><p>Our teams are equipped with the latest technology and equipment to ensure the safety of your property and assets.</p></div></div>
+      <div class="tile reveal" data-delay="160"><span class="ico">{I["award"]}</span><div><h4>Established 2008</h4><p>Guarding Kuwait for over {YEARS} years, with continuous growth that testifies to our commitment to excellence.</p></div></div>
       <div class="tile reveal" data-delay="0"><span class="ico">{I["target"]}</span><div><h4>Tailored to You</h4><p>Every client has unique security needs. We design customized solutions around your risk profile, site and operating hours.</p></div></div>
       <div class="tile reveal" data-delay="80"><span class="ico">{I["wallet"]}</span><div><h4>Cost-Effective</h4><p>The highest level of security and peace of mind, delivered in a way that stays efficient and commercially sensible.</p></div></div>
       <div class="tile reveal" data-delay="160"><span class="ico">{I["headset"]}</span><div><h4>24/7 Availability</h4><p>Our dedicated professionals are available 24 hours a day, 7 days a week &mdash; for monitoring, response and support.</p></div></div>
@@ -512,9 +493,9 @@ body = f'''
     </div>
     <div class="steps">
       <div class="step reveal"><span class="n">01</span><h4>Consultation</h4><p>We listen to your requirements, operating hours and concerns to understand what actually needs protecting.</p></div>
-      <div class="step reveal" data-delay="80"><span class="n">02</span><h4>Site Survey</h4><p>Our specialists assess the premises, identify vulnerabilities and map coverage, access points and risk.</p></div>
-      <div class="step reveal" data-delay="160"><span class="n">03</span><h4>Tailored Proposal</h4><p>You receive a clear solution and quotation &mdash; manpower, systems or both &mdash; scoped to your budget.</p></div>
-      <div class="step reveal" data-delay="240"><span class="n">04</span><h4>Deploy &amp; Support</h4><p>We install, commission and deploy, then maintain and monitor with 24/7 support behind you.</p></div>
+      <div class="step reveal" data-delay="80"><span class="n">02</span><h4>Site Survey</h4><p>Our specialists assess the premises, identify vulnerabilities and map patrol routes, access points and risk.</p></div>
+      <div class="step reveal" data-delay="160"><span class="n">03</span><h4>Tailored Proposal</h4><p>You receive a clear deployment plan and quotation &mdash; posts, shifts and cover &mdash; scoped to your budget.</p></div>
+      <div class="step reveal" data-delay="240"><span class="n">04</span><h4>Deploy &amp; Supervise</h4><p>Officers are briefed and deployed, then supervised and audited with 24/7 support behind them.</p></div>
     </div>
   </div>
 </section>
@@ -540,7 +521,7 @@ body = f'''
 
 page("index.html",
      "AZSCO Security | Professional Security Services for Kuwait",
-     "AZSCO Security is a leading security company in Kuwait offering security manpower, fire alarm systems, intrusion detection, CCTV installation, access control and 24/7 professional security services.",
+     "AZSCO for facility guard services provides professional security manpower in Kuwait since 2008 — manned guarding, mobile patrols, event and VIP security, reception and concierge, security consulting and 24/7 supervision.",
      body)
 
 # ================================================================= ABOUT
@@ -617,8 +598,8 @@ body = banner("About AZSCO",
     </div>
     <div class="grid grid-2">
       <div class="tile reveal"><span class="ico">{I["users"]}</span><div><h4>Highly Trained Personnel</h4><p>Our security professionals are screened, licensed, trained and supervised &mdash; and equipped with the technology they need to do the job properly.</p></div></div>
-      <div class="tile reveal" data-delay="80"><span class="ico">{I["cog"]}</span><div><h4>Certified Systems Engineering</h4><p>Fire, intrusion, CCTV and access control systems designed and commissioned to international standards, and maintained for the life of the installation.</p></div></div>
-      <div class="tile reveal"><span class="ico">{I["target"]}</span><div><h4>Customized Solutions</h4><p>Every client has unique security needs. We survey, assess and design around your site rather than selling a fixed package.</p></div></div>
+      <div class="tile reveal" data-delay="80"><span class="ico">{I["route"]}</span><div><h4>Managed, Not Just Staffed</h4><p>Field supervisors, unannounced shift audits and documented reporting, so a contract is actively managed rather than simply filled.</p></div></div>
+      <div class="tile reveal"><span class="ico">{I["target"]}</span><div><h4>Customized Solutions</h4><p>Every client has unique security needs. We survey, assess and plan deployments around your site rather than selling a fixed package.</p></div></div>
       <div class="tile reveal" data-delay="80"><span class="ico">{I["clock"]}</span><div><h4>Available 24/7</h4><p>Our team of dedicated professionals is available 24 hours a day, 7 days a week to provide the highest level of security and peace of mind.</p></div></div>
     </div>
   </div>
@@ -673,19 +654,19 @@ body = banner("About AZSCO",
     <div style="max-width:840px;margin:0 auto">
       <div class="acc is-open reveal">
         <button class="acc-btn" type="button">What areas does AZSCO cover?<span class="pm">{I["plus"]}</span></button>
-        <div class="acc-panel"><div class="inner">AZSCO provides security manpower and security systems across Kuwait, from our office at {ADDRESS_1L}. Call {PHONE} to discuss coverage for your site.</div></div>
+        <div class="acc-panel"><div class="inner">AZSCO provides security manpower across Kuwait, from our office at {ADDRESS_1L}. Call {PHONE} to discuss coverage for your site.</div></div>
       </div>
       <div class="acc reveal">
-        <button class="acc-btn" type="button">Do you provide both guards and security systems?<span class="pm">{I["plus"]}</span></button>
-        <div class="acc-panel"><div class="inner">Yes. AZSCO Security supplies trained security personnel &mdash; guarding, patrols, event security and consulting &mdash; while AZSCO Systems designs and installs fire alarm, intrusion, CCTV, access control and smart home solutions. Most clients use both under one contract.</div></div>
+        <button class="acc-btn" type="button">What kinds of premises do you guard?<span class="pm">{I["plus"]}</span></button>
+        <div class="acc-panel"><div class="inner">AZSCO is distinguished in offering security services such as security guards for apartments, malls, banks, stores and much more, along with offices, compounds, industrial sites and events. Every deployment is planned around the specific requirements of the client.</div></div>
       </div>
       <div class="acc reveal">
-        <button class="acc-btn" type="button">How quickly can a system be installed?<span class="pm">{I["plus"]}</span></button>
-        <div class="acc-panel"><div class="inner">Timelines depend on the size and complexity of the site. After a free site survey we issue a proposal with a clear schedule for supply, installation, commissioning and handover &mdash; along with the maintenance plan that follows it.</div></div>
+        <button class="acc-btn" type="button">How quickly can officers be deployed?<span class="pm">{I["plus"]}</span></button>
+        <div class="acc-panel"><div class="inner">Timelines depend on the number of posts, the shift pattern and any vetting the site requires. After a free site survey we issue a proposal with a clear deployment schedule, the officers assigned and the supervision arrangements that come with them.</div></div>
       </div>
       <div class="acc reveal">
         <button class="acc-btn" type="button">Is support available outside working hours?<span class="pm">{I["plus"]}</span></button>
-        <div class="acc-panel"><div class="inner">Our office hours are Sunday to Thursday, 8:00 to 17:00, but our team of dedicated professionals is available 24 hours a day, 7 days a week for monitoring, emergency response and technical support.</div></div>
+        <div class="acc-panel"><div class="inner">Our office hours are Sunday to Thursday, 8:00 to 17:00, but our team of dedicated professionals is available 24 hours a day, 7 days a week for supervision, emergency response and escalations.</div></div>
       </div>
     </div>
   </div>
@@ -701,62 +682,48 @@ page("about.html",
 
 # ================================================================= SERVICES
 SERVICE_DETAIL = [
- ("manpower","users","Security Manpower",
-  "Highly trained and professional security personnel to safeguard your premises, assets and people. Our security manpower services are tailored to meet the specific requirements of each client.",
-  ["Static guarding for offices, towers, compounds and industrial sites",
-   "Reception, concierge and front-of-house security",
-   "Mobile patrols and lock-and-unlock services",
-   "Event, exhibition and VIP protection details",
-   "Supervisors, shift rotation and documented reporting"]),
- ("fire","flame","Fire Alarm Systems",
-  "Advanced fire alarm systems to protect lives and property. AZSCO provides cutting-edge fire detection and alarm solutions tailored to meet the unique needs of various establishments.",
-  ["Addressable and conventional fire alarm panels",
-   "Smoke, heat, multi-sensor and beam detection",
-   "Sounders, strobes, voice evacuation and interfaces",
-   "Design, supply, installation, testing and commissioning",
-   "Scheduled inspection and preventive maintenance"]),
- ("intrusion","alarm","Intrusion Detection",
-  "Intrusion systems designed to detect and prevent unauthorized access to your property. We utilise state-of-the-art technology to deliver robust intrusion detection solutions.",
-  ["Wired and wireless intrusion alarm panels",
-   "Motion, glass-break, vibration and door contacts",
-   "Perimeter protection and external beam detection",
-   "Panic and hold-up devices for high-risk areas",
-   "Mobile alerts with 24/7 monitored response"]),
- ("cctv","camera","CCTV &amp; Surveillance",
-  "CCTV installation, configuration and maintenance — with high-definition coverage, intelligent recording and secure remote viewing from any device, anywhere.",
-  ["IP and HD camera systems for indoor and outdoor use",
-   "NVR / DVR storage sized to your retention policy",
-   "Video analytics, motion search and line-crossing alerts",
-   "Remote viewing via mobile and desktop applications",
-   "Health checks, cleaning and lens re-alignment"]),
- ("access","lock","Access Control",
-  "Control exactly who goes where, and when. AZSCO delivers card, PIN and biometric access control that integrates cleanly with your intrusion, CCTV and fire alarm systems.",
-  ["Proximity card, PIN and biometric readers",
-   "Door controllers, maglocks, turnstiles and barriers",
-   "Time and attendance reporting",
-   "Visitor management and audit trails",
-   "Fire alarm interfacing for safe egress"]),
- ("smart","home","Smart Home &amp; Automation",
-  "Integration and management of smart home devices — lights, locks, thermostats and more — brought together in one secure, easy-to-use application.",
-  ["Smart locks, video doorbells and indoor cameras",
-   "Lighting, curtain and climate automation",
-   "Scenes, schedules and away-mode simulation",
-   "Single-app control for the whole property",
-   "Integration with alarm and CCTV systems"]),
+ ("guarding","shield","Manned Guarding",
+  "Highly trained and professional security personnel to safeguard your premises, assets and people. AZSCO is distinguished in offering security guards for apartments, malls, banks, stores and much more, with deployments tailored to each client.",
+  ["Static officers for towers, compounds, retail and industrial sites",
+   "Screened, licensed and uniformed personnel",
+   "Site-specific post orders and access procedures",
+   "Day, night and rotating shift patterns",
+   "Daily occurrence books and incident reporting"]),
+ ("patrols","route","Mobile Patrols",
+  "A visible, unpredictable security presence for sites that do not need a permanent post &mdash; or an added layer of assurance for those that do.",
+  ["Scheduled and random patrol visits",
+   "Perimeter, car park and stairwell checks",
+   "Lock-and-unlock and key-holding services",
+   "Alarm response and escalation to key holders",
+   "Time-stamped patrol reports for every visit"]),
+ ("events","calendar","Event &amp; VIP Security",
+  "Officers who keep an event running smoothly and safely, from access screening at the door to close protection for principals.",
+  ["Crowd management and queue control",
+   "Access screening, accreditation and door supervision",
+   "Exhibition, conference and private function stewarding",
+   "VIP and close protection details",
+   "Pre-event risk assessment and deployment plan"]),
+ ("reception","users","Reception &amp; Concierge",
+  "Front-of-house security that protects the building without making visitors feel policed &mdash; the first impression as well as the first line of defence.",
+  ["Reception, lobby and concierge posts",
+   "Visitor registration, badging and escorting",
+   "Contractor and delivery control",
+   "Entry control and key management",
+   "Customer-service training alongside security training"]),
  ("consulting","file","Security Consulting",
-  "Independent assessment of your risk profile, followed by a practical plan. We help you decide what to protect, how, and in what order.",
+  "Independent assessment of your risk, followed by a practical plan. We help you decide what to protect, how, and in what order.",
   ["Site surveys and vulnerability assessments",
    "Security policies, procedures and post orders",
-   "Manpower deployment planning",
-   "System specification and tender support",
+   "Manpower deployment and shift planning",
+   "Tender and contract specification support",
    "Post-incident review and recommendations"]),
- ("monitoring","headset","24/7 Monitoring &amp; Support",
-  "Our team of dedicated professionals is available 24 hours a day, 7 days a week — for alarm monitoring, fire monitoring, emergency response and technical support.",
-  ["Alarm and fire signal monitoring",
-   "Escalation to key holders and authorities",
-   "Emergency call-out and response",
-   "Preventive and corrective maintenance contracts",
-   "Service-level reporting"]),
+ ("supervision","headset","Supervision &amp; Reporting",
+  "The difference between a guard on site and a managed security contract: supervision, auditing and a record you can rely on.",
+  ["Field supervisors and unannounced shift audits",
+   "24/7 operations contact for escalations",
+   "Documented incident and occurrence reporting",
+   "Attendance monitoring and shift cover",
+   "Regular service reviews with the client"]),
 ]
 
 def service_sections():
@@ -789,14 +756,14 @@ def service_sections():
     return "\n".join(out)
 
 body = banner("Our Services",
-  "A comprehensive range of security services — guarding, patrol services, event security and security consulting — backed by advanced fire, intrusion and surveillance systems.",
+  "A comprehensive range of security manpower services — guarding, patrol services, event security and security consulting — tailored to each client.",
   "Services") + f'''
 <section class="section">
   <div class="wrap">
     <div class="sec-head center reveal">
       <p class="eyebrow">Overview</p>
       <h2>What AZSCO Delivers</h2>
-      <p>Whether you need people on the ground, technology on the walls, or both, our services are tailored to the specific requirements of each client.</p>
+      <p>Every post, patrol and detail is planned around your premises, your operating hours and your risk &mdash; never a fixed package.</p>
     </div>
     <div class="grid grid-3">
 {service_cards()}
@@ -804,55 +771,8 @@ body = banner("Our Services",
   </div>
 </section>
 {service_sections()}
-{cta("Not sure which service you need?","Book a free site survey. We will assess your premises and recommend the right combination of manpower and systems.")}
-'''
-
-page("services.html",
-     "Security Services in Kuwait | AZSCO Security",
-     "AZSCO security services in Kuwait: security manpower, guarding, patrols, event security, consulting, fire alarm systems, intrusion detection, CCTV, access control and smart home automation.",
-     body)
-
-# ================================================================= AZSCO SECURITY
-body = banner("AZSCO Security",
-  "Guarding, patrol services, event security and security consulting — delivered by highly trained and experienced professionals.",
-  "AZSCO Security") + f'''
-<section class="section">
-  <div class="wrap">
-    <div class="split">
-      <div class="reveal">
-        <p class="eyebrow">Division 01</p>
-        <h2>Security Manpower You Can Rely On</h2>
-        <p class="lead">AZSCO offers a comprehensive range of security services, including guarding, patrol services, event security and security consulting. Our team of highly trained and experienced security professionals is equipped with the latest technology and equipment to ensure the safety of your property and assets.</p>
-        <p>We understand that every client has unique security needs and offer customized security solutions tailored to meet the specific requirements of each client. Our goal is to provide the highest level of security and peace of mind, while ensuring that our services are cost-effective and efficient.</p>
-        <p>Our team of dedicated professionals is available 24 hours a day, 7 days a week.</p>
-        <div class="btn-row">
-          <a class="btn btn-dark" href="contact.html">Discuss Your Requirement {I["arrow"]}</a>
-        </div>
-      </div>
-      <div class="split-visual reveal" data-delay="120">
-        <div class="visual-frame"><div style="color:#fff;width:170px;max-width:60%">{I["users"]}</div></div>
-        <div class="visual-badge"><b>24/7</b><span>On Duty</span></div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <section class="section section--alt">
-  <div class="wrap">
-    <div class="sec-head center reveal">
-      <p class="eyebrow">Services</p>
-      <h2>What This Division Covers</h2>
-    </div>
-    <div class="grid grid-4">
-      <article class="card reveal"><span class="ico">{I["shield"]}</span><h3>Guarding</h3><p>Static security officers for towers, offices, compounds, retail and industrial premises &mdash; with supervision and documented reporting.</p></article>
-      <article class="card reveal" data-delay="80"><span class="ico">{I["route"]}</span><h3>Patrol Services</h3><p>Scheduled and random mobile patrols, perimeter checks and lock-and-unlock services that keep an unpredictable, visible presence.</p></article>
-      <article class="card reveal" data-delay="160"><span class="ico">{I["calendar"]}</span><h3>Event Security</h3><p>Crowd management, access screening, VIP details and stewarding for exhibitions, conferences and private events.</p></article>
-      <article class="card reveal" data-delay="240"><span class="ico">{I["file"]}</span><h3>Security Consulting</h3><p>Risk assessments, security surveys, policies and deployment planning &mdash; so your spend goes where the risk actually is.</p></article>
-    </div>
-  </div>
-</section>
-
-<section class="section">
   <div class="wrap">
     <div class="sec-head center reveal">
       <p class="eyebrow">Our People</p>
@@ -861,107 +781,18 @@ body = banner("AZSCO Security",
     </div>
     <div class="grid grid-3">
       <div class="tile reveal"><span class="ico">{I["shield-check"]}</span><div><h4>Screened &amp; Licensed</h4><p>Every officer is background checked and licensed before deployment, and briefed on site-specific post orders.</p></div></div>
-      <div class="tile reveal" data-delay="80"><span class="ico">{I["award"]}</span><div><h4>Continuously Trained</h4><p>Ongoing training in access control, emergency procedures, fire response, customer service and incident reporting.</p></div></div>
-      <div class="tile reveal" data-delay="160"><span class="ico">{I["headset"]}</span><div><h4>Actively Supervised</h4><p>Field supervisors, shift audits and a control room reachable 24 hours a day, 7 days a week.</p></div></div>
+      <div class="tile reveal" data-delay="80"><span class="ico">{I["award"]}</span><div><h4>Continuously Trained</h4><p>Ongoing training in entry control, emergency procedures, fire response, customer service and incident reporting.</p></div></div>
+      <div class="tile reveal" data-delay="160"><span class="ico">{I["headset"]}</span><div><h4>Actively Supervised</h4><p>Field supervisors, shift audits and an operations team reachable 24 hours a day, 7 days a week.</p></div></div>
     </div>
   </div>
 </section>
 
-{cta("Need security personnel on site?","Tell us about your premises and shift pattern and we will propose a deployment plan and quotation.")}
+{cta("Not sure which service you need?","Book a free site survey. We will assess your premises and recommend the right deployment of officers, patrols and supervision.")}
 '''
 
-page("security.html",
-     "AZSCO Security | Guarding, Patrols &amp; Event Security in Kuwait",
-     "AZSCO Security offers guarding, patrol services, event security and security consulting in Kuwait, delivered by highly trained professionals available 24/7.",
-     body)
-
-# ================================================================= AZSCO SYSTEMS
-body = banner("AZSCO Systems",
-  "Fire alarm, intrusion detection, CCTV, access control and smart home integration — designed, installed and maintained to international standards.",
-  "AZSCO Systems") + f'''
-<section class="section">
-  <div class="wrap">
-    <div class="split">
-      <div class="split-visual reveal">
-        <div class="visual-frame"><div style="color:#fff;width:170px;max-width:60%">{I["cog"]}</div></div>
-        <div class="visual-badge"><b>ISO</b><span>Standards Led</span></div>
-      </div>
-      <div class="reveal" data-delay="120">
-        <p class="eyebrow">Division 02</p>
-        <h2>Electronic Security, Engineered Properly</h2>
-        <p class="lead">AZSCO Systems provides advanced fire alarm systems to protect lives and property, and intrusion systems designed to detect and prevent unauthorized access to your property &mdash; using state-of-the-art technology throughout.</p>
-        <p>We handle the full lifecycle: survey, design, supply, installation, commissioning, handover and maintenance. Systems are integrated so that fire, intrusion, CCTV and access control work as one, not as four disconnected products.</p>
-        <p>Alongside commercial installations we integrate and manage smart home devices &mdash; lights, locks, thermostats and more &mdash; in a single secure application.</p>
-        <div class="btn-row">
-          <a class="btn btn-dark" href="contact.html">Book a Site Survey {I["arrow"]}</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section section--alt">
-  <div class="wrap">
-    <div class="sec-head center reveal">
-      <p class="eyebrow">Systems</p>
-      <h2>Solutions We Install</h2>
-    </div>
-    <div class="grid grid-3">
-      <article class="card reveal"><span class="ico">{I["flame"]}</span><h3>Fire Alarm Systems</h3><p>Cutting-edge fire detection and alarm solutions tailored to meet the unique needs of various establishments &mdash; addressable panels, detection, evacuation and interfacing.</p><a class="more" href="services.html#fire">Learn more {I["arrow"]}</a></article>
-      <article class="card reveal" data-delay="80"><span class="ico">{I["alarm"]}</span><h3>Intrusion Systems</h3><p>Robust intrusion detection using state-of-the-art technology &mdash; panels, motion and perimeter detection, panic devices and monitored response.</p><a class="more" href="services.html#intrusion">Learn more {I["arrow"]}</a></article>
-      <article class="card reveal" data-delay="160"><span class="ico">{I["camera"]}</span><h3>CCTV &amp; Surveillance</h3><p>HD and IP camera systems with intelligent recording, analytics and secure remote viewing from any device, anywhere.</p><a class="more" href="services.html#cctv">Learn more {I["arrow"]}</a></article>
-      <article class="card reveal"><span class="ico">{I["lock"]}</span><h3>Access Control</h3><p>Card, PIN and biometric access control with door hardware, turnstiles, visitor management and full audit trails.</p><a class="more" href="services.html#access">Learn more {I["arrow"]}</a></article>
-      <article class="card reveal" data-delay="80"><span class="ico">{I["home"]}</span><h3>Smart Home</h3><p>Integration and management of smart home devices including lights, locks, thermostats and more &mdash; controlled from one application.</p><a class="more" href="services.html#smart">Learn more {I["arrow"]}</a></article>
-      <article class="card reveal" data-delay="160"><span class="ico">{I["headset"]}</span><h3>Monitoring &amp; Maintenance</h3><p>Fire and alarm monitoring, emergency call-out and planned preventive maintenance contracts that keep systems certified and working.</p><a class="more" href="services.html#monitoring">Learn more {I["arrow"]}</a></article>
-    </div>
-  </div>
-</section>
-
-<section class="section section--dark">
-  <div class="wrap">
-    <div class="split">
-      <div class="reveal">
-        <p class="eyebrow">AZSCO App</p>
-        <h2>Your Systems, In One Application</h2>
-        <p class="lead">The AZSCO application brings your protected site into one place &mdash; arm and disarm your alarm, view cameras, check event history and control connected smart devices from your phone.</p>
-        <ul class="div-list">
-          <li>{I["check"]} Live camera viewing and playback</li>
-          <li>{I["check"]} Arm, disarm and receive instant alerts</li>
-          <li>{I["check"]} Smart lights, locks and thermostats</li>
-          <li>{I["check"]} Multi-site and multi-user access</li>
-        </ul>
-        <div class="btn-row" style="margin-top:26px">
-          <a class="btn btn-primary" href="contact.html">Ask About the App {I["arrow"]}</a>
-        </div>
-      </div>
-      <div class="split-visual reveal" data-delay="120">
-        <div class="visual-frame"><div style="color:#fff;width:130px;max-width:45%">{I["phone-app"]}</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="wrap">
-    <div class="sec-head center reveal">
-      <p class="eyebrow">Delivery</p>
-      <h2>From Survey to Handover</h2>
-    </div>
-    <div class="steps">
-      <div class="step reveal"><span class="n">01</span><h4>Survey &amp; Design</h4><p>We assess the site, map risk and produce a compliant system design with a full bill of materials.</p></div>
-      <div class="step reveal" data-delay="80"><span class="n">02</span><h4>Supply &amp; Install</h4><p>Equipment from our partner brands, installed by our own certified engineers to manufacturer specification.</p></div>
-      <div class="step reveal" data-delay="160"><span class="n">03</span><h4>Test &amp; Commission</h4><p>Every device is tested, the system is commissioned, and your team is trained before handover.</p></div>
-      <div class="step reveal" data-delay="240"><span class="n">04</span><h4>Maintain &amp; Monitor</h4><p>Planned preventive maintenance, 24/7 monitoring and rapid corrective response for the life of the system.</p></div>
-    </div>
-  </div>
-</section>
-
-{cta("Planning a new installation or upgrade?","Our engineers will survey your premises and specify a system that meets standards, budget and risk.")}
-'''
-
-page("systems.html",
-     "AZSCO Systems | Fire Alarm, Intrusion, CCTV &amp; Access Control Kuwait",
-     "AZSCO Systems designs, installs and maintains fire alarm systems, intrusion detection, CCTV, access control and smart home automation across Kuwait.",
+page("services.html",
+     "Security Services in Kuwait | AZSCO Security",
+     "AZSCO security manpower services in Kuwait: manned guarding, mobile patrols, event and VIP security, reception and concierge, security consulting, supervision and reporting.",
      body)
 
 # ================================================================= PARTNERS
@@ -973,7 +804,7 @@ body = banner("Our Partners",
     <div class="sec-head center reveal">
       <p class="eyebrow">Strategic Partnerships</p>
       <h2>Backed by the Industry&rsquo;s Best</h2>
-      <p>We work with established manufacturers so that the equipment we install is supported, certified and available for years &mdash; not orphaned after the first fault.</p>
+      <p>AZSCO has partnerships with many global brands to provide unique products and solutions for projects, supporting the sites our officers protect.</p>
     </div>
     <div class="partners">
 {partner_grid()}
@@ -988,9 +819,9 @@ body = banner("Our Partners",
       <h2>What Our Partnerships Give You</h2>
     </div>
     <div class="grid grid-3">
-      <div class="tile reveal"><span class="ico">{I["award"]}</span><div><h4>Certified Engineers</h4><p>Manufacturer training and certification means our engineers commission systems the way they were designed to be commissioned.</p></div></div>
-      <div class="tile reveal" data-delay="80"><span class="ico">{I["cog"]}</span><div><h4>Genuine Equipment</h4><p>Authorised supply channels, full warranty cover and spare-part availability for the life of the installation.</p></div></div>
-      <div class="tile reveal" data-delay="160"><span class="ico">{I["link"]}</span><div><h4>Integrated Solutions</h4><p>Proven interoperability between fire, intrusion, CCTV and access control platforms &mdash; one system, not four silos.</p></div></div>
+      <div class="tile reveal"><span class="ico">{I["award"]}</span><div><h4>Established Brands</h4><p>We work with recognised global manufacturers, so the products specified on a project are supported and available for years.</p></div></div>
+      <div class="tile reveal" data-delay="80"><span class="ico">{I["target"]}</span><div><h4>The Right Fit</h4><p>Partnerships give us options, so each project gets the product that suits the site rather than the one we happen to stock.</p></div></div>
+      <div class="tile reveal" data-delay="160"><span class="ico">{I["users"]}</span><div><h4>Backing Our Officers</h4><p>Reliable equipment on site supports the officers guarding it, from the entry system at the door to the cameras they watch.</p></div></div>
     </div>
   </div>
 </section>
@@ -1094,16 +925,12 @@ body = banner("Contact Us",
             <label for="service">Service Required <span class="req">*</span></label>
             <select id="service" name="service" required>
               <option value="">Please select&hellip;</option>
-              <option>Security Manpower / Guarding</option>
-              <option>Patrol Services</option>
-              <option>Event Security</option>
+              <option>Manned Guarding</option>
+              <option>Mobile Patrols</option>
+              <option>Event &amp; VIP Security</option>
+              <option>Reception &amp; Concierge</option>
               <option>Security Consulting</option>
-              <option>Fire Alarm Systems</option>
-              <option>Intrusion Detection</option>
-              <option>CCTV &amp; Surveillance</option>
-              <option>Access Control</option>
-              <option>Smart Home &amp; Automation</option>
-              <option>Maintenance &amp; Monitoring</option>
+              <option>Supervision &amp; Reporting</option>
               <option>Other enquiry</option>
             </select>
             <span class="err">Please choose a service.</span>
@@ -1111,7 +938,7 @@ body = banner("Contact Us",
 
           <div class="field">
             <label for="message">How Can We Help? <span class="req">*</span></label>
-            <textarea id="message" name="message" placeholder="Tell us about your site, the number of entrances, operating hours, and what you need protected." required></textarea>
+            <textarea id="message" name="message" placeholder="Tell us about your site, the number of officers or posts you need, operating hours, and what you need protected." required></textarea>
             <span class="err">This field is required.</span>
           </div>
 
@@ -1147,13 +974,13 @@ body = banner("Privacy Policy",
       <ul>
         <li><b>Information you provide:</b> your name, company, email address, telephone number, the service you are enquiring about, and any details you include in an enquiry or quotation request.</li>
         <li><b>Technical information:</b> browser type, device type, approximate location, referring page and pages viewed, collected through server logs and cookies.</li>
-        <li><b>Service information:</b> where you become a client, records relating to site surveys, installed systems, maintenance visits and monitoring events.</li>
+        <li><b>Service information:</b> where you become a client, records relating to site surveys, deployments, shift rosters, patrol visits and incident reports.</li>
       </ul>
 
       <h2>How We Use Your Information</h2>
       <ul>
         <li>To respond to your enquiry and prepare quotations or proposals.</li>
-        <li>To arrange and carry out site surveys, installations, maintenance and monitoring.</li>
+        <li>To arrange and carry out site surveys, deployments, patrols and supervision.</li>
         <li>To provide customer support and manage our contractual relationship with you.</li>
         <li>To improve this website, our services and our communications.</li>
         <li>To comply with legal, regulatory and licensing obligations in the State of Kuwait.</li>
@@ -1166,7 +993,7 @@ body = banner("Privacy Policy",
       <p>We do not sell your personal information. We may share it with:</p>
       <ul>
         <li>Service providers who support our operations, such as hosting and IT providers, under confidentiality obligations.</li>
-        <li>Technology partners and manufacturers where necessary to fulfil warranty, support or commissioning obligations.</li>
+        <li>Technology partners and manufacturers where necessary to fulfil warranty or support obligations on products supplied for a project.</li>
         <li>Competent authorities where disclosure is required by law or to protect life and property.</li>
       </ul>
 
@@ -1179,8 +1006,8 @@ body = banner("Privacy Policy",
       <h2>Your Rights</h2>
       <p>You may request access to the personal information we hold about you, ask us to correct inaccurate information, or ask us to delete information where we are not required to retain it. To make a request, contact us using the details below.</p>
 
-      <h2>CCTV and Monitoring</h2>
-      <p>Where AZSCO operates or maintains CCTV, access control or alarm monitoring systems on behalf of a client, the client is responsible for how that system is used at their premises. AZSCO processes such data only as instructed by the client and as permitted by applicable law.</p>
+      <h2>Client Premises and Monitoring</h2>
+      <p>Where AZSCO officers work at a client&rsquo;s premises, any CCTV or entry system at that site remains the client&rsquo;s own, and the client is responsible for how it is used. AZSCO processes such data only as instructed by the client and as permitted by applicable law.</p>
 
       <h2>Third-Party Links</h2>
       <p>This website may link to third-party sites. We are not responsible for the privacy practices or content of those sites, and we encourage you to read their privacy policies.</p>
@@ -1224,8 +1051,32 @@ page("404.html", "Page Not Found | AZSCO Security",
      "The page you requested could not be found on the AZSCO Security website.", body)
 
 # ---------------------------------------------------------------- write
+SITEMAP_PRIORITY = {
+    "index.html": "1.0", "services.html": "0.9", "about.html": "0.8",
+    "contact.html": "0.8", "partners.html": "0.6", "privacy-policy.html": "0.3",
+}
+
+def write_sitemap():
+    """Built from the pages that actually exist, so it cannot list stale URLs."""
+    import datetime
+    today = datetime.date.today().isoformat()
+    rows = []
+    for fname in PAGES:
+        if fname not in SITEMAP_PRIORITY:      # 404 and any utility pages
+            continue
+        loc = "https://www.azsco.com/" + ("" if fname == "index.html" else fname)
+        rows.append(f"  <url>\n    <loc>{loc}</loc>\n    <lastmod>{today}</lastmod>\n"
+                    f"    <priority>{SITEMAP_PRIORITY[fname]}</priority>\n  </url>")
+    xml = ('<?xml version="1.0" encoding="UTF-8"?>\n'
+           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+           + "\n".join(rows) + "\n</urlset>\n")
+    with open(os.path.join(OUT, "sitemap.xml"), "w", encoding="utf-8") as fh:
+        fh.write(xml)
+    return len(rows)
+
 if __name__ == "__main__":
     for fname, html in PAGES.items():
         with open(os.path.join(OUT, fname), "w", encoding="utf-8") as fh:
             fh.write(html)
         print("wrote", fname, len(html), "bytes")
+    print("wrote sitemap.xml with", write_sitemap(), "urls")

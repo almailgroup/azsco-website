@@ -50,7 +50,6 @@
 .section--dark,
 .cta,
 .site-footer,
-.div-card,
 .visual-frame,
 .map-embed{
   --accent:#fff;
@@ -457,35 +456,21 @@ li{margin-bottom:.45em}
 .card .more svg{width:14px;height:14px;transition:transform .25s var(--ease)}
 .card:hover .more svg{transform:translateX(5px)}
 
-/* division cards */
-.division{
-  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px;
+/* sector tiles */
+.sectors{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.sector{
+  display:flex;align-items:center;gap:16px;padding:22px 24px;
+  border:1px solid var(--line);border-radius:var(--radius-lg);background:#fff;
+  font-weight:700;color:var(--ink);transition:all .3s var(--ease);
 }
-.div-card{
-  position:relative;overflow:hidden;border-radius:var(--radius-lg);
-  padding:46px 42px;color:#d0d0d0;
-  background:linear-gradient(140deg,var(--grey-900),var(--grey-800));
-  border:1px solid rgba(255,255,255,.09);
+.sector:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:var(--shadow)}
+.sector .ico{
+  width:46px;height:46px;flex:none;border-radius:var(--radius);
+  background:var(--accent-soft);color:var(--ink);display:grid;place-items:center;
   transition:all .3s var(--ease);
 }
-.div-card::before{
-  content:"";position:absolute;top:-70px;right:-70px;width:230px;height:230px;border-radius:50%;
-  background:radial-gradient(circle,rgba(255,255,255,.12),transparent 68%);
-  transition:all .45s var(--ease);
-}
-.div-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
-.div-card:hover::before{transform:scale(1.35)}
-.div-card > *{position:relative;z-index:2}
-.div-card .tag{
-  display:inline-block;padding:6px 13px;border-radius:100px;margin-bottom:18px;
-  background:rgba(255,255,255,.12);color:var(--accent);
-  font-size:.68rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
-}
-.div-card h3{color:#fff;font-size:1.75rem;font-family:var(--display);text-transform:uppercase;letter-spacing:.03em}
-.div-card p{color:#a6a6a6;font-size:.98rem}
-.div-list{list-style:none;margin:22px 0 28px;padding:0;display:grid;gap:9px}
-.div-list li{display:flex;align-items:center;gap:10px;margin:0;font-size:.93rem;color:#d0d0d0}
-.div-list svg{width:16px;height:16px;color:var(--accent);flex:none}
+.sector:hover .ico{background:var(--ink);color:#fff}
+.sector .ico svg{width:22px;height:22px}
 
 /* ==========================================================================
    Stats
@@ -598,7 +583,6 @@ li{margin-bottom:.45em}
   font-family:var(--display);font-size:1.9rem;font-weight:700;
   letter-spacing:.09em;text-transform:uppercase;color:var(--ink);line-height:1;
 }
-.partner-note{font-size:.86rem;line-height:1.5;color:var(--body);max-width:24ch}
 
 /* ==========================================================================
    Accordion (FAQ)
@@ -810,7 +794,7 @@ li{margin-bottom:.45em}
   .hero-grid,.split,.contact-grid{grid-template-columns:1fr;gap:44px}
   .split-visual{order:-1}
   .split > .split-visual{order:-1}
-  .grid-3,.grid-4,.division,.steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid-3,.grid-4,.sectors,.steps{grid-template-columns:repeat(2,minmax(0,1fr))}
   .step::after{display:none}
   .section{padding:72px 0}
   .hero{padding:80px 0 88px}
@@ -829,7 +813,7 @@ li{margin-bottom:.45em}
 
 /* ---------- phones ---------- */
 @media (max-width:640px){
-  .grid-2,.grid-3,.grid-4,.division{grid-template-columns:1fr}
+  .grid-2,.grid-3,.grid-4,.sectors{grid-template-columns:1fr}
 
   /* keep short, scannable blocks side by side rather than one long column */
   .partners,.clients{grid-template-columns:1fr;gap:14px}
@@ -858,7 +842,6 @@ li{margin-bottom:.45em}
   .card .ico{width:54px;height:54px;margin-bottom:16px}
   .card .ico svg{width:26px;height:26px}
   .card h3{font-size:1.16rem}
-  .div-card{padding:30px 24px}
   .tile{padding:22px;gap:16px}
   .info-card{padding:22px}
   .form-card{padding:24px 20px}
