@@ -36,6 +36,10 @@
   --wrap:1180px;
   --head:84px;
 
+  /* chat panel geometry — see .chat-panel */
+  --chat-bottom:90px;
+  --chat-safe-top:calc(var(--head) + 60px);
+
   --sans:"Inter","Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
   --display:"Barlow Condensed","Oswald","Inter",system-ui,sans-serif;
   --sans-ar:"Tajawal","Noto Sans Arabic","Segoe UI",system-ui,sans-serif;
@@ -1034,7 +1038,7 @@ li{margin-bottom:.45em}
    AZSCO Assistant (chat widget)
    ========================================================================== */
 .chat-launcher{
-  position:fixed;left:24px;bottom:24px;z-index:870;
+  position:fixed;left:24px;bottom:24px;z-index:910;
   display:inline-flex;align-items:center;gap:10px;
   min-height:52px;padding:12px 20px 12px 16px;
   background:var(--grey-950);color:#fff;
@@ -1048,10 +1052,13 @@ li{margin-bottom:.45em}
 .chat-launcher[hidden]{display:none}
 
 .chat-panel{
-  position:fixed;left:24px;bottom:90px;z-index:875;
+  position:fixed;left:24px;bottom:var(--chat-bottom);
+  /* above the sticky header (900): if the two ever meet, the panel wins rather
+     than being sliced in half with its controls unclickable */
+  z-index:920;
   display:none;flex-direction:column;
   width:min(390px,calc(100vw - 48px));
-  height:min(580px,calc(100vh - 180px));
+  height:min(580px,calc(100vh - var(--chat-bottom) - var(--chat-safe-top)));
   background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);
   box-shadow:0 30px 80px rgba(0,0,0,.30);overflow:hidden;
   opacity:0;transform:translateY(16px) scale(.98);
@@ -1060,7 +1067,14 @@ li{margin-bottom:.45em}
 .chat-panel.is-open{display:flex;opacity:1;transform:none}
 .chat-panel.is-expanded{
   width:min(780px,calc(100vw - 48px));
-  height:min(760px,calc(100vh - 130px));
+  height:min(760px,calc(100vh - var(--chat-bottom) - var(--chat-safe-top)));
+}
+
+/* Too little height to sit clear of the header — take the whole screen instead. */
+@media (max-height:560px){
+  .chat-panel,.chat-panel.is-expanded{
+    inset:0;width:auto;height:auto;border-radius:0;border:0;
+  }
 }
 
 .chat-head{
@@ -1163,9 +1177,10 @@ li{margin-bottom:.45em}
   }
   [dir="rtl"] .chat-launcher{left:auto;right:16px}
   .chat-panel{
+    --chat-bottom:calc(126px + env(safe-area-inset-bottom,0px));
     left:12px;right:12px;
-    bottom:calc(126px + env(safe-area-inset-bottom,0px));
-    width:auto;height:min(64vh,480px);
+    width:auto;
+    height:min(480px,calc(100vh - var(--chat-bottom) - var(--chat-safe-top)));
   }
   [dir="rtl"] .chat-panel{left:12px;right:12px}
   .chat-panel.is-expanded{
