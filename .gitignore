@@ -9,3 +9,10 @@ Thumbs.db
 node_modules/
 dist/
 .cache/
+
+# Secrets — the Mistral key belongs in the host's environment, never in the repo
+.env
+.env.*
+!.env.example
+.vercel
+.wrangler

@@ -12,6 +12,10 @@ PHONE = "(+965) 1808606"
 PHONE_HREF = "+9651808606"
 EMAIL = "info@azsco.com"
 MAPS_URL = "https://maps.app.goo.gl/BN2Byxt6BCJ62XV26"
+
+# Where the chat widget posts. The Mistral key lives behind this endpoint,
+# never in the page. See api/README.md.
+CHAT_ENDPOINT = "/api/chat"
 FOUNDED = 2008
 YEARS = datetime.date.today().year - FOUNDED
 
@@ -76,6 +80,19 @@ I = {
 "whatsapp":'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-3-.2-.3A8 8 0 1 1 12 20zm4.4-5.8c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7 1-.3.2-.5.1a6.6 6.6 0 0 1-3.2-2.8c-.2-.4.2-.4.6-1.2a.5.5 0 0 0 0-.5l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4 5 5 0 0 0 2.3.5 2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>',
 }
 
+I["chat"] = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
+             'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+             '<path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.3-.6L3 21l1.8-5a8.3 8.3 0 0 1-.8-3.6'
+             'A8.4 8.4 0 0 1 12.5 3 8.4 8.4 0 0 1 21 11.5z"/></svg>')
+
+I["expand"] = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
+               'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+               '<path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>')
+
+I["send"] = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
+             'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+             '<path d="M22 2 11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg>')
+
 I["globe"] = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
               'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
               '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/>'
@@ -127,6 +144,31 @@ UI = {
     "home_label": ("AZSCO Security — home", "أزسكو للأمن — الصفحة الرئيسية"),
     "main_nav":   ("Main navigation", "التنقل الرئيسي"),
     "mob_nav":    ("Mobile navigation", "قائمة التنقل للجوال"),
+}
+
+CHAT = {
+  "launcher": ("AZSCO Assistant", "مساعد أزسكو"),
+  "title": ("AZSCO Assistant", "مساعد أزسكو"),
+  "sub": ("Ask about our security services", "اسأل عن خدماتنا الأمنية"),
+  "greeting": ("Hello. I am the AZSCO Assistant. What can I help you with today? You can ask about our guarding services, the areas we cover, or how to request a quote.",
+               "مرحباً. أنا مساعد أزسكو. كيف يمكنني مساعدتك اليوم؟ يمكنك السؤال عن خدمات الحراسة لدينا، أو المناطق التي نغطيها، أو كيفية طلب عرض سعر."),
+  "placeholder": ("Type your question&hellip;", "اكتب سؤالك&hellip;"),
+  "send": ("Send message", "إرسال الرسالة"),
+  "close": ("Close assistant", "إغلاق المساعد"),
+  "expand": ("Expand assistant", "توسيع المساعد"),
+  "collapse": ("Collapse assistant", "تصغير المساعد"),
+  "open": ("Open the AZSCO Assistant", "فتح مساعد أزسكو"),
+  "suggest": [
+    ("What services do you offer?", "ما الخدمات التي تقدّمونها؟"),
+    ("How do I request a quote?", "كيف أطلب عرض سعر؟"),
+    ("What areas do you cover?", "ما المناطق التي تغطونها؟"),
+  ],
+  "error": ("Sorry, I could not reach the assistant just now. Please try again, or contact our team directly on (+965) 1808606 or info@azsco.com.",
+            "عذراً، تعذّر الوصول إلى المساعد في الوقت الحالي. يُرجى المحاولة مرة أخرى، أو التواصل مع فريقنا مباشرة على (+965) 1808606 أو info@azsco.com."),
+  "offline": ("The assistant is not connected yet. Please contact our team on (+965) 1808606 or info@azsco.com and we will be glad to help.",
+              "لم يتم تفعيل المساعد بعد. يُرجى التواصل مع فريقنا على (+965) 1808606 أو info@azsco.com وسيسعدنا مساعدتك."),
+  "foot": ("AI assistant — may be inaccurate. For anything binding, contact our team.",
+           "مساعد ذكاء اصطناعي — قد تكون إجاباته غير دقيقة. لأي أمر مُلزم يُرجى التواصل مع فريقنا."),
 }
 
 NAV = [
@@ -816,6 +858,49 @@ def header(lang, fname):
 </nav>
 '''
 
+def chat_widget(lang):
+    C = CHAT
+    chips = "\n      ".join(
+        f'<button type="button">{t(sug, lang)}</button>' for sug in C["suggest"])
+    return f'''
+<div data-azsco-chat data-endpoint="{CHAT_ENDPOINT}" data-lang="{lang}"
+     data-greeting="{t(C["greeting"], lang)}"
+     data-error="{t(C["error"], lang)}"
+     data-offline="{t(C["offline"], lang)}"
+     data-label-expand="{t(C["expand"], lang)}"
+     data-label-collapse="{t(C["collapse"], lang)}">
+  <button class="chat-launcher" type="button" aria-expanded="false" aria-controls="azsco-chat-panel" aria-label="{t(C["open"], lang)}">
+    {I["chat"]}<span class="chat-launcher-text">{t(C["launcher"], lang)}</span>
+  </button>
+
+  <div class="chat-panel" id="azsco-chat-panel" role="dialog" aria-label="{t(C["title"], lang)}" hidden>
+    <div class="chat-head">
+      <span class="avatar">{I["chat"]}</span>
+      <span>
+        <b>{t(C["title"], lang)}</b>
+        <small>{t(C["sub"], lang)}</small>
+      </span>
+      <span class="spacer"></span>
+      <button class="chat-btn" type="button" data-chat-expand aria-pressed="false" aria-label="{t(C["expand"], lang)}">{I["expand"]}</button>
+      <button class="chat-btn" type="button" data-chat-close aria-label="{t(C["close"], lang)}">{I["close"]}</button>
+    </div>
+
+    <div class="chat-log" role="log" aria-live="polite" aria-atomic="false"></div>
+
+    <div class="chat-suggest">
+      {chips}
+    </div>
+
+    <form class="chat-form">
+      <label class="visually-hidden" for="azsco-chat-input">{t(C["placeholder"], lang)}</label>
+      <textarea id="azsco-chat-input" rows="1" placeholder="{t(C["placeholder"], lang)}" maxlength="1000"></textarea>
+      <button class="chat-send" type="submit" aria-label="{t(C["send"], lang)}">{I["send"]}</button>
+    </form>
+    <p class="chat-foot">{t(C["foot"], lang)}</p>
+  </div>
+</div>
+'''
+
 def footer(lang):
     a = asset(lang, "")
     links = "\n          ".join(
@@ -880,7 +965,9 @@ def footer(lang):
   <a class="mobile-bar-call" href="tel:{PHONE_HREF}">{I["phone"]}<span>{t(UI["call_now"], lang)}</span></a>
   <a class="mobile-bar-quote" href="contact.html">{I["mail"]}<span>{t(UI["get_quote"], lang)}</span></a>
 </div>
+{chat_widget(lang)}
 <script src="{a}assets/js/main.js"></script>
+<script src="{a}assets/js/chat.js" defer></script>
 </body>
 </html>
 '''

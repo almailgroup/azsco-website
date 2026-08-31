@@ -123,6 +123,40 @@ The phone layout is not just the desktop layout stacked. Breakpoints at 768px, 6
 - **Every standalone link is at least 44px tall.** Links inside a sentence are deliberately
   left inline so prose is not broken up.
 
+## AZSCO Assistant (chat widget)
+
+A chat widget sits in the bottom-left corner of every page (bottom-right in Arabic, mirrored
+with the rest of the layout), labelled **AZSCO Assistant**. It opens a panel with suggested
+questions, supports an expand toggle — a wider panel on desktop, full screen on phones — and
+keeps the conversation across page navigation via `sessionStorage`.
+
+**The Mistral API key is never in the website.** A key in client-side JavaScript is public:
+anyone can read it from the page source and spend against your account. The widget instead
+posts to a small server-side proxy that holds the key:
+
+```
+browser  ──POST {lang, messages}──▶  /api/chat  ──with MISTRAL_API_KEY──▶  api.mistral.ai
+```
+
+- `assets/js/chat.js` — the widget. Contains no key, no provider URL and no copy; every
+  string is authored per language in the markup.
+- `api/chat.js` — the proxy (Vercel / Netlify / Deno). Holds the key, adds the system prompt,
+  and enforces size limits.
+- `workers/chat-worker.js` — the same proxy for Cloudflare Workers.
+- `api/README.md` — deployment steps and the environment variables.
+
+Until the proxy is deployed the widget still opens and explains that the assistant is not
+connected yet, pointing the visitor to the phone number and email — it never shows an error
+to a visitor without giving them a way to reach a human.
+
+The system prompt in `api/chat.js` carries AZSCO's facts (services, address, hours, partners,
+clients) and instructs the model to answer only from them, to refuse pricing and commitments,
+and to hand off to the team when it does not know. Update it there when the business changes.
+
+**Model replies are escaped before display.** `chat.js` escapes all HTML, then re-introduces a
+closed set of formatting (bold, phone and email links) — nothing from the model reaches the
+DOM as live markup.
+
 ## Notes
 
 - **Contact form**: client-side validation only. It shows a confirmation message and does not
