@@ -130,28 +130,39 @@ with the rest of the layout), labelled **AZSCO Assistant**. It opens a panel wit
 questions, supports an expand toggle — a wider panel on desktop, full screen on phones — and
 keeps the conversation across page navigation via `sessionStorage`.
 
-**The Mistral API key is never in the website.** A key in client-side JavaScript is public:
-anyone can read it from the page source and spend against your account. The widget instead
-posts to a small server-side proxy that holds the key:
+**This site is currently configured to call Mistral directly from the browser**
+(`CHAT_MODE = "direct"` in `tools/build.py`). The key is compiled into
+`assets/js/chat-config.js` and served to every visitor, so it is readable by anyone who
+opens the page source. That is a deliberate choice, not an oversight — but it means:
+
+- **Set a spend limit on the Mistral account.** With the key public, that limit is the only
+  thing capping what a scraper can spend.
+- **Rotate the key if usage looks wrong**, and rotate it again before any handover.
+- Anyone can also use the key for their own unrelated requests, not just the chat widget.
+
+The safe alternative is already written and one line away. Set `CHAT_MODE = "proxy"` in
+`tools/build.py` and rebuild: the key drops out of the site entirely and the widget posts to
+a server-side function instead:
 
 ```
-browser  ──POST {lang, messages}──▶  /api/chat  ──with MISTRAL_API_KEY──▶  api.mistral.ai
+direct:  browser ──key──▶ api.mistral.ai
+proxy:   browser ─────▶ /api/chat ──key──▶ api.mistral.ai
 ```
 
-- `assets/js/chat.js` — the widget. Contains no key, no provider URL and no copy; every
-  string is authored per language in the markup.
-- `api/chat.js` — the proxy (Vercel / Netlify / Deno). Holds the key, adds the system prompt,
-  and enforces size limits.
+- `assets/js/chat.js` — the widget; supports both modes, contains no key or copy of its own.
+- `assets/js/chat-config.js` — **generated**; holds the mode, model, system prompt, and in
+  direct mode the key. Do not edit by hand; edit the `CHAT_*` values in `tools/build.py`.
+- `api/chat.js` — the proxy (Vercel / Netlify / Deno), used when the mode is `proxy`.
 - `workers/chat-worker.js` — the same proxy for Cloudflare Workers.
-- `api/README.md` — deployment steps and the environment variables.
+- `api/README.md` — deployment steps and environment variables.
 
-Until the proxy is deployed the widget still opens and explains that the assistant is not
-connected yet, pointing the visitor to the phone number and email — it never shows an error
-to a visitor without giving them a way to reach a human.
+If the widget fails on the live site with a CORS error in the browser console, it means
+Mistral does not permit browser-origin requests; switching to `proxy` mode fixes it.
 
-The system prompt in `api/chat.js` carries AZSCO's facts (services, address, hours, partners,
-clients) and instructs the model to answer only from them, to refuse pricing and commitments,
-and to hand off to the team when it does not know. Update it there when the business changes.
+The system prompt lives in `CHAT_FACTS` and `CHAT_RULES` in `tools/build.py` and carries
+AZSCO's facts (services, address, hours, partners, clients), instructing the model to answer
+only from them, refuse pricing and commitments, and hand off to the team when it does not
+know. Update it there and rebuild when the business changes.
 
 **Model replies are escaped before display.** `chat.js` escapes all HTML, then re-introduces a
 closed set of formatting (bold, phone and email links) — nothing from the model reaches the

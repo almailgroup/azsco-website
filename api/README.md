@@ -1,9 +1,12 @@
 # AZSCO Assistant — API proxy
 
-The chat widget in the website never holds the Mistral API key. It posts to this
-proxy, which adds the key server-side. **Putting the key in the site's JavaScript
-would publish it** — anyone could read it from the page source and spend against
-your account.
+> **Not currently in use.** The site is configured with `CHAT_MODE = "direct"` in
+> `tools/build.py`, so the browser calls Mistral itself with a key embedded in
+> `assets/js/chat-config.js`. To switch to this proxy — which keeps the key off
+> the site entirely — set `CHAT_MODE = "proxy"`, rebuild, and deploy one of the
+> functions below.
+
+This proxy adds the API key server-side, so it never reaches the browser.
 
 ## What to deploy
 

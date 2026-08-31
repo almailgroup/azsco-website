@@ -13,9 +13,77 @@ PHONE_HREF = "+9651808606"
 EMAIL = "info@azsco.com"
 MAPS_URL = "https://maps.app.goo.gl/BN2Byxt6BCJ62XV26"
 
-# Where the chat widget posts. The Mistral key lives behind this endpoint,
-# never in the page. See api/README.md.
+# ---------------------------------------------------------------- assistant
+# CHAT_MODE selects how the browser reaches Mistral:
+#   "direct" — the browser calls api.mistral.ai itself using CHAT_API_KEY below.
+#              The key is compiled into assets/js/chat-config.js and is therefore
+#              readable by anyone who views the site. Set a spend limit on the
+#              Mistral account, and rotate the key if it is ever misused.
+#   "proxy"  — the browser calls CHAT_ENDPOINT, and a server-side function holds
+#              the key (see api/chat.js and api/README.md). Nothing is exposed.
+CHAT_MODE = "direct"
 CHAT_ENDPOINT = "/api/chat"
+CHAT_API_KEY = "nqiT2l7oBl5499RBMVgBQLFBoKwaiCi8"
+CHAT_MODEL = "mistral-small-latest"
+
+# The facts the assistant may rely on. This is the single source of truth: the
+# proxy in api/chat.js carries its own copy for when CHAT_MODE is "proxy".
+CHAT_FACTS = """
+COMPANY
+- AZSCO for Facility Guard Services (AZSCO), established 2008, headquartered in
+  Qibla, Kuwait. Part of Almail Group.
+- Office: Floor 27, Kuwait Building Tower, Fahad Al Salem St., Qibla, Kuwait.
+- Telephone: (+965) 1808606. Email: info@azsco.com.
+- Office hours: Sunday to Thursday, 8:00-17:00. Emergency response 24/7.
+
+WHAT AZSCO DOES
+AZSCO provides security manpower only. It does NOT sell, install or maintain
+security systems (no fire alarm, intrusion, CCTV, access control or smart home
+installation). Services:
+- Manned Guarding: static security officers for apartments, malls, banks,
+  stores, offices, compounds and industrial sites.
+- Mobile Patrols: scheduled and random patrols, perimeter checks,
+  lock-and-unlock, key holding, alarm response.
+- Event & VIP Security: crowd management, access screening, stewarding,
+  close protection.
+- Reception & Concierge: front-of-house officers, visitor management,
+  contractor and delivery control.
+- Security Consulting: site surveys, risk assessments, post orders,
+  deployment planning.
+- Supervision & Reporting: field supervisors, shift audits, incident reporting.
+
+OTHER FACTS
+- Officers are screened, licensed, uniformed, trained and supervised.
+- Technology partners: Ajax, Hikvision, Rasilient.
+- Clients include Xcite, Millennium Hotels and Resorts, and Alnasser.
+- A free site survey is the normal first step for a new enquiry.
+"""
+
+CHAT_RULES = """
+RULES
+- Answer ONLY questions about AZSCO, its security manpower services, and how to
+  get in touch. For anything else, politely say it is outside what you can help
+  with and offer to put the visitor in touch with the team.
+- Use ONLY the facts above. If you do not know something - pricing, guard
+  numbers, availability, contract terms, staff names - say so plainly and point
+  the visitor to (+965) 1808606 or info@azsco.com. Never guess or invent.
+- AZSCO does not install or maintain security systems. If asked for CCTV, alarm
+  or access control installation, say AZSCO provides security personnel and
+  suggest contacting the team to discuss what they need.
+- Never quote a price, promise a response time, or commit AZSCO to anything.
+- Be brief: two or three short paragraphs at most. Plain text, no markdown
+  headings or bullet lists.
+- If a visitor appears to have an urgent security incident, tell them to call
+  (+965) 1808606 immediately rather than continuing to chat.
+"""
+
+def chat_system_prompt(lang):
+    reply_in = ("Reply in Arabic (Modern Standard Arabic), in a professional tone."
+                if lang == "ar" else
+                "Reply in English, in a professional tone.")
+    return ("You are the AZSCO Assistant, the virtual assistant on the website of "
+            "AZSCO, a security manpower company in Kuwait.\n"
+            + CHAT_FACTS + CHAT_RULES + "- " + reply_in)
 FOUNDED = 2008
 YEARS = datetime.date.today().year - FOUNDED
 
@@ -967,6 +1035,7 @@ def footer(lang):
 </div>
 {chat_widget(lang)}
 <script src="{a}assets/js/main.js"></script>
+<script src="{a}assets/js/chat-config.js"></script>
 <script src="{a}assets/js/chat.js" defer></script>
 </body>
 </html>
@@ -1581,6 +1650,30 @@ SITEMAP_PRIORITY = {
     "contact.html": "0.8", "partners.html": "0.6", "privacy-policy.html": "0.3",
 }
 
+def write_chat_config():
+    """Writes assets/js/chat-config.js, read by the widget at runtime.
+
+    In "direct" mode this file contains the Mistral key and is served to every
+    visitor. That is a deliberate choice recorded in CHAT_MODE above; switching
+    CHAT_MODE to "proxy" removes the key from the site entirely.
+    """
+    import json
+    cfg = {
+        "mode": CHAT_MODE,
+        "endpoint": CHAT_ENDPOINT,
+        "model": CHAT_MODEL,
+        "apiUrl": "https://api.mistral.ai/v1/chat/completions",
+        "apiKey": CHAT_API_KEY if CHAT_MODE == "direct" else "",
+        "system": {lang: chat_system_prompt(lang) for lang in LANGS},
+    }
+    banner = ("/* Generated by tools/build.py - do not edit by hand.\n"
+              "   Edit CHAT_* in tools/build.py and rebuild. */\n")
+    body = "window.AZSCO_CHAT_CONFIG = " + json.dumps(cfg, ensure_ascii=False, indent=2) + ";\n"
+    path = os.path.join(OUT, "assets", "js", "chat-config.js")
+    with open(path, "w", encoding="utf-8") as fh:
+        fh.write(banner + body)
+    return cfg["mode"]
+
 def write_sitemap():
     """Built from the pages that exist, with an alternate for each language."""
     today = datetime.date.today().isoformat()
@@ -1617,3 +1710,4 @@ if __name__ == "__main__":
             fh.write(html)
         print("wrote", ("ar/" if lang == "ar" else "") + fname, len(html), "bytes")
     print("wrote sitemap.xml with", write_sitemap(), "urls")
+    print("wrote assets/js/chat-config.js (mode:", write_chat_config() + ")")
