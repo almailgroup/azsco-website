@@ -117,7 +117,7 @@
         var p = Math.min((ts - start) / dur, 1);
         var eased = 1 - Math.pow(1 - p, 3);
         var v = Math.round(target * eased);
-        el.textContent = plain ? String(v) : v.toLocaleString('en-US');
+        el.textContent = plain ? String(v) : v.toLocaleString('en-US');  // Latin digits in both languages
         if (p < 1) requestAnimationFrame(frame);
       }
       requestAnimationFrame(frame);
@@ -220,7 +220,8 @@
       }
 
       if (status) {
-        status.textContent = 'Thank you for contacting AZSCO. Your request has been recorded — a member of our team will respond shortly. For urgent matters call (+965) 1808606.';
+        // the message is authored per language on the form element itself
+        status.textContent = form.getAttribute('data-sent-message') || '';
         status.classList.add('is-visible');
         status.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }

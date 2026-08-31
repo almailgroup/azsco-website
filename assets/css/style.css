@@ -38,6 +38,8 @@
 
   --sans:"Inter","Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
   --display:"Barlow Condensed","Oswald","Inter",system-ui,sans-serif;
+  --sans-ar:"Tajawal","Noto Sans Arabic","Segoe UI",system-ui,sans-serif;
+  --display-ar:"Cairo","Tajawal","Noto Kufi Arabic",system-ui,sans-serif;
 
   --ease:cubic-bezier(.22,.61,.36,1);
 }
@@ -242,6 +244,21 @@ li{margin-bottom:.45em}
 .burger[aria-expanded="true"] span{background:transparent}
 .burger[aria-expanded="true"] span::before{top:0;transform:rotate(45deg)}
 .burger[aria-expanded="true"] span::after{top:0;transform:rotate(-45deg)}
+
+/* language switch */
+.lang-switch{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:.78rem;font-weight:700;letter-spacing:.06em;
+  border-radius:var(--radius);white-space:nowrap;
+}
+.lang-switch svg{width:15px;height:15px;flex:none}
+.lang-short{display:none}
+.lang-switch--head{
+  color:var(--ink);border:1px solid var(--line);
+  padding:11px 14px;min-height:44px;
+}
+.lang-switch--head:hover{border-color:var(--accent);color:var(--accent-strong);background:var(--accent-soft)}
+.topbar-end{display:flex;align-items:center;gap:18px;flex:none}
 
 /* mobile drawer */
 .mobile-nav{
@@ -916,6 +933,12 @@ li{margin-bottom:.45em}
   .to-top{bottom:calc(68px + env(safe-area-inset-bottom,0px));right:16px}
 }
 
+@media (max-width:480px){
+  .lang-full{display:none}
+  .lang-short{display:inline}
+  .lang-switch--head{padding:11px 12px;gap:6px}
+}
+
 @media (max-width:400px){
   .wrap{padding:0 16px}
   .brand-logo{height:44px}
@@ -933,4 +956,76 @@ li{margin-bottom:.45em}
   .topbar,.site-header,.mobile-nav,.backdrop,.to-top,.mobile-bar,.cta,.site-footer{display:none!important}
   body{padding-bottom:0}
   body{color:#000}
+}
+
+/* ==========================================================================
+   Arabic / right-to-left
+   Direction itself is handled by dir="rtl"; what follows are the physical
+   properties and typographic settings that do not mirror on their own.
+   ========================================================================== */
+[dir="rtl"]{
+  --sans:var(--sans-ar);
+  --display:var(--display-ar);
+}
+[dir="rtl"] body{font-family:var(--sans-ar)}
+[dir="rtl"] h1,[dir="rtl"] h2,[dir="rtl"] h3,[dir="rtl"] h4,[dir="rtl"] h5,
+[dir="rtl"] .brand-name,[dir="rtl"] .stat .num,[dir="rtl"] .step .n,
+[dir="rtl"] .partner-name,[dir="rtl"] .client-name,[dir="rtl"] .visual-badge b,
+[dir="rtl"] .site-footer h4,[dir="rtl"] .quote .quote-line{font-family:var(--display-ar)}
+
+/* Arabic script has no case and letter-spacing harms its joins */
+[dir="rtl"] h1,[dir="rtl"] h2,[dir="rtl"] h3,
+[dir="rtl"] .eyebrow,[dir="rtl"] .btn,[dir="rtl"] .nav > li > a,
+[dir="rtl"] .m-nav > li > a,[dir="rtl"] .m-toggle,[dir="rtl"] .stat .label,
+[dir="rtl"] .field label,[dir="rtl"] .card .more,[dir="rtl"] .quote-by,
+[dir="rtl"] .site-footer h4,[dir="rtl"] .div-card .tag,[dir="rtl"] .hero-badge,
+[dir="rtl"] .partner-name,[dir="rtl"] .client-name,[dir="rtl"] .visual-badge span,
+[dir="rtl"] .quote .quote-line,[dir="rtl"] .mobile-bar a,[dir="rtl"] .lang-switch{
+  letter-spacing:0;
+  text-transform:none;
+}
+[dir="rtl"] h1,[dir="rtl"] h2{line-height:1.32}
+[dir="rtl"] h3,[dir="rtl"] h4{line-height:1.45}
+[dir="rtl"] .hero h1{line-height:1.3}
+[dir="rtl"] .stat .num,[dir="rtl"] .step .n,[dir="rtl"] .visual-badge b{line-height:1.1}
+
+/* numbers, phone numbers and email addresses stay left-to-right */
+[dir="rtl"] [dir="ltr"]{unicode-bidi:isolate}
+
+/* borders and offsets that are physically left or right */
+[dir="rtl"] .quote{border-left:0;border-right:3px solid var(--accent);padding:0 28px 0 0}
+[dir="rtl"] .m-sub a{border-left:0;border-right:2px solid var(--line);padding:10px 16px 10px 2px}
+[dir="rtl"] .m-sub a:hover{border-right-color:var(--ink)}
+[dir="rtl"] .site-footer h4::after{left:auto;right:0}
+[dir="rtl"] .eyebrow::before,[dir="rtl"] .center .eyebrow::after{transform:none}
+[dir="rtl"] .card::after{transform-origin:right}
+[dir="rtl"] .visual-badge{right:auto;left:-16px}
+[dir="rtl"] .to-top{right:auto;left:24px}
+[dir="rtl"] .subnav{left:auto;right:0}
+[dir="rtl"] .subnav a:hover{padding-left:14px;padding-right:19px}
+[dir="rtl"] .step::after{right:auto;left:-14px}
+[dir="rtl"] .div-card::before{right:auto;left:-70px}
+[dir="rtl"] .skip-link{left:auto;right:16px}
+[dir="rtl"] .split--flip > .split-visual{order:0}
+[dir="rtl"] .field.has-error input,
+[dir="rtl"] .field.has-error select,
+[dir="rtl"] .field.has-error textarea{box-shadow:inset -3px 0 0 var(--ink)}
+[dir="rtl"] .field .err::before{margin-right:0;margin-left:6px}
+
+/* the drawer slides in from the left */
+[dir="rtl"] .mobile-nav{inset:0 auto 0 0;transform:translateX(-100%);box-shadow:20px 0 60px rgba(0,0,0,.28)}
+[dir="rtl"] .mobile-nav.is-open{transform:translateX(0)}
+
+/* hover nudges point the other way */
+[dir="rtl"] .hero-card-list li:hover{transform:translateX(-5px)}
+[dir="rtl"] .card:hover .more svg{transform:translateX(-5px)}
+[dir="rtl"] .card .more svg,[dir="rtl"] .btn svg,[dir="rtl"] .crumbs li+li::before{transform:scaleX(-1)}
+[dir="rtl"] .btn svg.caret,[dir="rtl"] .m-toggle svg{transform:none}
+[dir="rtl"] .to-top svg{transform:none}
+
+@media (max-width:1100px){
+  [dir="rtl"] .split > .split-visual{order:-1}
+}
+@media (max-width:640px){
+  [dir="rtl"] .to-top{left:16px;right:auto}
 }

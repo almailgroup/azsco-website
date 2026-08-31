@@ -6,6 +6,26 @@ security manpower and electronic security systems.
 Built as plain HTML, CSS and vanilla JavaScript with no build dependencies, so it can be
 served from any static host (GitHub Pages, S3, Netlify, nginx) by copying the repository root.
 
+## Languages
+
+The site is bilingual. English is served from the repository root and Arabic from `ar/`,
+with `dir="rtl"` and an Arabic type stack (Cairo / Tajawal). Every page carries `hreflang`
+alternates for both languages plus `x-default`, and a globe button in the header switches
+between them **on the same page** — Arabic Services goes to English Services, not to the home
+page.
+
+Both language versions are generated from one set of templates in `tools/build.py`: every
+visible string is an `(English, Arabic)` pair, so the two trees cannot drift apart
+structurally. Right-to-left is handled by `dir="rtl"` plus one `[dir="rtl"]` block at the end
+of the stylesheet covering what direction alone does not mirror — physical borders and
+offsets, the drawer sliding in from the left, and the arrows. Phone numbers and email
+addresses are wrapped in `dir="ltr"` so they read correctly inside Arabic text.
+
+> **The Arabic is a first draft and needs a native review before launch.** Two sections
+> especially: Our Story and the CEO's message were supplied in English and were most likely
+> written in Arabic originally — AZSCO's own Arabic wording should replace the translation.
+> The privacy policy is legal text and should be checked by someone qualified.
+
 ## Pages
 
 | File | Page |
@@ -17,6 +37,8 @@ served from any static host (GitHub Pages, S3, Netlify, nginx) by copying the re
 | `contact.html` | Contact details and enquiry form |
 | `privacy-policy.html` | Privacy policy |
 | `404.html` | Not-found page |
+
+Each of these exists twice: `<page>.html` in English and `ar/<page>.html` in Arabic.
 
 ## Structure
 
