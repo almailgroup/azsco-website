@@ -355,7 +355,12 @@ li{margin-bottom:.45em}
    ========================================================================== */
 .hero{
   position:relative;
-  background:linear-gradient(115deg,var(--grey-950) 0%,var(--grey-900) 45%,var(--grey-800) 100%);
+  background:
+    linear-gradient(115deg,rgba(8,8,8,.94) 0%,rgba(13,13,13,.88) 45%,rgba(28,28,28,.80) 100%),
+    url("../img/photos/hero.jpg");
+  background-size:cover;
+  background-position:center 30%;
+  background-repeat:no-repeat;
   color:#d0d0d0;overflow:hidden;
   padding:118px 0 124px;
 }
@@ -363,7 +368,8 @@ li{margin-bottom:.45em}
   content:"";position:absolute;inset:0;
   background:
     radial-gradient(760px 500px at 78% 18%,rgba(255,255,255,.10),transparent 62%),
-    radial-gradient(600px 460px at 8% 92%,rgba(38,38,38,.85),transparent 70%);
+    radial-gradient(600px 460px at 8% 92%,rgba(0,0,0,.55),transparent 70%),
+    linear-gradient(to top,rgba(0,0,0,.55),transparent 45%);
 }
 .hero::after{
   content:"";position:absolute;inset:0;opacity:.25;
