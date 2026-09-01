@@ -177,6 +177,12 @@ DOM as live markup.
 - **Scope**: the site covers security manpower only — guarding, patrols, event and VIP
   security, reception and concierge, consulting, and supervision. There is deliberately no
   content for security systems (fire, intrusion, CCTV, access control).
+- **Photography**: upload site photos to `assets/img/photos/` — see the README in that
+  folder for the slots, sizes and naming. Brand assets stay in `assets/img/`.
+- **Email**: two addresses, `EMAIL` (general) and `EMAIL_SALES` (sales) in
+  `tools/build.py`, shown together in the footer and on the contact page.
+- **Navigation**: there is no "Home" item; the logo links home in both the header and the
+  mobile drawer. The footer and breadcrumbs still carry an explicit Home link.
 - **Partners**: Ajax, Hikvision and Rasilient, defined in `PARTNERS` in `tools/build.py`.
   They render as name tiles; drop the official logo files into `assets/img/` and swap the
   tiles for images when licensing allows.

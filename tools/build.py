@@ -10,7 +10,8 @@ LANGS = ("en", "ar")
 
 PHONE = "(+965) 1808606"
 PHONE_HREF = "+9651808606"
-EMAIL = "info@azsco.com"
+EMAIL = "info@azsco.com"          # general enquiries
+EMAIL_SALES = "sales@azsco.com"   # sales and quotations
 MAPS_URL = "https://maps.app.goo.gl/BN2Byxt6BCJ62XV26"
 
 # ---------------------------------------------------------------- assistant
@@ -33,7 +34,9 @@ COMPANY
 - AZSCO for Facility Guard Services (AZSCO), established 2008, headquartered in
   Qibla, Kuwait. Part of Almail Group.
 - Office: Floor 27, Kuwait Building Tower, Fahad Al Salem St., Qibla, Kuwait.
-- Telephone: (+965) 1808606. Email: info@azsco.com.
+- Telephone: (+965) 1808606.
+- Email: info@azsco.com for general enquiries, sales@azsco.com for sales
+  and quotations.
 - Office hours: Sunday to Thursday, 8:00-17:00. Emergency response 24/7.
 
 WHAT AZSCO DOES
@@ -239,8 +242,9 @@ CHAT = {
            "مساعد ذكاء اصطناعي — قد تكون إجاباته غير دقيقة. لأي أمر مُلزم يُرجى التواصل مع فريقنا."),
 }
 
+# No "Home" item: the logo links to the home page in both the header and the
+# mobile drawer, so a separate entry would be a second route to the same place.
 NAV = [
-    (("Home", "الرئيسية"), "index.html", []),
     (("About", "من نحن"), "about.html", []),
     (("Services", "خدماتنا"), "services.html", [
         (("All Services", "جميع الخدمات"), "services.html"),
@@ -261,6 +265,8 @@ FOOTER = {
     "company": ("Company", "الشركة"),
     "services": ("Services", "الخدمات"),
     "touch": ("Get In Touch", "تواصل معنا"),
+  "email_general": ("General enquiries", "الاستفسارات العامة"),
+  "email_sales": ("Sales &amp; quotations", "المبيعات وعروض الأسعار"),
     "links": [
         (("Home", "الرئيسية"), "index.html"),
         (("About AZSCO", "عن أزسكو"), "about.html"),
@@ -667,7 +673,7 @@ CONTACT = {
   "cards": [
     ("pin",  ("Visit Our Office", "زُر مكتبنا"), None),
     ("phone",("Call Us", "اتصل بنا"), ("24/7 emergency response", "استجابة للطوارئ على مدار الساعة")),
-    ("mail", ("Email Us", "راسلنا"), ("We reply within one business day", "نردّ خلال يوم عمل واحد")),
+    ("mail", ("Email Us", "راسلنا"), None),
   ],
   "form_eyebrow": ("Get In Touch", "تواصل معنا"),
   "form_h2": ("Request a Free Site Survey", "اطلب معاينة مجانية للموقع"),
@@ -1011,7 +1017,8 @@ def footer(lang):
         <ul class="footer-contact">
           <li>{I["pin"]}<span>{t(ADDRESS_BR, lang)}</span></li>
           <li>{I["phone"]}<a href="tel:{PHONE_HREF}" dir="ltr">{PHONE}</a></li>
-          <li>{I["mail"]}<a href="mailto:{EMAIL}" dir="ltr">{EMAIL}</a></li>
+          <li>{I["mail"]}<span><a href="mailto:{EMAIL}" dir="ltr">{EMAIL}</a><small>{t(FOOTER["email_general"], lang)}</small></span></li>
+          <li>{I["mail"]}<span><a href="mailto:{EMAIL_SALES}" dir="ltr">{EMAIL_SALES}</a><small>{t(FOOTER["email_sales"], lang)}</small></span></li>
           <li>{I["clock"]}<span>{t(HOURS_FOOT, lang)}</span></li>
         </ul>
       </div>
@@ -1500,7 +1507,10 @@ def build_contact(lang):
     card_values = [
         f'<p>{t(ADDRESS_BR, lang)}</p>',
         f'<a href="tel:{PHONE_HREF}" dir="ltr">{PHONE}</a>',
-        f'<a href="mailto:{EMAIL}" dir="ltr">{EMAIL}</a>',
+        (f'<a href="mailto:{EMAIL}" dir="ltr">{EMAIL}</a>'
+         f'<small class="info-note">{t(FOOTER["email_general"], lang)}</small>'
+         f'<a href="mailto:{EMAIL_SALES}" dir="ltr">{EMAIL_SALES}</a>'
+         f'<small class="info-note">{t(FOOTER["email_sales"], lang)}</small>'),
     ]
     cards = []
     for i, ((icon, title, sub), value) in enumerate(zip(C["cards"], card_values)):

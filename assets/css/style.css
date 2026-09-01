@@ -676,6 +676,14 @@ li{margin-bottom:.45em}
 .info-card .ico svg{width:22px;height:22px}
 .info-card h4{margin-bottom:5px;font-size:1.02rem}
 .info-card p,.info-card a{font-size:.95rem;margin:0;color:var(--body);display:block}
+.info-card .info-note{
+  display:block;font-size:.78rem;color:var(--muted);
+  margin:2px 0 10px;line-height:1.4;
+}
+.info-card .info-note:last-child{margin-bottom:0}
+.footer-contact small{
+  display:block;font-size:.8rem;color:#8a8a8a;margin-top:1px;
+}
 .info-card a:hover{color:var(--accent-strong)}
 
 .form-card{
