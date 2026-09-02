@@ -7,11 +7,22 @@
   var all = function (sel, ctx) { return Array.prototype.slice.call((ctx || doc).querySelectorAll(sel)); };
 
   /* ---------- mark the active nav item ---------- */
+  // Pages live at clean directory URLs ("/about/", "/ar/services/") rather
+  // than filenames, so a link is "here" by comparing normalized paths, not
+  // the last path segment. A trailing slash is added only to extension-less
+  // paths, so a real file (e.g. "/404.html") is left alone.
+  function normalizePath(path) {
+    if (!path) return path;
+    if (/\.[a-z0-9]+$/i.test(path)) return path;
+    return path.charAt(path.length - 1) === '/' ? path : path + '/';
+  }
+
   function markActive() {
-    var here = location.pathname.split('/').pop() || 'index.html';
+    var here = normalizePath(location.pathname);
     all('.nav a, .mobile-nav a').forEach(function (a) {
-      var href = (a.getAttribute('href') || '').split('/').pop().split('#')[0];
-      if (!href || href !== here) return;
+      var raw = (a.getAttribute('href') || '').split('#')[0];
+      if (!raw) return;
+      if (normalizePath(raw) !== here) return;
       var item = a.closest('li');
       if (!item) return;
       item.classList.add('is-active');

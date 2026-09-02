@@ -28,35 +28,66 @@ addresses are wrapped in `dir="ltr"` so they read correctly inside Arabic text.
 
 ## Pages
 
-| File | Page |
-| --- | --- |
-| `index.html` | Home — hero, services, sectors guarded, why-us, process, partners |
-| `about.html` | About AZSCO — mission, vision, values, FAQ |
-| `services.html` | All services, with a detail section per service |
-| `partners.html` | Strategic partnerships |
-| `contact.html` | Contact details and enquiry form |
-| `privacy-policy.html` | Privacy policy |
-| `404.html` | Not-found page |
+| Page | English URL | Arabic URL |
+| --- | --- | --- |
+| Home — hero, services, sectors guarded, why-us, process, partners | `/` | `/ar/` |
+| About AZSCO — mission, vision, values, FAQ | `/about/` | `/ar/about/` |
+| All services, with a detail section per service | `/services/` | `/ar/services/` |
+| Strategic partnerships | `/partners/` | `/ar/partners/` |
+| Contact details and enquiry form | `/contact/` | `/ar/contact/` |
+| Privacy policy | `/privacy-policy/` | `/ar/privacy-policy/` |
+| Not-found page | `/404.html` | `/ar/404.html` |
 
-Each of these exists twice: `<page>.html` in English and `ar/<page>.html` in Arabic.
+## URLs
+
+Every URL is clean: no `.html`, and the homepage is the bare site root — never `/index`
+and never `/home`, which is how virtually every established site is built (nobody links
+`apple.com/home`). That's achieved without any server config, in a way that works
+unchanged on GitHub Pages: each page is written to its own directory as `index.html`
+(`about/index.html`, `ar/services/index.html`, ...), which every static host serves
+invisibly as the directory's default document — the same mechanism that already makes
+`/` show no filename at all.
+
+`tools/build.py` owns this: `ROUTES` maps each logical page to a slug, `path_for(lang,
+fname)` turns that into the clean URL, and `out_file_for(lang, fname)` turns it into the
+file the builder writes. Every internal link in the templates goes through `link(lang,
+spec)` (a plain string like `"about.html"`, or `"services.html#guarding"` for an
+in-page anchor) — nothing constructs a URL by hand, so the two languages and every
+generated link stay structurally in sync.
+
+**Old links keep working.** The flat filenames this replaced (`about.html`,
+`ar/services.html`, ...) are regenerated as tiny redirect pages — a `meta
+http-equiv="refresh"` plus a `rel="canonical"` pointing at the new clean URL — so a
+bookmark, an inbound link, or a page Google already indexed still arrives. The same
+mechanism backs a `/home/` and `/ar/home/` alias: not the canonical address, but a
+working one for anyone who types or shares it expecting a homepage to live there.
+
+`assets/js/main.js`'s `markActive()` highlights the current nav item by comparing
+normalized *paths* (`/about/` against `/about/`), not filenames — it has to, now that a
+page's identity in the URL is a directory, not a file.
 
 ## Structure
 
 ```
 .
+├── index.html, about/index.html, services/index.html, ...   # English pages
+├── ar/index.html, ar/about/index.html, ...                  # Arabic pages
+├── about.html, ar/services.html, home/index.html, ...       # redirect stubs (generated)
 ├── assets/
 │   ├── css/style.css     # all styling (design tokens, layout, components, responsive)
 │   ├── js/main.js        # nav, mobile drawer, scroll reveal, counters, accordions, form validation
-│   └── img/               # brand lockup, white variant, favicons
-├── tools/build.py        # regenerates the HTML pages from shared templates
+│   └── img/               # brand lockup, white variant, favicons, photos/
+├── tools/build.py        # regenerates every page, both languages, and the redirect stubs
 ├── robots.txt
 ├── sitemap.xml
-└── *.html
+└── 404.html, ar/404.html                                     # kept flat: GitHub Pages requirement
 ```
 
 ## Running locally
 
-No build step is required — open `index.html`, or serve the folder:
+Serve the folder rather than opening `index.html` directly — the clean URLs
+(`/about/`, `/ar/services/`) rely on directory-index resolution, which only a real
+server provides; `file://` cannot follow them.
 
 ```bash
 python3 -m http.server 8000

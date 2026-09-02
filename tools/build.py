@@ -97,22 +97,61 @@ def t(pair, lang):
 def lang_attrs(lang):
     return 'lang="ar" dir="rtl"' if lang == "ar" else 'lang="en" dir="ltr"'
 
-def asset(lang, path):
-    """Arabic pages live in /ar/, so shared assets need one level up."""
-    return ("../" + path) if lang == "ar" else path
+SITE_URL = "https://www.azsco.com"
 
-def page_url(lang, fname):
-    """Link between pages within the same language."""
-    return fname
+# Every page lives in its own directory (about/index.html, ar/services/index.html,
+# ...) so the address bar never shows ".html" or the word "index" -- the
+# directory's default document loads invisibly, the same way "/" already works.
+# The home page is the one entry mapped to slug "": that resolves to the bare
+# site root ("/", "/ar/") rather than "/home/", matching how every established
+# site is built -- the homepage IS the root, not a named page beneath it. A
+# /home/ alias is still written by write_redirects() below, so a link or a
+# typed "azsco.com/home" still arrives, it just forwards to "/".
+ROUTES = {
+    "index.html": "",
+    "about.html": "about",
+    "services.html": "services",
+    "partners.html": "partners",
+    "contact.html": "contact",
+    "privacy-policy.html": "privacy-policy",
+}
+
+def path_for(lang, fname):
+    """Root-relative clean URL for a page: '/', '/about/', '/ar/services/'."""
+    if fname == "404.html":
+        return "/404.html" if lang == "en" else "/ar/404.html"
+    slug = ROUTES[fname]
+    prefix = "/ar" if lang == "ar" else ""
+    return (prefix + "/") if slug == "" else f"{prefix}/{slug}/"
+
+def out_file_for(lang, fname):
+    """Filesystem path (relative to OUT) the page is physically written to."""
+    if fname == "404.html":
+        return "404.html" if lang == "en" else "ar/404.html"
+    slug = ROUTES[fname]
+    prefix = "ar/" if lang == "ar" else ""
+    return f"{prefix}index.html" if slug == "" else f"{prefix}{slug}/index.html"
+
+def link(lang, spec):
+    """Resolve an internal link spec ('about.html', 'services.html#guarding')
+    to a clean URL. Named link(), not href() -- 'href' is a loop variable
+    throughout this file and would shadow a function of that name."""
+    fname, _, anchor = spec.partition("#")
+    path = path_for(lang, fname)
+    return path + (f"#{anchor}" if anchor else "")
+
+def canonical(lang, fname):
+    return SITE_URL + path_for(lang, fname)
 
 def other_lang_url(lang, fname):
     """The same page in the other language."""
-    return ("../" + fname) if lang == "ar" else ("ar/" + fname)
+    other = "ar" if lang == "en" else "en"
+    return path_for(other, fname)
 
-def canonical(lang, fname):
-    base = "https://www.azsco.com/"
-    path = "" if fname == "index.html" else fname
-    return base + ("ar/" if lang == "ar" else "") + path
+def asset(lang, path=""):
+    """Assets are referenced by their root-relative path, so the reference is
+    correct no matter how deeply the page's own URL is now nested."""
+    return "/" + path
 I = {
 "shield":'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
 "shield-check":'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>',
@@ -844,12 +883,12 @@ def desktop_nav(lang):
     out = ['<ul class="nav">']
     for label, href, subs in NAV:
         if subs:
-            out.append(f'<li><a href="{href}">{t(label, lang)} {I["caret"]}</a><ul class="subnav">')
+            out.append(f'<li><a href="{link(lang, href)}">{t(label, lang)} {I["caret"]}</a><ul class="subnav">')
             for s_label, s_href in subs:
-                out.append(f'<li><a href="{s_href}">{t(s_label, lang)}</a></li>')
+                out.append(f'<li><a href="{link(lang, s_href)}">{t(s_label, lang)}</a></li>')
             out.append('</ul></li>')
         else:
-            out.append(f'<li><a href="{href}">{t(label, lang)}</a></li>')
+            out.append(f'<li><a href="{link(lang, href)}">{t(label, lang)}</a></li>')
     out.append('</ul>')
     return "\n        ".join(out)
 
@@ -862,10 +901,10 @@ def mobile_nav(lang):
                        f'aria-controls="m-sub-{n}">{t(label, lang)}{I["caret"]}</button>')
             out.append(f'<ul class="m-sub" id="m-sub-{n}">')
             for s_label, s_href in subs:
-                out.append(f'<li><a href="{s_href}">{t(s_label, lang)}</a></li>')
+                out.append(f'<li><a href="{link(lang, s_href)}">{t(s_label, lang)}</a></li>')
             out.append('</ul></li>')
         else:
-            out.append(f'<li><a href="{href}">{t(label, lang)}</a></li>')
+            out.append(f'<li><a href="{link(lang, href)}">{t(label, lang)}</a></li>')
     out.append('</ul>')
     return "\n      ".join(out)
 
@@ -901,7 +940,7 @@ def header(lang, fname):
 
 <header class="site-header">
   <div class="wrap">
-    <a class="brand" href="index.html" aria-label="{t(UI["home_label"], lang)}">
+    <a class="brand" href="{link(lang, "index.html")}" aria-label="{t(UI["home_label"], lang)}">
       <img class="brand-logo" src="{a}assets/img/AZSCO_Logo.png" alt="{t(SITE_NAME, lang)}" width="1730" height="798">
     </a>
 
@@ -911,7 +950,7 @@ def header(lang, fname):
 
     <div class="header-cta">
       {lang_link(lang, fname, "lang-switch lang-switch--head")}
-      <a class="btn btn-primary" href="contact.html">{t(UI["quote"], lang)}</a>
+      <a class="btn btn-primary" href="{link(lang, "contact.html")}">{t(UI["quote"], lang)}</a>
       <button class="burger" type="button" aria-label="{t(UI["menu_open"], lang)}" aria-expanded="false" aria-controls="mobile-nav"><span></span></button>
     </div>
   </div>
@@ -925,7 +964,7 @@ def header(lang, fname):
   </div>
       {mobile_nav(lang)}
   <div class="mobile-nav-foot">
-    <a class="btn btn-primary" href="contact.html">{t(UI["consult"], lang)}</a>
+    <a class="btn btn-primary" href="{link(lang, "contact.html")}">{t(UI["consult"], lang)}</a>
     <a class="m-contact" href="tel:{PHONE_HREF}">{I["phone"]}<span dir="ltr">{PHONE}</span></a>
     <a class="m-contact" href="mailto:{EMAIL}">{I["mail"]}<span dir="ltr">{EMAIL}</span></a>
   </div>
@@ -978,15 +1017,15 @@ def chat_widget(lang):
 def footer(lang):
     a = asset(lang, "")
     links = "\n          ".join(
-        f'<li><a href="{href}">{t(label, lang)}</a></li>' for label, href in FOOTER["links"])
+        f'<li><a href="{link(lang, href)}">{t(label, lang)}</a></li>' for label, href in FOOTER["links"])
     svc = "\n          ".join(
-        f'<li><a href="services.html#{s["anchor"]}">{t(s["name"], lang)}</a></li>' for s in SERVICES)
+        f'<li><a href="{link(lang, "services.html#" + s["anchor"])}">{t(s["name"], lang)}</a></li>' for s in SERVICES)
     return f'''
 <footer class="site-footer">
   <div class="wrap">
     <div class="footer-grid">
       <div>
-        <a class="brand" href="index.html" aria-label="{t(UI["home_label"], lang)}">
+        <a class="brand" href="{link(lang, "index.html")}" aria-label="{t(UI["home_label"], lang)}">
           <img class="brand-logo" src="{a}assets/img/AZSCO_Logo_white.png" alt="{t(SITE_NAME, lang)}" width="1730" height="798">
         </a>
         <p>{t(FOOTER["blurb"], lang)}</p>
@@ -1027,8 +1066,8 @@ def footer(lang):
     <div class="footer-bottom">
       <p>&copy; <span data-year>2026</span> {t(COMPANY, lang)}. {t(FOOTER["rights"], lang)}</p>
       <ul>
-        <li><a href="privacy-policy.html">{t(FOOTER["privacy"], lang)}</a></li>
-        <li><a href="contact.html">{t(FOOTER["contact"], lang)}</a></li>
+        <li><a href="{link(lang, "privacy-policy.html")}">{t(FOOTER["privacy"], lang)}</a></li>
+        <li><a href="{link(lang, "contact.html")}">{t(FOOTER["contact"], lang)}</a></li>
       </ul>
     </div>
   </div>
@@ -1038,7 +1077,7 @@ def footer(lang):
 
 <div class="mobile-bar">
   <a class="mobile-bar-call" href="tel:{PHONE_HREF}">{I["phone"]}<span>{t(UI["call_now"], lang)}</span></a>
-  <a class="mobile-bar-quote" href="contact.html">{I["mail"]}<span>{t(UI["get_quote"], lang)}</span></a>
+  <a class="mobile-bar-quote" href="{link(lang, "contact.html")}">{I["mail"]}<span>{t(UI["get_quote"], lang)}</span></a>
 </div>
 {chat_widget(lang)}
 <script src="{a}assets/js/main.js"></script>
@@ -1056,7 +1095,7 @@ def banner(lang, title, sub, crumb):
     <h1>{title}</h1>
     <p>{sub}</p>
     <ul class="crumbs">
-      <li><a href="index.html">{t(UI["home"], lang)}</a></li>
+      <li><a href="{link(lang, "index.html")}">{t(UI["home"], lang)}</a></li>
       <li aria-current="page">{crumb}</li>
     </ul>
   </div>
@@ -1073,7 +1112,7 @@ def cta(lang, pair=None):
       <p>{t(text, lang)}</p>
     </div>
     <div class="btn-row">
-      <a class="btn btn-primary" href="contact.html">{t(UI["consult"], lang)} {I["arrow"]}</a>
+      <a class="btn btn-primary" href="{link(lang, "contact.html")}">{t(UI["consult"], lang)} {I["arrow"]}</a>
       <a class="btn btn-outline" href="tel:{PHONE_HREF}" dir="ltr">{PHONE}</a>
     </div>
   </div>
@@ -1111,7 +1150,7 @@ def service_cards(lang):
         <span class="ico">{I[s["icon"]]}</span>
         <h3>{t(s["name"], lang)}</h3>
         <p>{t(s["card"], lang)}</p>
-        <a class="more" href="services.html#{s["anchor"]}">{t(UI["learn"], lang)} {I["arrow"]}</a>
+        <a class="more" href="{link(lang, "services.html#" + s["anchor"])}">{t(UI["learn"], lang)} {I["arrow"]}</a>
       </article>''' for n, s in enumerate(SERVICES))
 
 def partner_grid():
@@ -1163,8 +1202,8 @@ def build_home(lang):
         <h1>{t(H["h1a"], lang)}<em>{t(H["h1b"], lang)}</em></h1>
         <p class="lead">{t(H["lead"], lang)}</p>
         <div class="btn-row">
-          <a class="btn btn-primary" href="contact.html">{t(UI["consult"], lang)} {I["arrow"]}</a>
-          <a class="btn btn-outline" href="services.html">{t(UI["explore"], lang)}</a>
+          <a class="btn btn-primary" href="{link(lang, "contact.html")}">{t(UI["consult"], lang)} {I["arrow"]}</a>
+          <a class="btn btn-outline" href="{link(lang, "services.html")}">{t(UI["explore"], lang)}</a>
         </div>
         <ul class="hero-points">
 {points}
@@ -1210,7 +1249,7 @@ def build_home(lang):
 {checks}
         </ul>
         <div class="btn-row">
-          <a class="btn btn-dark" href="about.html">{t(UI["more_about"], lang)} {I["arrow"]}</a>
+          <a class="btn btn-dark" href="{link(lang, "about.html")}">{t(UI["more_about"], lang)} {I["arrow"]}</a>
         </div>
       </div>
     </div>
@@ -1269,7 +1308,7 @@ def build_home(lang):
 {partner_grid()}
     </div>
     <div class="center" style="margin-top:44px">
-      <a class="btn btn-dark" href="partners.html">{t(H["part_btn"], lang)} {I["arrow"]}</a>
+      <a class="btn btn-dark" href="{link(lang, "partners.html")}">{t(H["part_btn"], lang)} {I["arrow"]}</a>
     </div>
   </div>
 </section>
@@ -1310,7 +1349,7 @@ def build_about(lang):
         <h2>{t(A["story_h2"], lang)}</h2>
         {story}
         <div class="btn-row" style="margin-top:26px">
-          <a class="btn btn-dark" href="contact.html">{t(UI["talk"], lang)} {I["arrow"]}</a>
+          <a class="btn btn-dark" href="{link(lang, "contact.html")}">{t(UI["talk"], lang)} {I["arrow"]}</a>
         </div>
       </div>
     </div>
@@ -1405,7 +1444,7 @@ def build_services(lang):
 {pts}
         </ul>
         <div class="btn-row">
-          <a class="btn btn-dark" href="contact.html">{t(UI["req_quote"], lang)} {I["arrow"]}</a>
+          <a class="btn btn-dark" href="{link(lang, "contact.html")}">{t(UI["req_quote"], lang)} {I["arrow"]}</a>
         </div>
       </div>
       <div class="split-visual reveal" data-delay="120">
@@ -1487,7 +1526,7 @@ def build_partners(lang):
         <p class="lead">{t(P["join_lead"], lang)}</p>
         <p>{join_p}</p>
         <div class="btn-row">
-          <a class="btn btn-dark" href="contact.html">{t(P["join_btn"], lang)} {I["arrow"]}</a>
+          <a class="btn btn-dark" href="{link(lang, "contact.html")}">{t(P["join_btn"], lang)} {I["arrow"]}</a>
         </div>
       </div>
       <div class="split-visual reveal" data-delay="120">
@@ -1521,7 +1560,7 @@ def build_contact(lang):
       </div>''')
     options = "\n".join(f'              <option>{t(o, lang)}</option>' for o in C["options"])
     note = (t(F["note"], lang)
-            .replace("{PRIVACY}", f'<a href="privacy-policy.html">{t(FOOTER["privacy"], lang)}</a>')
+            .replace("{PRIVACY}", f'<a href="{link(lang, "privacy-policy.html")}">{t(FOOTER["privacy"], lang)}</a>')
             .replace("{PHONE}", f'<span dir="ltr">{PHONE}</span>'))
 
     body = banner(lang, t(C["banner_h"], lang), t(C["banner_p"], lang), t(C["crumb"], lang)) + f'''
@@ -1646,8 +1685,8 @@ def build_404(lang):
     <h1 style="margin-bottom:18px">{t(N["h1"], lang)}</h1>
     <p class="lead" style="max-width:560px;margin:0 auto 32px">{t(N["lead"], lang)}</p>
     <div class="btn-row center">
-      <a class="btn btn-primary" href="index.html">{t(N["back"], lang)} {I["arrow"]}</a>
-      <a class="btn btn-dark" href="contact.html">{t(N["contact"], lang)}</a>
+      <a class="btn btn-primary" href="{link(lang, "index.html")}">{t(N["back"], lang)} {I["arrow"]}</a>
+      <a class="btn btn-dark" href="{link(lang, "contact.html")}">{t(N["contact"], lang)}</a>
     </div>
   </div>
 </section>
@@ -1703,6 +1742,32 @@ def write_sitemap():
         fh.write(xml)
     return len(rows)
 
+def write_redirect(out_path, target_url, lang="en"):
+    """A minimal page that immediately forwards to target_url and tells search
+    engines that URL is the real one. Used for two things: the flat ".html"
+    URLs this migration retires (about.html -> /about/, ...), so a bookmark or
+    a result already indexed by a search engine still arrives; and the /home/
+    alias, for anyone who types or shares "azsco.com/home" expecting it to
+    work even though the homepage itself lives at the site root."""
+    html = f'''<!DOCTYPE html>
+<html {lang_attrs(lang)}>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="refresh" content="0; url={target_url}">
+<link rel="canonical" href="{target_url}">
+<meta name="robots" content="noindex">
+<title>{t(SITE_NAME, lang)}</title>
+</head>
+<body>
+<p><a href="{target_url}">{t(SITE_NAME, lang)}</a></p>
+</body>
+</html>
+'''
+    full = os.path.join(OUT, out_path)
+    os.makedirs(os.path.dirname(full) or OUT, exist_ok=True)
+    with open(full, "w", encoding="utf-8") as fh:
+        fh.write(html)
+
 if __name__ == "__main__":
     for lang in LANGS:
         build_home(lang)
@@ -1713,11 +1778,28 @@ if __name__ == "__main__":
         build_privacy(lang)
         build_404(lang)
 
-    os.makedirs(os.path.join(OUT, "ar"), exist_ok=True)
     for (lang, fname), html in PAGES.items():
-        path = os.path.join(OUT, "ar", fname) if lang == "ar" else os.path.join(OUT, fname)
-        with open(path, "w", encoding="utf-8") as fh:
+        out_path = out_file_for(lang, fname)
+        full = os.path.join(OUT, out_path)
+        os.makedirs(os.path.dirname(full) or OUT, exist_ok=True)
+        with open(full, "w", encoding="utf-8") as fh:
             fh.write(html)
-        print("wrote", ("ar/" if lang == "ar" else "") + fname, len(html), "bytes")
+        print("wrote", out_path, len(html), "bytes")
+
+    # Retire the flat ".html" URLs this migration replaces, and add the /home/
+    # alias, without breaking anyone already pointed at the old address.
+    redirects = 0
+    for lang in LANGS:
+        for fname in ROUTES:
+            if fname == "index.html":
+                continue  # no flat URL to retire: index.html *is* the file behind "/"
+            old_path = fname if lang == "en" else f"ar/{fname}"
+            write_redirect(old_path, canonical(lang, fname), lang)
+            redirects += 1
+        home_stub = "home/index.html" if lang == "en" else "ar/home/index.html"
+        write_redirect(home_stub, canonical(lang, "index.html"), lang)
+        redirects += 1
+    print("wrote", redirects, "redirect stubs (retired .html URLs + /home alias)")
+
     print("wrote sitemap.xml with", write_sitemap(), "urls")
     print("wrote assets/js/chat-config.js (mode:", write_chat_config() + ")")
