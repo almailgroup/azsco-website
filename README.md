@@ -1,7 +1,8 @@
 # AZSCO Security — Website
 
-A static replica of the AZSCO Security website (azsco.com) — a Kuwait-based provider of
-security manpower and electronic security systems.
+The AZSCO Security website (azsco.com) — a Kuwait-based provider of security manpower
+services: facility guarding, VIP protection and rapid intervention, a central operations room,
+and security patrols.
 
 Built as plain HTML, CSS and vanilla JavaScript with no build dependencies, so it can be
 served from any static host (GitHub Pages, S3, Netlify, nginx) by copying the repository root.
@@ -21,17 +22,18 @@ of the stylesheet covering what direction alone does not mirror — physical bor
 offsets, the drawer sliding in from the left, and the arrows. Phone numbers and email
 addresses are wrapped in `dir="ltr"` so they read correctly inside Arabic text.
 
-> **The Arabic is a first draft and needs a native review before launch.** Two sections
-> especially: Our Story and the CEO's message were supplied in English and were most likely
-> written in Arabic originally — AZSCO's own Arabic wording should replace the translation.
-> The privacy policy is legal text and should be checked by someone qualified.
+> **Most Arabic copy is AZSCO's own**, taken directly from the bilingual company profile
+> supplied by the client (About, Objective/Vision/Mission, Values, CEO's message, Services,
+> Sectors, Nationalities, Training, Equipment, Uniforms, Certifications). Page furniture around
+> that content — section eyebrows and leads, the FAQ, the privacy policy — is a translation of
+> English copy I wrote, and still needs a native review before launch.
 
 ## Pages
 
 | Page | English URL | Arabic URL |
 | --- | --- | --- |
-| Home — hero, services, sectors guarded, why-us, process, partners | `/` | `/ar/` |
-| About AZSCO — mission, vision, values, FAQ | `/about/` | `/ar/about/` |
+| Home — hero, services, sectors served, why-us, process, partners | `/` | `/ar/` |
+| About AZSCO — story, objective/vision/mission, values, commitment, nationalities, training, equipment, uniforms, certifications, CEO's message, clients, stats, FAQ | `/about/` | `/ar/about/` |
 | All services, with a detail section per service | `/services/` | `/ar/services/` |
 | Strategic partnerships | `/partners/` | `/ar/partners/` |
 | Contact details and enquiry form | `/contact/` | `/ar/contact/` |
@@ -199,31 +201,61 @@ know. Update it there and rebuild when the business changes.
 closed set of formatting (bold, phone and email links) — nothing from the model reaches the
 DOM as live markup.
 
+## Content source
+
+The company facts, service descriptions, About page copy, statistics and imagery come from
+AZSCO's own official company profile (a bilingual PDF supplied directly by the client), which
+is treated as the single source of truth over anything guessed earlier from public search
+results. Three things worth knowing about how it was applied:
+
+- **Scope stays manpower-only by explicit instruction.** The source document lists a fifth
+  service, Security Systems (CCTV, fire and theft alarms), with named technology partners.
+  Per the client's standing direction, the site does not describe AZSCO as selling or
+  installing security systems — only the four manpower services appear (`SERVICES` in
+  `tools/build.py`: Facility Guarding, VIP Protection & Rapid Intervention, Central Operations
+  Room, Security Patrols). The 8 technology partners still appear on the Partners page,
+  reframed as the equipment ecosystem that feeds the Central Operations Room's monitoring —
+  not as something AZSCO sells or installs.
+- **Founding year corrected to 2014.** Earlier content (built before the official profile was
+  available) said 2008. The source document is unambiguous — established 2014, formerly known
+  as Almail Zone Security Services — and every mention (`FOUNDED` in `tools/build.py`, the
+  About page story, the footer blurb) now reflects that.
+- **Client list changed.** The official profile's client-logo panel (`clients-logos.jpg`,
+  19 logos including Radisson Blu Hotel Kuwait, Alnasser, Millennium Hotels and Resorts and
+  Kuwait Ports Authority) replaced an earlier, shorter client list that had included a name
+  ("Xcite") not present in the official document — dropped in favour of the authoritative source.
+
 ## Notes
 
 - **Contact form**: client-side validation only. It shows a confirmation message and does not
   submit anywhere. Point the `<form>` at a backend endpoint or form service to make it live.
-- **Social links**: placeholder `#` hrefs in the top bar and footer — replace with the real
-  profile URLs.
-- **Scope**: the site covers security manpower only — guarding, patrols, event and VIP
-  security, reception and concierge, consulting, and supervision. There is deliberately no
-  content for security systems (fire, intrusion, CCTV, access control).
-- **Photography**: upload site photos to `assets/img/photos/` — see the README in that
-  folder for the slots, sizes and naming. Brand assets stay in `assets/img/`.
+- **Social links**: placeholder `#` hrefs in the top bar and footer, except Instagram
+  (`INSTAGRAM_URL` in `tools/build.py`) — replace the rest with the real profile URLs.
+- **Scope**: the site covers security manpower only — facility guarding, VIP protection and
+  rapid intervention, a central operations room, and security patrols. There is deliberately
+  no content describing AZSCO as selling or installing security systems (fire, intrusion,
+  CCTV, access control) — see "Content source" above.
+- **Photography**: `assets/img/photos/` holds `hero.jpg`, the extracted `partners-logos.png`,
+  `clients-logos.jpg` and `certifications.jpg` panels, and `uniforms/` (front and back photos
+  for the four official uniform models — formal, winter, patrol, duty — extracted from the
+  official company profile, which uses real AZSCO staff). See the README in that folder for
+  slots, sizes and naming for anything added later. Brand assets stay in `assets/img/`.
 - **Email**: two addresses, `EMAIL` (general) and `EMAIL_SALES` (sales) in
   `tools/build.py`, shown together in the footer and on the contact page.
 - **Navigation**: there is no "Home" item; the logo links home in both the header and the
   mobile drawer. The footer and breadcrumbs still carry an explicit Home link.
-- **Partners**: Ajax, Hikvision and Rasilient, defined in `PARTNERS` in `tools/build.py`.
-  They render as name tiles; drop the official logo files into `assets/img/` and swap the
-  tiles for images when licensing allows.
+- **Partners**: the 8 official technology partners (`PARTNERS` in `tools/build.py`, backing
+  the partner count in the statistics row) render as a single logo-panel image
+  (`assets/img/photos/partners-logos.png`) rather than individual tiles.
 - **Map**: the contact page uses a styled address panel rather than an embedded map, so the
   page loads without third-party scripts. Replace with a map embed if required.
-- **Statistics** now come from AZSCO's own copy: founding year, years of experience
-  (recalculated each year by `data-years-since`, so it never goes stale), 24/7 response and
-  the partner count. No invented figures remain.
-- **Clients** (`CLIENTS` in `tools/build.py`) render as text tiles; swap for logo files when
-  licensing allows.
+- **Statistics** come from AZSCO's own copy: founding year, years of experience (recalculated
+  each year by `data-years-since`, so it never goes stale), 24/7 response and the partner count.
+- **Clients**: render as a single logo-panel image (`assets/img/photos/clients-logos.jpg`);
+  `CLIENTS_ALT` in `tools/build.py` holds the descriptive alt text.
+- **Logos keep their own colour.** The palette rule is for the site's own UI — partner, client
+  and certification logos are third-party marks shown as supplied, so those three images are
+  the only place colour appears on the site.
 - **Fonts**: Inter and Barlow Condensed are loaded from Google Fonts, with system-font
   fallbacks if that request is blocked.
 

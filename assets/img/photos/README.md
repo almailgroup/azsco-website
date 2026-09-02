@@ -20,23 +20,38 @@ hero.jpg                 not   IMG_4821.JPG
 service-guarding.jpg     not   Guarding Photo (1).jpg
 ```
 
-## Where each image would be used
+## What's wired up already
 
-Nothing is wired up yet — the site currently uses drawn SVG panels. Upload
-whatever you have and say the word, and these are the slots they would fill:
+These images are live on the site, sourced from AZSCO's official company profile:
+
+| File | Used for | Size (px) |
+| --- | --- | --- |
+| `hero.jpg` | Home page hero background | as supplied |
+| `partners-logos.png` | Partners page and home page, the 8 technology partner logos | 552 × 233 |
+| `clients-logos.jpg` | About page, the client logo wall | 748 × 489 |
+| `certifications.jpg` | About page, ISO 9001 / SCK / IAS certification badges | 473 × 180 |
+| `uniforms/formal-front.jpg`, `formal-back.jpg` | About page, Uniform Models — Formal Uniform | 232 × 349 |
+| `uniforms/winter-front.jpg`, `winter-back.jpg` | About page, Uniform Models — Winter Uniform | 232 × 349 |
+| `uniforms/patrol-front.jpg`, `patrol-back.jpg` | About page, Uniform Models — Patrol Uniform | 232 × 349 |
+| `uniforms/security-front.jpg`, `security-back.jpg` | About page, Uniform Models — Duty Uniform | 232 × 349 |
+
+The partner, client and certification images are logo panels shown at their supplied colours —
+see "Logos keep their own colour" in the repository root README. The uniform photos are real
+AZSCO staff, as published in AZSCO's own external-facing company profile.
+
+## Open slots
+
+The site currently uses drawn SVG panels for these. Upload a photograph and say the word to
+wire it in:
 
 | Suggested name | Used for | Size (px) |
 | --- | --- | --- |
-| `hero.jpg` | Home page hero background, behind the headline | 1920 × 1080 |
-| `story.jpg` | About page, beside "Protecting Kuwait Since 2008" | 900 × 760 |
+| `story.jpg` | About page, beside "Protecting Kuwait Since 2014" | 900 × 760 |
 | `about-home.jpg` | Home page, beside "A Leading Provider…" | 900 × 760 |
-| `service-guarding.jpg` | Services page, Manned Guarding section | 900 × 560 |
-| `service-patrols.jpg` | Services page, Mobile Patrols section | 900 × 560 |
-| `service-events.jpg` | Services page, Event & VIP Security section | 900 × 560 |
-| `service-reception.jpg` | Services page, Reception & Concierge section | 900 × 560 |
-| `service-consulting.jpg` | Services page, Security Consulting section | 900 × 560 |
-| `service-supervision.jpg` | Services page, Supervision & Reporting section | 900 × 560 |
-| `partners.jpg` | Partners page panel | 900 × 560 |
+| `service-guarding.jpg` | Services page, Facility Guarding section | 900 × 560 |
+| `service-protection.jpg` | Services page, VIP Protection & Rapid Intervention section | 900 × 560 |
+| `service-operations.jpg` | Services page, Central Operations Room section | 900 × 560 |
+| `service-patrols.jpg` | Services page, Security Patrols section | 900 × 560 |
 | `og-share.jpg` | The preview card when the site is shared on WhatsApp, LinkedIn etc. | 1200 × 630 |
 
 Partial uploads are fine — any slot without a photograph keeps its current SVG

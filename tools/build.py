@@ -13,6 +13,7 @@ PHONE_HREF = "+9651808606"
 EMAIL = "info@azsco.com"          # general enquiries
 EMAIL_SALES = "sales@azsco.com"   # sales and quotations
 MAPS_URL = "https://maps.app.goo.gl/BN2Byxt6BCJ62XV26"
+INSTAGRAM_URL = "https://www.instagram.com/azsco.security/"
 
 # ---------------------------------------------------------------- assistant
 # CHAT_MODE selects how the browser reaches Mistral:
@@ -31,34 +32,45 @@ CHAT_MODEL = "mistral-small-latest"
 # proxy in api/chat.js carries its own copy for when CHAT_MODE is "proxy".
 CHAT_FACTS = """
 COMPANY
-- AZSCO for Facility Guard Services (AZSCO), established 2008, headquartered in
-  Qibla, Kuwait. Part of Almail Group.
-- Office: Floor 27, Kuwait Building Tower, Fahad Al Salem St., Qibla, Kuwait.
+- AZSCO Security Services Company (formerly Almail Zone Security Services),
+  established 2014, headquartered in Qibla, Kuwait.
+- Office: Floor 27B, Kuwait Building Tower, Fahad Al Salem St., Qibla, Kuwait.
 - Telephone: (+965) 1808606.
 - Email: info@azsco.com for general enquiries, sales@azsco.com for sales
   and quotations.
 - Office hours: Sunday to Thursday, 8:00-17:00. Emergency response 24/7.
+- CEO: Dr. Abdulaziz Almail.
+- Certified ISO 9001:2015 for quality management, and compliant with
+  Anti-Money Laundering standards.
 
 WHAT AZSCO DOES
 AZSCO provides security manpower only. It does NOT sell, install or maintain
-security systems (no fire alarm, intrusion, CCTV, access control or smart home
+security systems (no fire alarm, intrusion, CCTV or access control
 installation). Services:
-- Manned Guarding: static security officers for apartments, malls, banks,
-  stores, offices, compounds and industrial sites.
-- Mobile Patrols: scheduled and random patrols, perimeter checks,
-  lock-and-unlock, key holding, alarm response.
-- Event & VIP Security: crowd management, access screening, stewarding,
-  close protection.
-- Reception & Concierge: front-of-house officers, visitor management,
-  contractor and delivery control.
-- Security Consulting: site surveys, risk assessments, post orders,
-  deployment planning.
-- Supervision & Reporting: field supervisors, shift audits, incident reporting.
+- Facility Guarding: trained, uniformed officers guarding apartments, malls,
+  banks, stores, offices, compounds, industrial sites and events.
+- VIP Protection & Rapid Intervention: physically and technically qualified
+  personal guards for individuals needing a high level of security, plus
+  rapid-intervention response to critical sites.
+- Central Operations Room: a 24/7 monitoring and communications room that
+  keeps continuous contact with every AZSCO-guarded site and dispatches a
+  rapid response to any incident.
+- Security Patrols: scheduled patrols by trained officers equipped with the
+  necessary tools, reinforcing the security of guarded sites and areas.
 
 OTHER FACTS
-- Officers are screened, licensed, uniformed, trained and supervised.
-- Technology partners: Ajax, Hikvision, Rasilient.
-- Clients include Xcite, Millennium Hotels and Resorts, and Alnasser.
+- Officers are screened, licensed, uniformed, trained (first aid,
+  fire-fighting, dealing with the public, dealing with accidents,
+  self-defense) and supervised.
+- Officers come from a range of nationalities: Kuwaiti, Indian, Egyptian,
+  Chadian, Nigerian, Nepalese and stateless individuals.
+- Serves government, commercial, financial, industrial, residential and many
+  other sectors across Kuwait.
+- Technology partners whose equipment feeds AZSCO's Central Operations Room
+  monitoring: Ajax, Rasilient, Avigilon, Teltonika, Inrico, Hikvision, Pelco
+  and Motorola. AZSCO does not itself sell or install this equipment.
+- Clients include Radisson Blu Hotel Kuwait, Alnasser, Millennium Hotels and
+  Resorts, and Kuwait Ports Authority, among others.
 - A free site survey is the normal first step for a new enquiry.
 """
 
@@ -87,7 +99,7 @@ def chat_system_prompt(lang):
     return ("You are the AZSCO Assistant, the virtual assistant on the website of "
             "AZSCO, a security manpower company in Kuwait.\n"
             + CHAT_FACTS + CHAT_RULES + "- " + reply_in)
-FOUNDED = 2008
+FOUNDED = 2014
 YEARS = datetime.date.today().year - FOUNDED
 
 # Every visible string is a pair: (English, Arabic).
@@ -216,13 +228,16 @@ def logo(variant="dark"):
 
 
 # ============================================================ shared strings
-COMPANY   = ("AZSCO for Facility Guard Services", "شركة أزسكو لخدمات حراسة المنشآت")
+COMPANY   = ("AZSCO Security Services Company", "شركة أزكو لخدمات حراسة المنشآت ذ.م.م")
+# The company's own profile document: "Azsco Security Services LLC, formerly
+# known as Almail Zone Security Services." Used once, in the About page story.
+FORMER_NAME = ("Almail Zone Security Services", "شركة الميل زون للخدمات الأمنية")
 SITE_NAME = ("AZSCO Security", "أزسكو للأمن")
 TAGLINE   = ("Security &amp; Guarding", "الأمن والحراسة")
-ADDRESS_1L = ("Floor 27, Kuwait Building Tower, Fahad Al Salem St., Qibla, Kuwait",
-              "الدور 27، برج مبنى الكويت، شارع فهد السالم، القبلة، الكويت")
-ADDRESS_BR = ("Floor 27, Kuwait Building Tower,<br>Fahad Al Salem St., Qibla, Kuwait",
-              "الدور 27، برج مبنى الكويت،<br>شارع فهد السالم، القبلة، الكويت")
+ADDRESS_1L = ("Floor 27B, Kuwait Building Tower, Fahad Al Salem St., Qibla, Kuwait",
+              "الدور 27B، برج مبنى الكويت، شارع فهد السالم، القبلة، الكويت")
+ADDRESS_BR = ("Floor 27B, Kuwait Building Tower,<br>Fahad Al Salem St., Qibla, Kuwait",
+              "الدور 27B، برج مبنى الكويت،<br>شارع فهد السالم، القبلة، الكويت")
 HOURS      = ("Sunday &ndash; Thursday, 8:00 &ndash; 17:00", "الأحد &ndash; الخميس، 8:00 &ndash; 17:00")
 HOURS_FOOT = ("Sunday &ndash; Thursday, 8:00 &ndash; 17:00<br>Emergency response 24/7",
               "الأحد &ndash; الخميس، 8:00 &ndash; 17:00<br>استجابة الطوارئ على مدار الساعة")
@@ -287,20 +302,18 @@ NAV = [
     (("About", "من نحن"), "about.html", []),
     (("Services", "خدماتنا"), "services.html", [
         (("All Services", "جميع الخدمات"), "services.html"),
-        (("Manned Guarding", "الحراسة الأمنية"), "services.html#guarding"),
-        (("Mobile Patrols", "الدوريات المتنقلة"), "services.html#patrols"),
-        (("Event &amp; VIP Security", "أمن الفعاليات وكبار الشخصيات"), "services.html#events"),
-        (("Reception &amp; Concierge", "الاستقبال والكونسيرج"), "services.html#reception"),
-        (("Security Consulting", "الاستشارات الأمنية"), "services.html#consulting"),
-        (("Supervision &amp; Reporting", "الإشراف والتقارير"), "services.html#supervision"),
+        (("Facility Guarding", "حراسة المنشآت"), "services.html#guarding"),
+        (("VIP Protection &amp; Rapid Intervention", "حماية الشخصيات والتدخل السريع"), "services.html#protection"),
+        (("Central Operations Room", "غرفة عمليات مركزية"), "services.html#operations"),
+        (("Security Patrols", "دوريات أمنية"), "services.html#patrols"),
     ]),
     (("Partners", "شركاؤنا"), "partners.html", []),
     (("Contact", "اتصل بنا"), "contact.html", []),
 ]
 
 FOOTER = {
-    "blurb": ("AZSCO for facility guard services has been protecting premises, assets and people across Kuwait since 2008, with professionally trained, licensed and closely supervised security personnel.",
-              "تعمل شركة أزسكو لخدمات حراسة المنشآت على حماية المنشآت والممتلكات والأشخاص في جميع أنحاء الكويت منذ عام 2008، بكوادر أمنية مدرّبة ومرخّصة وتخضع لإشراف دقيق."),
+    "blurb": ("AZSCO Security Services Company has been protecting premises, assets and people across Kuwait since 2014, with professionally trained, licensed and closely supervised security personnel.",
+              "تعمل شركة أزسكو لخدمات حراسة المنشآت على حماية المنشآت والممتلكات والأشخاص في جميع أنحاء الكويت منذ عام 2014، بكوادر أمنية مدرّبة ومرخّصة وتخضع لإشراف دقيق."),
     "company": ("Company", "الشركة"),
     "services": ("Services", "الخدمات"),
     "touch": ("Get In Touch", "تواصل معنا"),
@@ -327,96 +340,131 @@ CTA_DEFAULT = (
 # ============================================================ services
 SERVICES = [
   {"anchor": "guarding", "icon": "shield",
-   "name": ("Manned Guarding", "الحراسة الأمنية"),
-   "card": ("Highly trained and professional security officers safeguarding your premises, assets and people &mdash; security guards for apartments, malls, banks, stores and much more.",
-            "أفراد أمن محترفون وعلى درجة عالية من التدريب لحماية منشآتك وممتلكاتك والعاملين فيها &mdash; حراس أمن للشقق والمجمّعات التجارية والبنوك والمتاجر وغيرها الكثير."),
-   "intro": ("Highly trained and professional security personnel to safeguard your premises, assets and people. AZSCO is distinguished in offering security guards for apartments, malls, banks, stores and much more, with deployments tailored to each client.",
-             "كوادر أمنية مدرّبة ومحترفة لحماية منشآتك وممتلكاتك والعاملين فيها. تتميّز أزسكو بتوفير حراس الأمن للشقق والمجمّعات التجارية والبنوك والمتاجر وغيرها الكثير، مع خطط انتشار مصمّمة لكل عميل."),
+   "name": ("Facility Guarding", "حراسة المنشآت"),
+   "card": ("A comprehensive range of security services for facilities of every kind, delivered by a team known for its efficiency and professionalism.",
+            "مجموعة شاملة من الخدمات الأمنية لمختلف المنشآت، يقدّمها فريق يتميّز بكفاءته واحترافيته."),
+   "intro": ("AZSCO offers a comprehensive range of security services for various facilities. The security team is known for its efficiency and professionalism, undergoing extensive training that covers emergency handling, surveillance techniques and maintaining site security.",
+             "تقدّم أزسكو مجموعة شاملة من الخدمات الأمنية في مختلف المنشآت. يتميّز فريق الحراسة بكفاءته واحترافيته، حيث يخضع لتدريبات مكثّفة تغطي التعامل مع الحالات الطارئة وتقنيات المراقبة وحفظ الأمن في المواقع."),
    "points": [
-     ("Static officers for towers, compounds, retail and industrial sites", "أفراد أمن ثابتون للأبراج والمجمّعات والمنشآت التجارية والصناعية"),
+     ("Static officers for facilities of every kind", "أفراد أمن ثابتون لمختلف أنواع المنشآت"),
      ("Screened, licensed and uniformed personnel", "كوادر مدقّقة أمنياً ومرخّصة وبزي رسمي"),
-     ("Site-specific post orders and access procedures", "تعليمات مواقع وإجراءات دخول خاصة بكل منشأة"),
+     ("Extensive training in emergency handling", "تدريبات مكثّفة على التعامل مع الحالات الطارئة"),
+     ("Surveillance techniques and site security", "تقنيات المراقبة وحفظ الأمن في المواقع"),
      ("Day, night and rotating shift patterns", "ورديات صباحية وليلية ودوّارة"),
-     ("Daily occurrence books and incident reporting", "سجلات يومية وتقارير عن الحوادث"),
+   ]},
+  {"anchor": "protection", "icon": "target",
+   "name": ("VIP Protection &amp; Rapid Intervention", "حماية الشخصيات والتدخل السريع"),
+   "card": ("Rapid intervention for critical sites and personal protection for individuals who need a high level of security, through physically and technically qualified guards.",
+            "خدمات تدخّل سريع للمواقع المهمة وحماية شخصية للأفراد الذين يحتاجون إلى مستوى عالٍ من الأمان، عبر حراس مؤهلين جسمانياً وفنياً."),
+   "intro": ("AZSCO provides rapid intervention services to critical sites to ensure security control, along with personal protection services for individuals requiring a high level of security through physically and technically qualified personal guards.",
+             "تقدّم أزسكو خدمات التدخّل السريع للمواقع المهمة لضمان ضبط الأمن، إلى جانب خدمات الحماية الشخصية للأفراد المهمين الذين يحتاجون إلى مستوى عالٍ من الأمان، من خلال توفير حراس شخصيين مؤهلين جسمانياً وفنياً."),
+   "points": [
+     ("Rapid intervention for critical sites", "تدخّل سريع للمواقع المهمة"),
+     ("Personal protection for high-profile individuals", "حماية شخصية للأفراد المهمين"),
+     ("Physically and technically qualified personal guards", "حراس شخصيون مؤهلون جسمانياً وفنياً"),
+     ("Close protection and escort details", "فرق حماية شخصية ومرافقة"),
+     ("Pre-assignment risk assessment", "تقييم للمخاطر قبل التكليف"),
+   ]},
+  {"anchor": "operations", "icon": "eye",
+   "name": ("Central Operations Room", "غرفة عمليات مركزية"),
+   "card": ("A 24/7 operations room equipped with the latest monitoring and communication technology, in continuous contact with every site AZSCO guards.",
+            "غرفة عمليات تعمل على مدار الساعة، مجهّزة بأحدث تقنيات المراقبة والاتصال، وعلى تواصل مستمر مع كل موقع تحرسه أزسكو."),
+   "intro": ("The Central Operations Room is a core AZSCO offering, ensuring safety and rapid response to any security incident. Equipped with the latest monitoring and communication technology, it operates 24/7, allowing continuous surveillance and immediate communication with every site AZSCO guards. The team consists of trained, specialised personnel capable of handling a wide range of security situations.",
+             "تُعدّ غرفة العمليات المركزية إحدى الخدمات الأساسية التي توفّرها أزسكو لضمان الأمان والاستجابة السريعة لأي حادث أمني. وهي مجهّزة بأحدث تقنيات المراقبة والاتصالات، وتعمل على مدار الساعة، مما يتيح مراقبة مستمرة وتواصلاً فورياً مع المواقع الأمنية التي تتولى أزسكو حراستها. يتألّف فريق غرفة العمليات من كوادر مدرّبة ومتخصصة، قادرة على التعامل مع مختلف المواقف الأمنية."),
+   "points": [
+     ("Operating 24 hours a day, 7 days a week", "تعمل على مدار 24 ساعة طوال أيام الأسبوع"),
+     ("Latest monitoring and communication technology", "أحدث تقنيات المراقبة والاتصالات"),
+     ("Continuous surveillance of every guarded site", "مراقبة مستمرة لكل موقع مُحروس"),
+     ("Immediate communication with officers on site", "تواصل فوري مع الأفراد في الموقع"),
+     ("Trained, specialised operations personnel", "كوادر عمليات مدرّبة ومتخصصة"),
    ]},
   {"anchor": "patrols", "icon": "route",
-   "name": ("Mobile Patrols", "الدوريات المتنقلة"),
-   "card": ("Scheduled and random patrols, perimeter checks and lock-and-unlock services that keep a visible, unpredictable security presence across your site.",
-            "دوريات مجدولة وعشوائية، وفحص للأسوار الخارجية، وخدمات الفتح والإغلاق، للحفاظ على حضور أمني ظاهر ويصعب التنبؤ به في موقعك."),
-   "intro": ("A visible, unpredictable security presence for sites that do not need a permanent post &mdash; or an added layer of assurance for those that do.",
-             "حضور أمني ظاهر ويصعب التنبؤ به للمواقع التي لا تحتاج إلى نقطة حراسة دائمة &mdash; أو طبقة حماية إضافية للمواقع التي تحتاجها."),
+   "name": ("Security Patrols", "دوريات أمنية"),
+   "card": ("Organised, specialised patrols by a trained team of officers, equipped with modern technical means to keep a visible security presence across your site.",
+            "دوريات أمنية متخصصة ومنظّمة يقوم بها فريق مدرّب من حراس الأمن، مزوّدين بوسائل تقنية حديثة للحفاظ على حضور أمني ظاهر في موقعك."),
+   "intro": ("A specialised patrol service that strengthens security and surveillance across the facilities and areas AZSCO guards. It consists of organised patrols carried out by a trained team of security officers, equipped with the necessary equipment and modern technical means to ensure the highest level of efficiency and effectiveness.",
+             "خدمة دوريات أمنية متخصصة تهدف إلى تعزيز الأمان والرقابة على المنشآت والمناطق التي تتولى أزسكو حراستها. تتضمّن دوريات أمنية منظّمة يقوم بها فريق مدرّب من حراس الأمن، مزوّدين بالمعدات اللازمة والوسائل التقنية الحديثة لضمان أعلى مستوى من الكفاءة والفعالية."),
    "points": [
-     ("Scheduled and random patrol visits", "زيارات دوريات مجدولة وعشوائية"),
-     ("Perimeter, car park and stairwell checks", "فحص الأسوار ومواقف السيارات والسلالم"),
-     ("Lock-and-unlock and key-holding services", "خدمات الفتح والإغلاق وحفظ المفاتيح"),
-     ("Alarm response and escalation to key holders", "الاستجابة للإنذارات وإبلاغ حاملي المفاتيح"),
+     ("Organised, scheduled and random patrol visits", "زيارات دوريات منظّمة ومجدولة وعشوائية"),
+     ("Trained team of security officers", "فريق مدرّب من حراس الأمن"),
+     ("Modern technical means and equipment", "وسائل تقنية حديثة ومعدّات لازمة"),
+     ("Coordinated with the Central Operations Room", "تنسيق مع غرفة العمليات المركزية"),
      ("Time-stamped patrol reports for every visit", "تقارير دوريات موثّقة بالوقت لكل زيارة"),
    ]},
-  {"anchor": "events", "icon": "calendar",
-   "name": ("Event &amp; VIP Security", "أمن الفعاليات وكبار الشخصيات"),
-   "card": ("Crowd management, access screening, stewarding and close protection for exhibitions, conferences, private functions and VIP visits.",
-            "إدارة الحشود، وتفتيش الدخول، والتنظيم، والحماية الشخصية للمعارض والمؤتمرات والمناسبات الخاصة وزيارات كبار الشخصيات."),
-   "intro": ("Officers who keep an event running smoothly and safely, from access screening at the door to close protection for principals.",
-             "أفراد أمن يضمنون سير الفعالية بسلاسة وأمان، من تفتيش الدخول عند الباب إلى الحماية الشخصية للشخصيات المهمة."),
-   "points": [
-     ("Crowd management and queue control", "إدارة الحشود وتنظيم الصفوف"),
-     ("Access screening, accreditation and door supervision", "تفتيش الدخول والتصاريح والإشراف على الأبواب"),
-     ("Exhibition, conference and private function stewarding", "تنظيم المعارض والمؤتمرات والمناسبات الخاصة"),
-     ("VIP and close protection details", "فرق حماية كبار الشخصيات والحماية الشخصية"),
-     ("Pre-event risk assessment and deployment plan", "تقييم المخاطر وخطة الانتشار قبل الفعالية"),
-   ]},
-  {"anchor": "reception", "icon": "users",
-   "name": ("Reception &amp; Concierge", "الاستقبال والكونسيرج"),
-   "card": ("Front-of-house officers who combine entry control and visitor management with the courtesy your staff, residents and guests expect.",
-            "أفراد استقبال يجمعون بين ضبط الدخول وإدارة الزوار وحسن التعامل الذي يتوقعه موظفوك وسكانك وضيوفك."),
-   "intro": ("Front-of-house security that protects the building without making visitors feel policed &mdash; the first impression as well as the first line of defence.",
-             "أمن الواجهة الأمامية الذي يحمي المبنى دون أن يشعر الزائر بالمراقبة &mdash; الانطباع الأول وخط الدفاع الأول في آنٍ واحد."),
-   "points": [
-     ("Reception, lobby and concierge posts", "نقاط الاستقبال والبهو والكونسيرج"),
-     ("Visitor registration, badging and escorting", "تسجيل الزوار وإصدار البطاقات ومرافقتهم"),
-     ("Contractor and delivery control", "ضبط دخول المقاولين وعمليات التوصيل"),
-     ("Entry control and key management", "ضبط الدخول وإدارة المفاتيح"),
-     ("Customer-service training alongside security training", "تدريب على خدمة العملاء إلى جانب التدريب الأمني"),
-   ]},
-  {"anchor": "consulting", "icon": "file",
-   "name": ("Security Consulting", "الاستشارات الأمنية"),
-   "card": ("Site surveys, risk assessments, post orders and deployment planning, so your security spend goes where the risk actually is.",
-            "معاينات للمواقع، وتقييم للمخاطر، وتعليمات للمواقع، وتخطيط للانتشار، ليذهب إنفاقك الأمني إلى حيث تكمن المخاطر فعلاً."),
-   "intro": ("Independent assessment of your risk, followed by a practical plan. We help you decide what to protect, how, and in what order.",
-             "تقييم مستقل للمخاطر يتبعه خطة عملية. نساعدك على تحديد ما يجب حمايته، وكيف، وبأي ترتيب."),
-   "points": [
-     ("Site surveys and vulnerability assessments", "معاينات المواقع وتقييم نقاط الضعف"),
-     ("Security policies, procedures and post orders", "السياسات والإجراءات الأمنية وتعليمات المواقع"),
-     ("Manpower deployment and shift planning", "تخطيط انتشار الكوادر وجدولة الورديات"),
-     ("Tender and contract specification support", "دعم إعداد مواصفات المناقصات والعقود"),
-     ("Post-incident review and recommendations", "مراجعة ما بعد الحوادث وتقديم التوصيات"),
-   ]},
-  {"anchor": "supervision", "icon": "headset",
-   "name": ("Supervision &amp; Reporting", "الإشراف والتقارير"),
-   "card": ("Field supervisors, shift audits and documented incident reporting, with a team available 24 hours a day, 7 days a week.",
-            "مشرفون ميدانيون، وتدقيق للورديات، وتقارير موثّقة للحوادث، مع فريق متاح على مدار 24 ساعة طوال أيام الأسبوع."),
-   "intro": ("The difference between a guard on site and a managed security contract: supervision, auditing and a record you can rely on.",
-             "الفرق بين وجود حارس في الموقع وعقد أمني مُدار: الإشراف والتدقيق وسجل يمكن الاعتماد عليه."),
-   "points": [
-     ("Field supervisors and unannounced shift audits", "مشرفون ميدانيون وتدقيق مفاجئ للورديات"),
-     ("24/7 operations contact for escalations", "تواصل تشغيلي على مدار الساعة للحالات الطارئة"),
-     ("Documented incident and occurrence reporting", "تقارير موثّقة للحوادث والوقائع"),
-     ("Attendance monitoring and shift cover", "متابعة الحضور وتغطية الورديات"),
-     ("Regular service reviews with the client", "مراجعات دورية للخدمة مع العميل"),
-   ]},
 ]
 
+# The 15 sectors named in AZSCO's own company profile.
 SECTORS = [
-    ("home",     ("Apartments &amp; Compounds", "الشقق والمجمّعات السكنية")),
-    ("grid",     ("Malls &amp; Retail", "المجمّعات التجارية والمتاجر")),
-    ("wallet",   ("Banks &amp; Financial", "البنوك والمؤسسات المالية")),
-    ("file",     ("Offices &amp; Corporate", "المكاتب والشركات")),
-    ("cog",      ("Industrial &amp; Logistics", "المنشآت الصناعية واللوجستية")),
-    ("calendar", ("Events &amp; Exhibitions", "الفعاليات والمعارض")),
+    ("Government Sectors", "القطاعات الحكومية"),
+    ("Commercial Establishments", "المنشآت التجارية"),
+    ("Financial Institutions", "المؤسسات المالية"),
+    ("Industrial Sector", "القطاع الصناعي"),
+    ("Public Facilities", "المرافق العامة"),
+    ("Events &amp; Occasions", "الفعاليات والمناسبات"),
+    ("Tourist Sites", "المواقع السياحية"),
+    ("Residential Complexes", "المجمعات السكنية"),
+    ("Ports &amp; Airports", "الموانئ والمطارات"),
+    ("Critical Infrastructure", "المنشآت الحيوية"),
+    ("Warehouses &amp; Storage Facilities", "المخازن والمستودعات"),
+    ("Transport &amp; Logistics Sector", "قطاع النقل واللوجستيات"),
+    ("Special or Protected Areas", "المناطق الخاصة أو المحمية"),
+    ("Sports &amp; Recreational Facilities", "المرافق الرياضية والترفيهية"),
+    ("Vital Infrastructure", "البنية التحتية الحيوية"),
 ]
 
-PARTNERS = ["Ajax", "Hikvision", "Rasilient"]
-CLIENTS = [("Xcite", "إكسايت"), ("Millennium Hotels and Resorts", "ميلينيوم للفنادق والمنتجعات"), ("Alnasser", "النصر")]
+VALUES = [
+    ("Trust", "الثقة"), ("Cooperation", "التعاون"), ("Quality", "الجودة"),
+    ("Innovation", "الإبتكار"), ("Focus", "التركيز"), ("Determination", "الإصرار"),
+]
+
+NATIONALITIES = [
+    ("Kuwaiti", "كويتية"), ("Indian", "هندية"), ("Egyptian", "مصرية"),
+    ("Chadian", "تشادية"), ("Nigerian", "نيجيرية"), ("Nepalese", "نيبالية"),
+    ("Stateless individuals", "غير محددي الجنسية"),
+]
+
+TRAINING = [
+    ("plus",         ("First Aid", "الإسعافات الأولية")),
+    ("flame",        ("Fire-Fighting", "مكافحة الحرائق")),
+    ("users",        ("Dealing with the Public", "التعامل مع الجمهور")),
+    ("shield-check", ("Dealing with Accidents", "التعامل مع الحوادث")),
+    ("shield",       ("Self-Defense", "الدفاع عن النفس")),
+]
+
+EQUIPMENT = [
+    ("Walkie Talkie", "جهاز اتصال لاسلكي"),
+    ("Flashlight", "كشاف يدوي"),
+    ("Baton", "العصا"),
+    ("Fire Extinguisher", "طفاية حريق"),
+    ("First Aid Kit", "حقيبة إسعافات أولية"),
+    ("Metal Detectors", "الكاشفات المعدنية"),
+]
+
+CERTIFICATIONS = [
+    ("ISO 9001:2015 certified quality management system.",
+     "حاصلة على شهادة 9001:2015 ISO لنظام إدارة الجودة."),
+    ("Certified compliant with Anti-Money Laundering standards.",
+     "حاصلة على شهادة الالتزام بمعايير مكافحة غسل الأموال."),
+]
+
+UNIFORMS = [
+    ("formal", ("Formal Uniform", "الزي الرسمي")),
+    ("winter", ("Winter Uniform", "الزي الشتوي")),
+    ("patrol", ("Patrol Uniform", "زي الدوريات")),
+    ("security", ("Duty Uniform", "زي المناوبة")),
+]
+
+# 8 official technology partners; rendered as a single logo panel image
+# (assets/img/photos/partners-logos.png), this list backs the count shown in
+# the statistics row and the image's alt text.
+PARTNERS = ["Ajax", "Rasilient", "Avigilon", "Teltonika", "Inrico", "Hikvision", "Pelco", "Motorola"]
+
+CLIENTS_ALT = ("Logos of AZSCO clients including Radisson Blu Hotel Kuwait, Alnasser, Millennium Hotels and Resorts, Kuwait Ports Authority and others",
+               "شعارات عملاء أزسكو، ومنهم فندق راديسون بلو الكويت، والنصر، وميلينيوم للفنادق والمنتجعات، والهيئة العامة لموانئ الكويت وغيرهم")
+PARTNERS_ALT = ("Logos of AZSCO technology partners: Ajax, Rasilient, Avigilon, Teltonika, Inrico, Hikvision, Pelco and Motorola",
+                "شعارات شركاء أزسكو التقنيين: Ajax وRasilient وAvigilon وTeltonika وInrico وHikvision وPelco وMotorola")
+CERT_ALT = ("AZSCO certification badges: SCK, IAS accredited and ISO 9001",
+            "شهادات أزسكو: SCK، معتمدة من IAS، وISO 9001")
 HERO_SVG = '''<svg viewBox="0 0 320 300" role="img" aria-label="Illustration of a monitored, protected building">
 <defs><linearGradient id="hg" x1="0" y1="0" x2="0" y2="1">
 <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#9a9a9a"/></linearGradient></defs>
@@ -451,26 +499,26 @@ ABOUT_SVG = '''<svg viewBox="0 0 320 300" role="img" aria-label="Illustration of
 HOME = {
   "title": ("AZSCO Security | Professional Security Services for Kuwait",
             "أزسكو للأمن | خدمات أمنية احترافية في الكويت"),
-  "desc": ("AZSCO for facility guard services provides professional security manpower in Kuwait since 2008 — manned guarding, mobile patrols, event and VIP security, reception and concierge, security consulting and 24/7 supervision.",
-           "تقدّم شركة أزسكو لخدمات حراسة المنشآت كوادر أمنية احترافية في الكويت منذ عام 2008 — حراسة أمنية، ودوريات متنقلة، وأمن الفعاليات وكبار الشخصيات، والاستقبال والكونسيرج، والاستشارات الأمنية، وإشراف على مدار الساعة."),
+  "desc": ("AZSCO Security Services Company provides professional security manpower in Kuwait since 2014 — facility guarding, VIP protection and rapid intervention, a 24/7 central operations room, and security patrols.",
+           "تقدّم شركة أزسكو لخدمات حراسة المنشآت كوادر أمنية احترافية في الكويت منذ عام 2014 — حراسة المنشآت، وحماية الشخصيات والتدخّل السريع، وغرفة عمليات مركزية على مدار الساعة، ودوريات أمنية."),
   "badge": ("Licensed Security Provider &mdash; Kuwait", "مزوّد خدمات أمنية مرخّص &mdash; الكويت"),
   "h1a": ("Professional Security", "خدمات أمنية"),
   "h1b": ("Services for Kuwait", "احترافية في الكويت"),
   "lead": ("AZSCO is committed to providing unparalleled security services that ensure the safety and peace of mind of our clients &mdash; delivered by highly trained, licensed and closely supervised security personnel.",
            "تلتزم أزسكو بتقديم خدمات أمنية لا تُضاهى تضمن سلامة عملائنا وراحة بالهم &mdash; عبر كوادر أمنية مدرّبة تدريباً عالياً ومرخّصة وتخضع لإشراف دقيق."),
-  "points": [("Guarding Kuwait since 2008", "نحرس الكويت منذ عام 2008"),
+  "points": [("Guarding Kuwait since 2014", "نحرس الكويت منذ عام 2014"),
              ("Licensed &amp; vetted personnel", "كوادر مرخّصة ومدقّقة أمنياً"),
              ("24/7 supervision &amp; response", "إشراف واستجابة على مدار الساعة")],
   "card_h": ("What We Guard", "ما الذي نحرسه"),
   "card_p": ("Security officers for every kind of premises across Kuwait.",
              "أفراد أمن لجميع أنواع المنشآت في جميع أنحاء الكويت."),
   "card_items": [
-    ("shield", ("Manned Guarding", "الحراسة الأمنية"),
-     ("Static officers for apartments, malls, banks and stores.", "أفراد أمن ثابتون للشقق والمجمّعات التجارية والبنوك والمتاجر.")),
-    ("route", ("Mobile Patrols", "الدوريات المتنقلة"),
-     ("Scheduled and random patrols, day and night.", "دوريات مجدولة وعشوائية، نهاراً وليلاً.")),
-    ("calendar", ("Event &amp; VIP Security", "أمن الفعاليات وكبار الشخصيات"),
-     ("Crowd management, screening and close protection.", "إدارة الحشود والتفتيش والحماية الشخصية.")),
+    ("shield", ("Facility Guarding", "حراسة المنشآت"),
+     ("Static officers for facilities of every kind.", "أفراد أمن ثابتون لمختلف أنواع المنشآت.")),
+    ("target", ("VIP Protection &amp; Rapid Intervention", "حماية الشخصيات والتدخل السريع"),
+     ("Qualified personal guards and rapid intervention.", "حراس شخصيون مؤهلون وتدخّل سريع.")),
+    ("eye", ("Central Operations Room", "غرفة عمليات مركزية"),
+     ("24/7 monitoring and immediate communication.", "مراقبة وتواصل فوري على مدار الساعة.")),
   ],
   "svc_eyebrow": ("Our Services", "خدماتنا"),
   "svc_h2": ("Our Security Services", "خدماتنا الأمنية"),
@@ -478,8 +526,8 @@ HOME = {
                "من الحراسة الأمنية إلى الدوريات المتنقلة وأمن الفعاليات، تُصمَّم كل خطة انتشار وفق متطلبات كل عميل على حدة."),
   "about_eyebrow": ("About AZSCO", "عن أزسكو"),
   "about_h2": ("A Leading Provider of Security Services in Kuwait", "مزوّد رائد للخدمات الأمنية في الكويت"),
-  "about_lead": ("AZSCO for facility guard services was established in 2008 and is headquartered in Qibla, Kuwait. Our team of highly trained and experienced security professionals is equipped with the latest technology and equipment to ensure the safety of your property and assets.",
-                 "تأسّست شركة أزسكو لخدمات حراسة المنشآت عام 2008 ويقع مقرّها في القبلة بالكويت. ويضمّ فريقنا كوادر أمنية مدرّبة وذات خبرة، مجهّزة بأحدث التقنيات والمعدات لضمان سلامة ممتلكاتك وأصولك."),
+  "about_lead": ("AZSCO Security Services Company was established in 2014 and is headquartered in Qibla, Kuwait. Our team of highly trained and experienced security professionals is equipped with the latest technology and equipment to ensure the safety of your property and assets.",
+                 "تأسّست شركة أزسكو لخدمات حراسة المنشآت عام 2014 ويقع مقرّها في القبلة بالكويت. ويضمّ فريقنا كوادر أمنية مدرّبة وذات خبرة، مجهّزة بأحدث التقنيات والمعدات لضمان سلامة ممتلكاتك وأصولك."),
   "about_checks": [
     (("Customized solutions", "حلول مخصّصة"),
      ("We understand that every client has unique security needs, and tailor our solutions to the specific requirements of each site.",
@@ -506,7 +554,7 @@ HOME = {
     ("users", ("Trained Professionals", "كوادر مدرّبة"),
      ("Highly trained and experienced security personnel, screened, licensed and supervised to a consistent operating standard.",
       "كوادر أمنية مدرّبة وذات خبرة، مدقّقة أمنياً ومرخّصة وتخضع لإشراف وفق معيار تشغيلي ثابت.")),
-    ("award2", ("Established 2008", "تأسّست عام 2008"),
+    ("award2", ("Established 2014", "تأسّست عام 2014"),
      ("Guarding Kuwait for over {YEARS} years, with continuous growth that testifies to our commitment to excellence.",
       "نحرس الكويت منذ أكثر من {YEARS} عاماً، بنموّ متواصل يشهد على التزامنا بالتميّز.")),
     ("target", ("Tailored to You", "مصمّمة لك"),
@@ -550,34 +598,36 @@ STATS = [
 # ============================================================ about
 ABOUT = {
   "title": ("About Us | AZSCO Security Kuwait", "من نحن | أزسكو للأمن الكويت"),
-  "desc": ("AZSCO for facility guard services was established in 2008 in Qibla, Kuwait, offering security guards for apartments, malls, banks, stores and much more.",
-           "تأسّست شركة أزسكو لخدمات حراسة المنشآت عام 2008 في القبلة بالكويت، وتقدّم حراس أمن للشقق والمجمّعات التجارية والبنوك والمتاجر وغيرها الكثير."),
+  "desc": ("AZSCO Security Services Company was established in 2014 in Qibla, Kuwait, offering facility guarding, VIP protection and rapid intervention, a central operations room, and security patrols.",
+           "تأسّست شركة أزسكو لخدمات حراسة المنشآت عام 2014 في القبلة بالكويت، وتقدّم حراسة المنشآت، وحماية الشخصيات والتدخّل السريع، وغرفة عمليات مركزية، ودوريات أمنية."),
   "banner_h": ("About AZSCO", "عن أزسكو"),
   "banner_p": ("A leading provider of security services in Kuwait, with a strong reputation for quality and reliability.",
                "مزوّد رائد للخدمات الأمنية في الكويت، بسمعة قوية في الجودة والموثوقية."),
   "crumb": ("About", "من نحن"),
   "story_eyebrow": ("Our Story", "قصّتنا"),
-  "story_h2": ("Protecting Kuwait Since 2008", "نحمي الكويت منذ عام 2008"),
+  "story_h2": ("Protecting Kuwait Since 2014", "نحمي الكويت منذ عام 2014"),
   "story": [
-    ("AZSCO for facility guard services was established in 2008 and is headquartered in Qibla, Kuwait. Since its inception, AZSCO has been committed to providing its customers with state of the art security and prosperity bringing peace to places that are vulnerable. Additionally, AZSCO&rsquo;s team works on improving the security solutions that is offered to our beloved customers.",
-     "تأسّست شركة أزسكو لخدمات حراسة المنشآت عام 2008 ويقع مقرّها في القبلة بالكويت. ومنذ انطلاقتها، التزمت أزسكو بتزويد عملائها بأحدث حلول الأمن والازدهار، لتبعث الطمأنينة في الأماكن المعرّضة للخطر. كما يعمل فريق أزسكو باستمرار على تطوير الحلول الأمنية المقدَّمة لعملائنا الكرام."),
-    ("AZSCO is distinguished in offering security services such as security guards for apartments, malls, banks, stores and much more. AZSCO has partnerships with many global brands to provide unique products and solutions for projects.",
-     "تتميّز أزسكو بتقديم خدمات أمنية مثل حراس الأمن للشقق والمجمّعات التجارية والبنوك والمتاجر وغيرها الكثير. ولدى أزسكو شراكات مع العديد من العلامات التجارية العالمية لتوفير منتجات وحلول مميّزة للمشاريع."),
-    ("AZSCO is committed to building long-term relationships with its clients in both the public and private sectors, based on trust, cooperation, and development, with a focus on executing its projects with efficiency and high quality. Its success and continuous growth testify to its commitment to excellence and innovation in providing solutions and products to its clients.",
-     "تلتزم أزسكو ببناء علاقات طويلة الأمد مع عملائها في القطاعين العام والخاص، قائمة على الثقة والتعاون والتطوير، مع التركيز على تنفيذ مشاريعها بكفاءة وجودة عالية. ويشهد نجاحها ونموّها المستمر على التزامها بالتميّز والابتكار في تقديم الحلول والمنتجات لعملائها."),
+    ("AZSCO Security Services Company &mdash; formerly known as Almail Zone Security Services &mdash; was established in 2014 in Kuwait. AZSCO specialises in comprehensive security services including facility guarding, personal protection, security patrols, a central operations room and security systems, delivered by carefully selected, well-trained personnel.",
+     "تأسّست شركة أزسكو لخدمات حراسة المنشآت &mdash; المعروفة سابقاً بـ&laquo;شركة الميل زون للخدمات الأمنية&raquo; &mdash; عام 2014 في الكويت. ركّزت أزسكو على توفير خدمات أمنية متكاملة تشمل حراسة المنشآت وحماية الشخصيات والدوريات الأمنية وغرفة عمليات مركزية وأنظمة أمنية، من خلال كوادر مدرّبة يتم اختيارهم بعناية."),
+    ("AZSCO is committed to continuous development and embracing modern technologies, such as advanced security systems and specialised applications for managing sites and security personnel, aiming to deliver exceptional security services to its clients.",
+     "أظهرت أزسكو التزاماً قوياً بالتطوير المستمر وتبنّي التقنيات الحديثة مثل الأنظمة الأمنية المتطوّرة وتطبيقات خاصة لإدارة المواقع وأفراد الأمن، وذلك لتقديم خدمات أمنية مميّزة إلى عملائها."),
+    ("AZSCO is dedicated to forging long-term relationships with clients in both the public and private sectors, built on trust, collaboration, quality and development, with a focus on rapid response and efficient risk and threat management. Its continuous success and growth are a testament to its commitment to excellence and innovation in providing security and guarding services.",
+     "تلتزم أزسكو ببناء علاقات طويلة الأمد مع عملائها في القطاعين العام والخاص، وتعتمد في ذلك على معايير الثقة والتعاون والجودة والتطوير، مع التركيز على الاستجابة السريعة والكفاءة في إدارة المخاطر والتهديدات الأمنية. يشهد نجاحها ونموّها المستمر على التزامها بالتميّز والابتكار في تقديم خدمات الحراسة والأمن لعملائها."),
   ],
-  "badge": (("2008", "2008"), ("Established", "سنة التأسيس")),
+  "badge": (("2014", "2014"), ("Established", "سنة التأسيس")),
   "mvv": [
-    ("target", ("Our Mission", "رسالتنا"),
-     ("To provide the highest level of security and peace of mind for every client, while ensuring that our services remain cost-effective and efficient.",
-      "تقديم أعلى مستوى من الأمن وراحة البال لكل عميل، مع ضمان بقاء خدماتنا فعّالة من حيث التكلفة والكفاءة.")),
-    ("eye", ("Our Vision", "رؤيتنا"),
-     ("To be Kuwait&rsquo;s most trusted security partner &mdash; recognised for quality, reliability and the strength of the people we put on the ground.",
-      "أن نكون الشريك الأمني الأكثر ثقة في الكويت &mdash; معروفين بالجودة والموثوقية وكفاءة الكوادر التي ننشرها في الميدان.")),
-    ("shield-check", ("Our Values", "قيمنا"),
-     ("Integrity, vigilance and accountability. We understand that every client has unique security needs, and we tailor our solutions to meet them exactly.",
-      "النزاهة واليقظة والمساءلة. ندرك أن لكل عميل احتياجات أمنية فريدة، ونصمّم حلولنا لتلبيتها بدقة.")),
+    ("award", ("Objective", "الهدف"),
+     ("To provide the highest levels of security and protection to our clients.",
+      "توفير أعلى مستويات الأمان والحماية لعملائنا.")),
+    ("eye", ("Vision", "الرؤية"),
+     ("At AZSCO, we are committed to achieving the highest standards of quality and innovation. Our goal is to lead in providing security services and solutions in Kuwait and the region, building a Kuwaiti brand with global standards that extends its expertise internationally.",
+      "نحن في أزسكو ملتزمون بتحقيق أعلى مستويات الجودة والابتكار، ونطمح لأن نكون في طليعة مقدّمي خدمات الحراسة والحلول الأمنية في الكويت والمنطقة. نهدف إلى بناء علامة تجارية كويتية بمعايير عالمية، تنقل خبراتها إلى العالمية.")),
+    ("target", ("Mission", "الرسالة"),
+     ("At AZSCO, we understand that our clients seek exceptional and effective security services that reflect their status. To achieve this, we focus on attracting and developing highly specialised and trained administrative, supervisory and security personnel, relying on the latest technologies and technological solutions.",
+      "في أزسكو، ندرك أن عملاءنا يبحثون عن خدمات أمنية مميّزة وفعّالة تتناسب مع مكانتهم. لتحقيق هذا، نركّز على جذب وتطوير كوادر إدارية وإشرافية وأمنية ذوي تخصّص وتدريب عالٍ، ونعتمد في عملنا على أحدث التقنيات والحلول التكنولوجية.")),
   ],
+  "values_eyebrow": ("Our Values", "قيمنا"),
+  "values_h2": ("What We Stand On", "ما نقوم عليه"),
   "commit_eyebrow": ("What Sets Us Apart", "ما يميّزنا"),
   "commit_h2": ("Our Commitment", "التزامنا"),
   "commit_lead": ("Everything we do is measured against one standard: does it make our client safer?",
@@ -599,19 +649,37 @@ ABOUT = {
   "ceo_eyebrow": ("A Word From Our Leadership", "كلمة من إدارتنا"),
   "ceo_h2": ("CEO&rsquo;s Message", "كلمة الرئيس التنفيذي"),
   "ceo": [
-    ("Our commitment goes beyond merely achieving success and profitability at Almail Group. We believe in the importance of upholding our principles and values towards our employees, customers, and the community. Therefore, the owners of Almail Group prioritize the well-being and comfort of our employees and the development of our products and services.",
-     "التزامنا يتجاوز مجرّد تحقيق النجاح والربحية في مجموعة الميّل. فنحن نؤمن بأهمية التمسّك بمبادئنا وقيمنا تجاه موظفينا وعملائنا والمجتمع. ولذلك يضع ملّاك مجموعة الميّل رفاهية موظفينا وراحتهم وتطوير منتجاتنا وخدماتنا في مقدمة أولوياتهم."),
-    ("The employees of Almail Group are partners in our success and a fundamental part of achieving it. We always strive to provide a comfortable work environment without focusing on cost. We also work on continuous development and adopting modern technologies despite their high cost, as they enhance work efficiency and quality and contribute to delivering distinguished products and solutions to serve the community, thereby building strong and sustainable relationships with our customers.",
-     "موظفو مجموعة الميّل شركاء في نجاحنا وجزء أساسي من تحقيقه. ونسعى دائماً إلى توفير بيئة عمل مريحة دون التركيز على التكلفة. كما نعمل على التطوير المستمر وتبنّي التقنيات الحديثة رغم ارتفاع كلفتها، لأنها تعزّز كفاءة العمل وجودته وتسهم في تقديم منتجات وحلول متميّزة تخدم المجتمع، وبذلك نبني علاقات قوية ومستدامة مع عملائنا."),
+    ("Our commitment at AZSCO extends beyond just achieving success and profitability. We believe in the importance of maintaining our principles and values towards our employees, clients and community. Therefore, AZSCO&rsquo;s management prioritises the welfare, comfort and development of our security operations. Our employees are partners in success and a fundamental pillar in achieving it.",
+     "التزامنا يتجاوز مجرّد تحقيق النجاح والربحية في شركة أزسكو. نحن نؤمن بأهمية الحفاظ على مبادئنا وقيمنا تجاه موظفينا وعملائنا والمجتمع، ولذا تعتبر إدارة شركة أزسكو رفاهية الموظفين وراحتهم وتطوير العمل الأمني أولوية. موظفو أزسكو شركاء في النجاح ولبنة أساسية في تحقيقه."),
+    ("We continuously strive to provide a humane working environment that meets their basic needs without focusing on costs. Despite the high costs, we are committed to continuous development and adopting modern technologies, as they enhance work efficiency and quality. These technologies contribute to providing distinguished security services that protect the community and properties from risks, thereby building strong and sustainable relationships with our clients.",
+     "نسعى دائماً لتوفير بيئة عمل إنسانية تلبّي احتياجاتهم الأساسية دون التركيز على التكلفة. كما نعمل على التطوير المستمر وتبنّي التقنيات الحديثة رغم تكلفتها العالية، إلا أنها تعزّز كفاءة وجودة العمل وتسهم في تقديم خدمات أمنية متميّزة لحماية المجتمع والممتلكات من المخاطر، وبالتالي بناء علاقات قوية ومستدامة مع عملائنا."),
   ],
-  "ceo_line": ("(Our Employees &mdash; Our Customers)", "(موظفونا &mdash; عملاؤنا)"),
-  "ceo_thanks": ("Thank you for your trust in us, we thrive because of you.",
-                 "شكراً لثقتكم بنا، فبكم نزدهر."),
-  "ceo_by": ("CEO, Almail Group", "الرئيس التنفيذي، مجموعة الميّل"),
+  "ceo_line": ("(Our Employees &mdash; Our Clients)", "(موظفونا &mdash; عملاؤنا)"),
+  "ceo_thanks": ("Thank you for your trust in us; with you, we rise.",
+                 "شكراً لكم على ثقتكم بنا، بكم نرتقي."),
+  "ceo_by": ("Dr. Abdulaziz Almail &mdash; Chief Executive Officer", "د. عبدالعزيز الميل &mdash; الرئيس التنفيذي"),
   "clients_eyebrow": ("Our Clients", "عملاؤنا"),
   "clients_h2": ("Trusted Across Kuwait", "موثوقون في جميع أنحاء الكويت"),
   "clients_lead": ("AZSCO is committed to building long-term relationships with its clients in both the public and private sectors.",
                    "تلتزم أزسكو ببناء علاقات طويلة الأمد مع عملائها في القطاعين العام والخاص."),
+  "nat_eyebrow": ("Our People", "كوادرنا"),
+  "nat_h2": ("Available Nationalities", "الجنسيات المتوفرة"),
+  "nat_lead": ("AZSCO fields security guards from a range of nationalities. A diverse workforce brings cultural range, varied skills and multiple languages, along with a healthy, positive spirit of competition.",
+               "توفّر أزسكو حرّاس أمن من جنسيات متعدّدة. يمنح تنوّع الكوادر تنوّعاً ثقافياً ومهارات متعدّدة وتعدّد لغات، إلى جانب خلق روح تنافس إيجابية."),
+  "train_eyebrow": ("Preparedness", "الجاهزية"),
+  "train_h2": ("Training Courses", "الدورات التدريبية"),
+  "train_lead": ("Every AZSCO guard is trained across a range of courses designed to prepare them for a wide range of security and emergency situations, raising their efficiency and professionalism.",
+                 "يخضع كل حارس في أزسكو لدورات تدريبية متنوّعة تُعدّه لمواجهة مجموعة واسعة من المواقف الأمنية والطارئة، ما يرفع كفاءته واحترافيته."),
+  "equip_eyebrow": ("Equipped for the Job", "مجهّزون للمهمة"),
+  "equip_h2": ("Security Equipment", "المعدات الأمنية"),
+  "equip_lead": ("Security guards need the right equipment on hand to perform their duties effectively and safely.",
+                 "يحتاج حرّاس الأمن إلى مجموعة من المعدات الأمنية لأداء واجباتهم بفعالية وأمان."),
+  "uniform_eyebrow": ("On Site", "في الميدان"),
+  "uniform_h2": ("Uniform Models", "نماذج الزي الرسمي"),
+  "uniform_lead": ("Uniforms designed with safety, comfort and a professional appearance in mind, reflecting our commitment to exceptional security services.",
+                   "أزياء صُمّمت لتراعي معايير الأمان والراحة والمظهر المهني، وتعكس التزامنا بتقديم خدمات أمنية متميّزة."),
+  "cert_eyebrow": ("Independently Verified", "معتمدة رسمياً"),
+  "cert_h2": ("Certifications", "الشهادات"),
   "faq_eyebrow": ("Questions", "أسئلة"),
   "faq_h2": ("Frequently Asked", "الأسئلة الشائعة"),
   "faq": [
@@ -634,11 +702,11 @@ ABOUT = {
 SERVICES_PAGE = {
   "title": ("Security Manpower Services in Kuwait | AZSCO Security",
             "خدمات الكوادر الأمنية في الكويت | أزسكو للأمن"),
-  "desc": ("AZSCO security manpower services in Kuwait: manned guarding, mobile patrols, event and VIP security, reception and concierge, security consulting, supervision and reporting.",
-           "خدمات الكوادر الأمنية من أزسكو في الكويت: الحراسة الأمنية، والدوريات المتنقلة، وأمن الفعاليات وكبار الشخصيات، والاستقبال والكونسيرج، والاستشارات الأمنية، والإشراف والتقارير."),
+  "desc": ("AZSCO security manpower services in Kuwait: facility guarding, VIP protection and rapid intervention, a central operations room, and security patrols.",
+           "خدمات الكوادر الأمنية من أزسكو في الكويت: حراسة المنشآت، وحماية الشخصيات والتدخل السريع، وغرفة عمليات مركزية، ودوريات أمنية."),
   "banner_h": ("Our Services", "خدماتنا"),
-  "banner_p": ("A comprehensive range of security manpower services — guarding, patrol services, event security and security consulting — tailored to each client.",
-               "مجموعة شاملة من خدمات الكوادر الأمنية — الحراسة، وخدمات الدوريات، وأمن الفعاليات، والاستشارات الأمنية — مصمّمة لكل عميل."),
+  "banner_p": ("A comprehensive range of security manpower services — facility guarding, VIP protection, a central operations room and security patrols — tailored to each client.",
+               "مجموعة شاملة من خدمات الكوادر الأمنية — حراسة المنشآت، وحماية الشخصيات، وغرفة عمليات مركزية، ودوريات أمنية — مصمّمة لكل عميل."),
   "crumb": ("Services", "خدماتنا"),
   "over_eyebrow": ("Overview", "نظرة عامة"),
   "over_h2": ("What AZSCO Delivers", "ما تقدّمه أزسكو"),
@@ -703,8 +771,8 @@ PARTNERS_PAGE = {
 # ============================================================ contact page
 CONTACT = {
   "title": ("Contact AZSCO Security | Kuwait", "اتصل بأزسكو للأمن | الكويت"),
-  "desc": ("Contact AZSCO Security in Kuwait. Office: Floor 27, Kuwait Building Tower, Fahad Al Salem St., Qibla, Kuwait. Tel (+965) 1808606. Email info@azsco.com. Request a free site survey.",
-           "تواصل مع أزسكو للأمن في الكويت. المكتب: الدور 27، برج مبنى الكويت، شارع فهد السالم، القبلة، الكويت. هاتف (+965) 1808606. بريد إلكتروني info@azsco.com. اطلب معاينة مجانية للموقع."),
+  "desc": ("Contact AZSCO Security in Kuwait. Office: Floor 27B, Kuwait Building Tower, Fahad Al Salem St., Qibla, Kuwait. Tel (+965) 1808606. Email info@azsco.com. Request a free site survey.",
+           "تواصل مع أزسكو للأمن في الكويت. المكتب: الدور 27B، برج مبنى الكويت، شارع فهد السالم، القبلة، الكويت. هاتف (+965) 1808606. بريد إلكتروني info@azsco.com. اطلب معاينة مجانية للموقع."),
   "banner_h": ("Contact Us", "اتصل بنا"),
   "banner_p": ("Talk to AZSCO about guarding or a free site survey. Our team is available 24 hours a day, 7 days a week.",
                "تحدّث مع أزسكو حول خدمات الحراسة أو معاينة مجانية للموقع. فريقنا متاح على مدار 24 ساعة طوال أيام الأسبوع."),
@@ -739,12 +807,10 @@ CONTACT = {
     "choose":  ("Please choose a service.", "يُرجى اختيار خدمة."),
   },
   "options": [
-    ("Manned Guarding", "الحراسة الأمنية"),
-    ("Mobile Patrols", "الدوريات المتنقلة"),
-    ("Event &amp; VIP Security", "أمن الفعاليات وكبار الشخصيات"),
-    ("Reception &amp; Concierge", "الاستقبال والكونسيرج"),
-    ("Security Consulting", "الاستشارات الأمنية"),
-    ("Supervision &amp; Reporting", "الإشراف والتقارير"),
+    ("Facility Guarding", "حراسة المنشآت"),
+    ("VIP Protection &amp; Rapid Intervention", "حماية الشخصيات والتدخل السريع"),
+    ("Central Operations Room", "غرفة عمليات مركزية"),
+    ("Security Patrols", "دوريات أمنية"),
     ("Other enquiry", "استفسار آخر"),
   ],
   "office_hours": ("Office hours", "ساعات العمل"),
@@ -931,7 +997,7 @@ def header(lang, fname):
       <div class="topbar-social" aria-label="{t(UI["social"], lang)}">
         <a href="#" aria-label="AZSCO on Facebook">{I["facebook"]}</a>
         <a href="#" aria-label="AZSCO on X">{I["x"]}</a>
-        <a href="#" aria-label="AZSCO on Instagram">{I["instagram"]}</a>
+        <a href="{INSTAGRAM_URL}" target="_blank" rel="noopener noreferrer" aria-label="AZSCO on Instagram">{I["instagram"]}</a>
         <a href="#" aria-label="AZSCO on LinkedIn">{I["linkedin"]}</a>
       </div>
     </div>
@@ -1032,7 +1098,7 @@ def footer(lang):
         <div class="footer-social">
           <a href="#" aria-label="AZSCO on Facebook">{I["facebook"]}</a>
           <a href="#" aria-label="AZSCO on X">{I["x"]}</a>
-          <a href="#" aria-label="AZSCO on Instagram">{I["instagram"]}</a>
+          <a href="{INSTAGRAM_URL}" target="_blank" rel="noopener noreferrer" aria-label="AZSCO on Instagram">{I["instagram"]}</a>
           <a href="#" aria-label="AZSCO on LinkedIn">{I["linkedin"]}</a>
         </div>
       </div>
@@ -1153,23 +1219,20 @@ def service_cards(lang):
         <a class="more" href="{link(lang, "services.html#" + s["anchor"])}">{t(UI["learn"], lang)} {I["arrow"]}</a>
       </article>''' for n, s in enumerate(SERVICES))
 
-def partner_grid():
+def chip_list(lang, items):
+    """A wrapping row of pill chips for a plain enumeration -- sectors,
+    values, nationalities, equipment -- where a dozen-plus items would make
+    an icon-tile grid noisy. `items` is a list of (en, ar) pairs."""
     return "\n".join(
-        f'      <div class="partner reveal" data-delay="{i*80}">'
-        f'<span class="partner-name">{name}</span></div>'
-        for i, name in enumerate(PARTNERS))
+        f'      <span class="chip reveal" data-delay="{min(i*30, 300)}">{t(item, lang)}</span>'
+        for i, item in enumerate(items))
 
-def client_grid(lang):
-    return "\n".join(
-        f'      <div class="client reveal" data-delay="{i*80}">'
-        f'<span class="client-name">{t(name, lang)}</span></div>'
-        for i, name in enumerate(CLIENTS))
-
-def sector_grid(lang):
-    return "\n".join(
-        f'      <div class="sector reveal" data-delay="{i*60}">'
-        f'<span class="ico">{I[icon]}</span><span>{t(label, lang)}</span></div>'
-        for i, (icon, label) in enumerate(SECTORS))
+def logo_panel(src, alt_pair, lang, cls=""):
+    """A white bordered panel holding a supplied logo-wall image (partners or
+    clients), so it reads as a deliberate panel on any section background
+    rather than a stray white rectangle."""
+    return (f'<div class="logo-panel{(" " + cls) if cls else ""} reveal">'
+            f'<img src="/{src}" alt="{t(alt_pair, lang)}" loading="lazy"></div>')
 
 def tiles(lang, items, cols=3):
     return "\n".join(
@@ -1265,8 +1328,8 @@ def build_home(lang):
       <h2>{t(H["sec_h2"], lang)}</h2>
       <p>{t(H["sec_lead"], lang)}</p>
     </div>
-    <div class="sectors">
-{sector_grid(lang)}
+    <div class="chips center">
+{chip_list(lang, SECTORS)}
     </div>
   </div>
 </section>
@@ -1304,9 +1367,7 @@ def build_home(lang):
       <h2>{t(H["part_h2"], lang)}</h2>
       <p>{t(H["part_lead"], lang)}</p>
     </div>
-    <div class="partners">
-{partner_grid()}
-    </div>
+    {logo_panel("assets/img/photos/partners-logos.png", PARTNERS_ALT, lang)}
     <div class="center" style="margin-top:44px">
       <a class="btn btn-dark" href="{link(lang, "partners.html")}">{t(H["part_btn"], lang)} {I["arrow"]}</a>
     </div>
@@ -1327,6 +1388,21 @@ def build_about(lang):
         f'<h3>{t(title, lang)}</h3><p>{t(text, lang)}</p></article>'
         for i, (icon, title, text) in enumerate(A["mvv"]))
     ceo = "\n      ".join(f'<p>{t(p, lang)}</p>' for p in A["ceo"])
+    values_html = chip_list(lang, VALUES)
+    nat_html = chip_list(lang, NATIONALITIES)
+    equip_html = chip_list(lang, EQUIPMENT)
+    training_html = "\n".join(
+        f'      <div class="tile reveal" data-delay="{(i%3)*80}"><span class="ico">{I[icon]}</span>'
+        f'<div><h4>{t(title, lang)}</h4></div></div>'
+        for i, (icon, title) in enumerate(TRAINING))
+    uniform_html = "\n".join(
+        f'      <div class="uniform reveal" data-delay="{i*70}">'
+        f'<div class="uniform-photos">'
+        f'<img src="/assets/img/photos/uniforms/{key}-front.jpg" alt="{t(title, lang)}" loading="lazy">'
+        f'<img src="/assets/img/photos/uniforms/{key}-back.jpg" alt="{t(title, lang)}" loading="lazy">'
+        f'</div><h4>{t(title, lang)}</h4></div>'
+        for i, (key, title) in enumerate(UNIFORMS))
+    cert_items_html = "\n      ".join(f'<p>{t(c, lang)}</p>' for c in CERTIFICATIONS)
     faqs = []
     for i, (q, a) in enumerate(A["faq"]):
         ans = t(a, lang).replace("{ADDR}", t(ADDRESS_1L, lang)).replace("{PHONE}", PHONE)
@@ -1361,6 +1437,13 @@ def build_about(lang):
     <div class="grid grid-3">
 {mvv}
     </div>
+    <div class="sec-head center reveal" style="margin-top:56px">
+      <p class="eyebrow">{t(A["values_eyebrow"], lang)}</p>
+      <h2>{t(A["values_h2"], lang)}</h2>
+    </div>
+    <div class="chips center">
+{values_html}
+    </div>
   </div>
 </section>
 
@@ -1374,6 +1457,69 @@ def build_about(lang):
     <div class="grid grid-2">
 {tiles(lang, A["commit_tiles"], cols=2)}
     </div>
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <p class="eyebrow">{t(A["nat_eyebrow"], lang)}</p>
+      <h2>{t(A["nat_h2"], lang)}</h2>
+      <p>{t(A["nat_lead"], lang)}</p>
+    </div>
+    <div class="chips center">
+{nat_html}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <p class="eyebrow">{t(A["train_eyebrow"], lang)}</p>
+      <h2>{t(A["train_h2"], lang)}</h2>
+      <p>{t(A["train_lead"], lang)}</p>
+    </div>
+    <div class="grid grid-3">
+{training_html}
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <p class="eyebrow">{t(A["equip_eyebrow"], lang)}</p>
+      <h2>{t(A["equip_h2"], lang)}</h2>
+      <p>{t(A["equip_lead"], lang)}</p>
+    </div>
+    <div class="chips center">
+{equip_html}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <p class="eyebrow">{t(A["uniform_eyebrow"], lang)}</p>
+      <h2>{t(A["uniform_h2"], lang)}</h2>
+      <p>{t(A["uniform_lead"], lang)}</p>
+    </div>
+    <div class="uniform-gallery">
+{uniform_html}
+    </div>
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <p class="eyebrow">{t(A["cert_eyebrow"], lang)}</p>
+      <h2>{t(A["cert_h2"], lang)}</h2>
+      {cert_items_html}
+    </div>
+    {logo_panel("assets/img/photos/certifications.jpg", CERT_ALT, lang)}
   </div>
 </section>
 
@@ -1399,9 +1545,7 @@ def build_about(lang):
       <h2>{t(A["clients_h2"], lang)}</h2>
       <p>{t(A["clients_lead"], lang)}</p>
     </div>
-    <div class="clients">
-{client_grid(lang)}
-    </div>
+    {logo_panel("assets/img/photos/clients-logos.jpg", CLIENTS_ALT, lang)}
   </div>
 </section>
 
@@ -1499,9 +1643,7 @@ def build_partners(lang):
       <h2>{t(P["h2"], lang)}</h2>
       <p>{t(P["lead"], lang)}</p>
     </div>
-    <div class="partners">
-{partner_grid()}
-    </div>
+    {logo_panel("assets/img/photos/partners-logos.png", PARTNERS_ALT, lang)}
   </div>
 </section>
 

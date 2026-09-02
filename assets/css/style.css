@@ -483,21 +483,19 @@ li{margin-bottom:.45em}
 .card .more svg{width:14px;height:14px;transition:transform .25s var(--ease)}
 .card:hover .more svg{transform:translateX(5px)}
 
-/* sector tiles */
-.sectors{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
-.sector{
-  display:flex;align-items:center;gap:16px;padding:22px 24px;
-  border:1px solid var(--line);border-radius:var(--radius-lg);background:#fff;
-  font-weight:700;color:var(--ink);transition:all .3s var(--ease);
+/* ==========================================================================
+   Chips -- plain enumerations (sectors, values, nationalities, equipment)
+   ========================================================================== */
+.chips{display:flex;flex-wrap:wrap;gap:12px}
+.chips.center{justify-content:center}
+.chip{
+  display:inline-flex;align-items:center;padding:11px 20px;
+  border:1px solid var(--line);border-radius:100px;background:#fff;
+  font-size:.9rem;font-weight:700;color:var(--ink);transition:all .3s var(--ease);
 }
-.sector:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:var(--shadow)}
-.sector .ico{
-  width:46px;height:46px;flex:none;border-radius:var(--radius);
-  background:var(--accent-soft);color:var(--ink);display:grid;place-items:center;
-  transition:all .3s var(--ease);
-}
-.sector:hover .ico{background:var(--ink);color:#fff}
-.sector .ico svg{width:22px;height:22px}
+.section--alt .chip{background:#fff}
+.section--dark .chip{background:transparent;border-color:rgba(255,255,255,.22);color:#fff}
+.chip:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:var(--shadow)}
 
 /* ==========================================================================
    Stats
@@ -596,20 +594,23 @@ li{margin-bottom:.45em}
 .steps .step:last-child::after{display:none}
 
 /* ==========================================================================
-   Partners
+   Logo panels (partners, clients) + uniform gallery
    ========================================================================== */
-.partners,.clients{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
-.partner,.client{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
-  min-height:150px;padding:30px 24px;text-align:center;
+.logo-panel{
   border:1px solid var(--line);border-radius:var(--radius-lg);background:#fff;
-  transition:all .3s var(--ease);
+  padding:28px;box-shadow:var(--shadow);
 }
-.partner:hover,.client:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:var(--shadow)}
-.partner-name,.client-name{
-  font-family:var(--display);font-size:1.9rem;font-weight:700;
-  letter-spacing:.09em;text-transform:uppercase;color:var(--ink);line-height:1;
+.logo-panel img{display:block;width:100%;height:auto;border-radius:var(--radius)}
+
+.uniform-gallery{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+.uniform{
+  border:1px solid var(--line);border-radius:var(--radius-lg);background:#fff;
+  overflow:hidden;transition:all .3s var(--ease);
 }
+.uniform:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:var(--shadow)}
+.uniform-photos{display:grid;grid-template-columns:1fr 1fr}
+.uniform-photos img{display:block;width:100%;height:100%;object-fit:cover;aspect-ratio:2/3}
+.uniform h4{padding:14px 16px;margin:0;font-size:.98rem;text-align:center;color:var(--ink)}
 
 /* ==========================================================================
    Accordion (FAQ)
@@ -829,7 +830,7 @@ li{margin-bottom:.45em}
   .hero-grid,.split,.contact-grid{grid-template-columns:1fr;gap:44px}
   .split-visual{order:-1}
   .split > .split-visual{order:-1}
-  .grid-3,.grid-4,.sectors,.steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid-3,.grid-4,.steps,.uniform-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
   .step::after{display:none}
   .section{padding:72px 0}
   .hero{padding:80px 0 88px}
@@ -848,12 +849,9 @@ li{margin-bottom:.45em}
 
 /* ---------- phones ---------- */
 @media (max-width:640px){
-  .grid-2,.grid-3,.grid-4,.sectors{grid-template-columns:1fr}
-
-  /* keep short, scannable blocks side by side rather than one long column */
-  .partners,.clients{grid-template-columns:1fr;gap:14px}
-  .partner,.client{min-height:0;padding:22px 20px;gap:6px}
-  .partner-name,.client-name{font-size:1.6rem}
+  .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
+  .logo-panel{padding:16px}
+  .uniform-gallery{grid-template-columns:1fr 1fr;gap:14px}
   .quote{padding-left:18px}
   .quote p{font-size:1rem;line-height:1.75}
   .quote .quote-line{font-size:1.2rem}
@@ -960,7 +958,6 @@ li{margin-bottom:.45em}
 @media (max-width:400px){
   .wrap{padding:0 16px}
   .brand-logo{height:44px}
-  .partner-name,.client-name{font-size:1.45rem;overflow-wrap:anywhere}
   .card{padding:22px 18px}
   .mobile-bar a{font-size:.74rem;letter-spacing:.06em;gap:7px}
 }
@@ -988,7 +985,7 @@ li{margin-bottom:.45em}
 [dir="rtl"] body{font-family:var(--sans-ar)}
 [dir="rtl"] h1,[dir="rtl"] h2,[dir="rtl"] h3,[dir="rtl"] h4,[dir="rtl"] h5,
 [dir="rtl"] .brand-name,[dir="rtl"] .stat .num,[dir="rtl"] .step .n,
-[dir="rtl"] .partner-name,[dir="rtl"] .client-name,[dir="rtl"] .visual-badge b,
+[dir="rtl"] .visual-badge b,
 [dir="rtl"] .site-footer h4,[dir="rtl"] .quote .quote-line{font-family:var(--display-ar)}
 
 /* Arabic script has no case and letter-spacing harms its joins */
@@ -997,7 +994,7 @@ li{margin-bottom:.45em}
 [dir="rtl"] .m-nav > li > a,[dir="rtl"] .m-toggle,[dir="rtl"] .stat .label,
 [dir="rtl"] .field label,[dir="rtl"] .card .more,[dir="rtl"] .quote-by,
 [dir="rtl"] .site-footer h4,[dir="rtl"] .div-card .tag,[dir="rtl"] .hero-badge,
-[dir="rtl"] .partner-name,[dir="rtl"] .client-name,[dir="rtl"] .visual-badge span,
+[dir="rtl"] .visual-badge span,
 [dir="rtl"] .quote .quote-line,[dir="rtl"] .mobile-bar a,[dir="rtl"] .lang-switch{
   letter-spacing:0;
   text-transform:none;
