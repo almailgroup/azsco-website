@@ -13,7 +13,8 @@ PHONE_HREF = "+9651808606"
 EMAIL = "info@azsco.com"          # general enquiries
 EMAIL_SALES = "sales@azsco.com"   # sales and quotations
 MAPS_URL = "https://maps.app.goo.gl/BN2Byxt6BCJ62XV26"
-INSTAGRAM_URL = "https://www.instagram.com/azsco.security/"
+INSTAGRAM_URL = "https://www.instagram.com/azsco_security.co"
+X_URL = "https://x.com/azsco_security"
 
 # ---------------------------------------------------------------- assistant
 # CHAT_MODE selects how the browser reaches Mistral:
@@ -123,6 +124,7 @@ ROUTES = {
     "index.html": "",
     "about.html": "about",
     "services.html": "services",
+    "projects.html": "projects",
     "partners.html": "partners",
     "contact.html": "contact",
     "privacy-policy.html": "privacy-policy",
@@ -198,7 +200,6 @@ I = {
 "facebook":'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 8.5V7a1.5 1.5 0 0 1 1.5-1.5H17V2.6A17 17 0 0 0 14.9 2.5C12.3 2.5 10.6 4 10.6 7v1.5H8V12h2.6v9.5H14V12h2.6l.5-3.5z"/></svg>',
 "x":'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 3h3l-6.6 7.5L21.7 21h-6l-4.7-6.1L5.6 21h-3l7-8L2.6 3h6.1l4.2 5.6zm-1 16h1.7L7.6 4.7H5.8z"/></svg>',
 "instagram":'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor" stroke="none"/></svg>',
-"linkedin":'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6a4.2 4.2 0 0 1 3.7-2c3 0 4 1.9 4 5V21h-4v-6c0-1.5-.5-2.5-1.9-2.5-1 0-1.6.7-1.9 1.4-.1.3-.1.6-.1 1V21h-4z"/></svg>',
 "whatsapp":'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-3-.2-.3A8 8 0 1 1 12 20zm4.4-5.8c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7 1-.3.2-.5.1a6.6 6.6 0 0 1-3.2-2.8c-.2-.4.2-.4.6-1.2a.5.5 0 0 0 0-.5l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4 5 5 0 0 0 2.3.5 2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>',
 }
 
@@ -247,7 +248,6 @@ LANG_SWITCH_SHORT = ("ع", "EN")
 LANG_SWITCH_LABEL = ("Switch to Arabic", "التبديل إلى الإنجليزية")
 
 UI = {
-    "quote":      ("Get a Quote", "اطلب عرض سعر"),
     "consult":    ("Request a Consultation", "اطلب استشارة"),
     "consult_m":  ("Request a Consultation", "اطلب استشارة"),
     "learn":      ("Learn more", "اعرف المزيد"),
@@ -307,6 +307,7 @@ NAV = [
         (("Central Operations Room", "غرفة عمليات مركزية"), "services.html#operations"),
         (("Security Patrols", "دوريات أمنية"), "services.html#patrols"),
     ]),
+    (("Projects", "المشاريع"), "projects.html", []),
     (("Partners", "شركاؤنا"), "partners.html", []),
     (("Contact", "اتصل بنا"), "contact.html", []),
 ]
@@ -323,6 +324,7 @@ FOOTER = {
         (("Home", "الرئيسية"), "index.html"),
         (("About AZSCO", "عن أزسكو"), "about.html"),
         (("Our Services", "خدماتنا"), "services.html"),
+        (("Our Projects", "مشاريعنا"), "projects.html"),
         (("Our Partners", "شركاؤنا"), "partners.html"),
         (("Contact Us", "اتصل بنا"), "contact.html"),
     ],
@@ -733,6 +735,22 @@ SERVICES_PAGE = {
            "احجز معاينة مجانية للموقع. سنقيّم منشأتك ونوصي بالانتشار المناسب من الأفراد والدوريات والإشراف.")),
 }
 
+# ============================================================ projects page
+PROJECTS = {
+  "title": ("Our Projects | AZSCO Security Kuwait", "مشاريعنا | أزسكو للأمن الكويت"),
+  "desc": ("A look at the sites and sectors AZSCO Security protects across Kuwait. Project case studies are being added soon.",
+           "نظرة على المواقع والقطاعات التي تحميها أزسكو للأمن في جميع أنحاء الكويت. دراسات حالة المشاريع قيد الإضافة قريباً."),
+  "banner_h": ("Our Projects", "مشاريعنا"),
+  "banner_p": ("A closer look at the sites AZSCO protects across Kuwait.",
+               "نظرة أقرب على المواقع التي تحميها أزسكو في جميع أنحاء الكويت."),
+  "crumb": ("Projects", "المشاريع"),
+  "eyebrow": ("Coming Soon", "قريباً"),
+  "h2": ("Project Case Studies Are on Their Way", "دراسات حالة المشاريع قادمة قريباً"),
+  "lead": ("We are putting together case studies from the facilities, sectors and events AZSCO protects across Kuwait. In the meantime, our Services and Partners pages cover what we do and how, and our team is glad to talk through a specific site.",
+           "نعمل حالياً على إعداد دراسات حالة من المنشآت والقطاعات والفعاليات التي تحميها أزسكو في جميع أنحاء الكويت. في الأثناء، تغطي صفحتا خدماتنا وشركاؤنا ما نقدّمه وكيف نقدّمه، ويسعد فريقنا مناقشة موقعك تحديداً."),
+  "btn": ("Talk to Our Team", "تحدّث مع فريقنا"),
+}
+
 # ============================================================ partners page
 PARTNERS_PAGE = {
   "title": ("Our Partners | AZSCO Security Kuwait", "شركاؤنا | أزسكو للأمن الكويت"),
@@ -996,9 +1014,8 @@ def header(lang, fname):
     <div class="topbar-end">
       <div class="topbar-social" aria-label="{t(UI["social"], lang)}">
         <a href="#" aria-label="AZSCO on Facebook">{I["facebook"]}</a>
-        <a href="#" aria-label="AZSCO on X">{I["x"]}</a>
+        <a href="{X_URL}" target="_blank" rel="noopener noreferrer" aria-label="AZSCO on X">{I["x"]}</a>
         <a href="{INSTAGRAM_URL}" target="_blank" rel="noopener noreferrer" aria-label="AZSCO on Instagram">{I["instagram"]}</a>
-        <a href="#" aria-label="AZSCO on LinkedIn">{I["linkedin"]}</a>
       </div>
     </div>
   </div>
@@ -1016,7 +1033,6 @@ def header(lang, fname):
 
     <div class="header-cta">
       {lang_link(lang, fname, "lang-switch lang-switch--head")}
-      <a class="btn btn-primary" href="{link(lang, "contact.html")}">{t(UI["quote"], lang)}</a>
       <button class="burger" type="button" aria-label="{t(UI["menu_open"], lang)}" aria-expanded="false" aria-controls="mobile-nav"><span></span></button>
     </div>
   </div>
@@ -1097,9 +1113,8 @@ def footer(lang):
         <p>{t(FOOTER["blurb"], lang)}</p>
         <div class="footer-social">
           <a href="#" aria-label="AZSCO on Facebook">{I["facebook"]}</a>
-          <a href="#" aria-label="AZSCO on X">{I["x"]}</a>
+          <a href="{X_URL}" target="_blank" rel="noopener noreferrer" aria-label="AZSCO on X">{I["x"]}</a>
           <a href="{INSTAGRAM_URL}" target="_blank" rel="noopener noreferrer" aria-label="AZSCO on Instagram">{I["instagram"]}</a>
-          <a href="#" aria-label="AZSCO on LinkedIn">{I["linkedin"]}</a>
         </div>
       </div>
 
@@ -1630,6 +1645,31 @@ def build_services(lang):
 '''
     page(lang, "services.html", t(S["title"], lang), t(S["desc"], lang), body)
 
+def build_projects(lang):
+    PJ = PROJECTS
+    body = banner(lang, t(PJ["banner_h"], lang), t(PJ["banner_p"], lang), t(PJ["crumb"], lang)) + f'''
+<section class="section">
+  <div class="wrap">
+    <div class="split">
+      <div class="reveal">
+        <p class="eyebrow">{t(PJ["eyebrow"], lang)}</p>
+        <h2>{t(PJ["h2"], lang)}</h2>
+        <p class="lead">{t(PJ["lead"], lang)}</p>
+        <div class="btn-row">
+          <a class="btn btn-dark" href="{link(lang, "contact.html")}">{t(PJ["btn"], lang)} {I["arrow"]}</a>
+        </div>
+      </div>
+      <div class="split-visual reveal" data-delay="120">
+        <div class="visual-frame"><div style="color:#fff;width:160px;max-width:55%">{I["grid"]}</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{cta(lang)}
+'''
+    page(lang, "projects.html", t(PJ["title"], lang), t(PJ["desc"], lang), body)
+
 def build_partners(lang):
     P = PARTNERS_PAGE
     join_p = (t(P["join_p"], lang)
@@ -1838,7 +1878,8 @@ def build_404(lang):
 # ============================================================ write
 SITEMAP_PRIORITY = {
     "index.html": "1.0", "services.html": "0.9", "about.html": "0.8",
-    "contact.html": "0.8", "partners.html": "0.6", "privacy-policy.html": "0.3",
+    "contact.html": "0.8", "partners.html": "0.6", "projects.html": "0.5",
+    "privacy-policy.html": "0.3",
 }
 
 def write_chat_config():
@@ -1915,6 +1956,7 @@ if __name__ == "__main__":
         build_home(lang)
         build_about(lang)
         build_services(lang)
+        build_projects(lang)
         build_partners(lang)
         build_contact(lang)
         build_privacy(lang)

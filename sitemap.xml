@@ -72,6 +72,20 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://www.azsco.com/projects/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.azsco.com/projects/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.azsco.com/ar/projects/"/>
+    <lastmod>2026-09-02</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.azsco.com/ar/projects/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.azsco.com/projects/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.azsco.com/ar/projects/"/>
+    <lastmod>2026-09-02</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://www.azsco.com/privacy-policy/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.azsco.com/privacy-policy/"/>
     <xhtml:link rel="alternate" hreflang="ar" href="https://www.azsco.com/ar/privacy-policy/"/>
