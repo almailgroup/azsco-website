@@ -15,6 +15,7 @@ EMAIL_SALES = "sales@azsco.com"   # sales and quotations
 MAPS_URL = "https://maps.app.goo.gl/BN2Byxt6BCJ62XV26"
 INSTAGRAM_URL = "https://www.instagram.com/azsco_security.co"
 X_URL = "https://x.com/azsco_security"
+FACEBOOK_URL = "https://www.facebook.com/profile.php?id=61593999123161"
 
 # ---------------------------------------------------------------- assistant
 # CHAT_MODE selects how the browser reaches Mistral:
@@ -1013,7 +1014,7 @@ def header(lang, fname):
     </ul>
     <div class="topbar-end">
       <div class="topbar-social" aria-label="{t(UI["social"], lang)}">
-        <a href="#" aria-label="AZSCO on Facebook">{I["facebook"]}</a>
+        <a href="{FACEBOOK_URL}" target="_blank" rel="noopener noreferrer" aria-label="AZSCO on Facebook">{I["facebook"]}</a>
         <a href="{X_URL}" target="_blank" rel="noopener noreferrer" aria-label="AZSCO on X">{I["x"]}</a>
         <a href="{INSTAGRAM_URL}" target="_blank" rel="noopener noreferrer" aria-label="AZSCO on Instagram">{I["instagram"]}</a>
       </div>
@@ -1112,7 +1113,7 @@ def footer(lang):
         </a>
         <p>{t(FOOTER["blurb"], lang)}</p>
         <div class="footer-social">
-          <a href="#" aria-label="AZSCO on Facebook">{I["facebook"]}</a>
+          <a href="{FACEBOOK_URL}" target="_blank" rel="noopener noreferrer" aria-label="AZSCO on Facebook">{I["facebook"]}</a>
           <a href="{X_URL}" target="_blank" rel="noopener noreferrer" aria-label="AZSCO on X">{I["x"]}</a>
           <a href="{INSTAGRAM_URL}" target="_blank" rel="noopener noreferrer" aria-label="AZSCO on Instagram">{I["instagram"]}</a>
         </div>
