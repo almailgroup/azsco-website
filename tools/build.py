@@ -16,6 +16,7 @@ MAPS_URL = "https://maps.app.goo.gl/BN2Byxt6BCJ62XV26"
 INSTAGRAM_URL = "https://www.instagram.com/azsco_security.co"
 X_URL = "https://x.com/azsco_security"
 FACEBOOK_URL = "https://www.facebook.com/profile.php?id=61593999123161"
+WHATSAPP_URL = "https://wa.me/9651808606?text=Hello%20I%20would%20like%20more%20information"
 
 # ---------------------------------------------------------------- assistant
 # CHAT_MODE selects how the browser reaches Mistral:
@@ -201,6 +202,7 @@ I = {
 "facebook":'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 8.5V7a1.5 1.5 0 0 1 1.5-1.5H17V2.6A17 17 0 0 0 14.9 2.5C12.3 2.5 10.6 4 10.6 7v1.5H8V12h2.6v9.5H14V12h2.6l.5-3.5z"/></svg>',
 "x":'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 3h3l-6.6 7.5L21.7 21h-6l-4.7-6.1L5.6 21h-3l7-8L2.6 3h6.1l4.2 5.6zm-1 16h1.7L7.6 4.7H5.8z"/></svg>',
 "instagram":'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor" stroke="none"/></svg>',
+"whatsapp":'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.44 1.32 4.94L2 22l5.25-1.38a9.9 9.9 0 0 0 4.78 1.22h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.64-1.03-5.13-2.9-7a9.82 9.82 0 0 0-7-2.9zm0 1.67c2.19 0 4.25.85 5.8 2.4a8.18 8.18 0 0 1 2.4 5.83c0 4.55-3.7 8.24-8.25 8.24a8.2 8.2 0 0 1-4.19-1.14l-.3-.18-3.12.82.83-3.03-.2-.32a8.17 8.17 0 0 1-1.26-4.38c0-4.55 3.7-8.24 8.29-8.24zM8.5 6.9c-.17 0-.44.06-.68.32-.23.26-.9.87-.9 2.12s.92 2.46 1.05 2.63c.13.17 1.79 2.85 4.42 3.9 2.19.86 2.63.69 3.11.65.47-.04 1.52-.62 1.74-1.22.22-.6.22-1.11.16-1.22-.07-.1-.24-.17-.5-.3-.27-.13-1.54-.76-1.78-.85-.24-.08-.41-.13-.58.13-.17.26-.66.85-.81 1.02-.15.17-.3.19-.56.06-.26-.13-1.09-.4-2.08-1.28-.77-.68-1.29-1.53-1.44-1.79-.15-.26-.02-.4.11-.53.12-.12.27-.3.4-.45.13-.15.17-.26.26-.43.08-.17.04-.32-.02-.45-.06-.13-.58-1.42-.8-1.94-.21-.51-.42-.44-.58-.45z"/></svg>',
 "whatsapp":'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-3-.2-.3A8 8 0 1 1 12 20zm4.4-5.8c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7 1-.3.2-.5.1a6.6 6.6 0 0 1-3.2-2.8c-.2-.4.2-.4.6-1.2a.5.5 0 0 0 0-.5l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4 5 5 0 0 0 2.3.5 2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>',
 }
 
@@ -260,6 +262,7 @@ UI = {
     "menu_open":  ("Open menu", "فتح القائمة"),
     "menu_close": ("Close menu", "إغلاق القائمة"),
     "to_top":     ("Back to top", "العودة إلى الأعلى"),
+    "whatsapp":   ("Chat with us on WhatsApp", "تواصل معنا عبر واتساب"),
     "skip":       ("Skip to content", "تخطّي إلى المحتوى"),
     "call_now":   ("Call Now", "اتصل الآن"),
     "get_quote":  ("Get a Quote", "عرض سعر"),
@@ -1156,6 +1159,7 @@ def footer(lang):
 </footer>
 
 <button class="to-top" type="button" aria-label="{t(UI["to_top"], lang)}">{I["up"]}</button>
+<a class="whatsapp-fab" href="{WHATSAPP_URL}" target="_blank" rel="noopener noreferrer" aria-label="{t(UI["whatsapp"], lang)}">{I["whatsapp"]}</a>
 
 <div class="mobile-bar">
   <a class="mobile-bar-call" href="tel:{PHONE_HREF}">{I["phone"]}<span>{t(UI["call_now"], lang)}</span></a>

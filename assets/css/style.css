@@ -794,9 +794,9 @@ li{margin-bottom:.45em}
 .footer-bottom ul{display:flex;gap:22px;list-style:none;margin:0;padding:0}
 .footer-bottom li{margin:0}
 
-/* back to top */
+/* back to top -- stacked above the WhatsApp button below, same corner */
 .to-top{
-  position:fixed;right:24px;bottom:24px;z-index:800;
+  position:fixed;right:24px;bottom:94px;z-index:800;
   width:46px;height:46px;border:0;border-radius:50%;cursor:pointer;
   background:var(--accent);color:var(--accent-ink);
   display:grid;place-items:center;box-shadow:var(--shadow);
@@ -806,6 +806,21 @@ li{margin-bottom:.45em}
 .to-top.is-visible{opacity:1;visibility:visible;transform:translateY(0)}
 .to-top:hover{background:var(--accent-strong)}
 .to-top svg{width:18px;height:18px}
+
+/* WhatsApp -- bottom-right (mirrors to bottom-left in RTL exactly like
+   .to-top, so it always sits in the corner opposite the AZSCO Assistant
+   chat launcher and never collides with it); .to-top stacks above it. */
+.whatsapp-fab{
+  position:fixed;right:24px;bottom:24px;z-index:910;
+  width:56px;height:56px;border-radius:50%;
+  display:grid;place-items:center;
+  background:var(--grey-950);color:#fff;
+  border:1px solid rgba(255,255,255,.16);
+  box-shadow:0 12px 34px rgba(0,0,0,.28);
+  transition:transform .25s var(--ease),box-shadow .25s var(--ease);
+}
+.whatsapp-fab:hover{transform:translateY(-3px);box-shadow:0 18px 44px rgba(0,0,0,.36);color:#fff}
+.whatsapp-fab svg{width:27px;height:27px}
 
 /* reveal on scroll */
 .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
@@ -936,6 +951,8 @@ li{margin-bottom:.45em}
   .footer-links li{margin-bottom:0}
   .footer-contact li{margin-bottom:8px}
   .to-top{width:46px;height:46px}
+  .whatsapp-fab{width:50px;height:50px}
+  .whatsapp-fab svg{width:24px;height:24px}
 
   /* top bar carries the phone number only; social lives in the footer */
   .topbar .wrap{justify-content:center;padding-top:0;padding-bottom:0}
@@ -946,7 +963,8 @@ li{margin-bottom:.45em}
      (bar height + breathing room + any home-indicator inset) */
   .mobile-bar{display:flex}
   body{padding-bottom:calc(56px + 18px + env(safe-area-inset-bottom,0px))}
-  .to-top{bottom:calc(68px + env(safe-area-inset-bottom,0px));right:16px}
+  .whatsapp-fab{bottom:calc(68px + env(safe-area-inset-bottom,0px));right:16px}
+  .to-top{bottom:calc(132px + env(safe-area-inset-bottom,0px));right:16px}
 }
 
 @media (max-width:480px){
@@ -968,7 +986,7 @@ li{margin-bottom:.45em}
 }
 
 @media print{
-  .topbar,.site-header,.mobile-nav,.backdrop,.to-top,.mobile-bar,.cta,.site-footer{display:none!important}
+  .topbar,.site-header,.mobile-nav,.backdrop,.to-top,.whatsapp-fab,.mobile-bar,.cta,.site-footer{display:none!important}
   body{padding-bottom:0}
   body{color:#000}
 }
@@ -1016,6 +1034,7 @@ li{margin-bottom:.45em}
 [dir="rtl"] .card::after{transform-origin:right}
 [dir="rtl"] .visual-badge{right:auto;left:-16px}
 [dir="rtl"] .to-top{right:auto;left:24px}
+[dir="rtl"] .whatsapp-fab{right:auto;left:24px}
 [dir="rtl"] .subnav{left:auto;right:0}
 [dir="rtl"] .subnav a:hover{padding-left:14px;padding-right:19px}
 [dir="rtl"] .step::after{right:auto;left:-14px}
@@ -1043,6 +1062,7 @@ li{margin-bottom:.45em}
 }
 @media (max-width:640px){
   [dir="rtl"] .to-top{left:16px;right:auto}
+  [dir="rtl"] .whatsapp-fab{left:16px;right:auto}
 }
 
 /* ==========================================================================
