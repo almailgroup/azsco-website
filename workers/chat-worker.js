@@ -1,5 +1,5 @@
 /**
- * AZSCO Assistant — Cloudflare Workers proxy for the Mistral API.
+ * AZSCO Assistant — Cloudflare Workers proxy for the Gemini API.
  *
  * Self-contained on purpose: this file has no imports, so it can be pasted
  * directly into the Cloudflare dashboard's Worker editor (Workers & Pages ->
@@ -9,14 +9,16 @@
  * prefers deploying with Wrangler instead:
  *
  *   npx wrangler deploy workers/chat-worker.js --name azsco-chat
- *   npx wrangler secret put MISTRAL_API_KEY --name azsco-chat
+ *   npx wrangler secret put GEMINI_API_KEY --name azsco-chat
  *
  * Either way, once deployed:
- *   1. Add the MISTRAL_API_KEY secret (Settings -> Variables and Secrets in
- *      the dashboard, or the wrangler command above).
+ *   1. Add the GEMINI_API_KEY secret (Settings -> Variables and Secrets in
+ *      the dashboard, or the wrangler command above). Get a free key at
+ *      https://aistudio.google.com/apikey -- no payment method required for
+ *      the free tier.
  *   2. Optionally add ALLOWED_ORIGIN as a plain variable, e.g.
  *      "https://www.azsco.com,https://azsco.com" -- without it, any site can
- *      call this worker and spend your Mistral quota.
+ *      call this worker and spend your Gemini quota.
  *   3. Set CHAT_ENDPOINT in tools/build.py to this worker's URL (shown at
  *      the top of its dashboard page, e.g. https://azsco-chat.<subdomain>.workers.dev),
  *      set CHAT_MODE = "proxy", and run `python3 tools/build.py`.
@@ -25,9 +27,16 @@
  * tools/build.py (and with api/chat.js) by hand whenever the business facts
  * change -- a deployed worker has no way to read the static site's source at
  * build time.
+ *
+ * Why Gemini and not Mistral: Mistral's free tier rate-limits far too
+ * aggressively for live visitor traffic (a single test message could exhaust
+ * it). Google AI Studio's free tier is meant for exactly this kind of light,
+ * ongoing production use -- see https://ai.google.dev/gemini-api/docs/models
+ * for current rate limits if MODEL below ever needs bumping to a newer one.
  */
 
-const MISTRAL_URL = 'https://api.mistral.ai/v1/chat/completions';
+const MODEL = 'gemini-2.5-flash';
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
 
 const MAX_CHARS = 1000;     // per message
 const MAX_MESSAGES = 40;    // per request
@@ -129,9 +138,9 @@ export default {
     if (request.method !== 'POST') {
       return json({ error: 'Method not allowed' }, 405, origin, env);
     }
-    if (!env.MISTRAL_API_KEY) {
+    if (!env.GEMINI_API_KEY) {
       // Configuration problem, not the visitor's fault — do not leak details.
-      console.error('MISTRAL_API_KEY is not set');
+      console.error('GEMINI_API_KEY is not set');
       return json({ error: 'Assistant unavailable' }, 503, origin, env);
     }
 
@@ -147,36 +156,40 @@ export default {
     if (!incoming.length) return json({ error: 'No messages' }, 400, origin, env);
 
     // Accept only the shape we expect; drop anything else the client sent.
-    const messages = incoming
+    // Gemini uses "model" where the client (and Mistral's shape) says
+    // "assistant" -- translate roles and wrap each turn's text in "parts".
+    const contents = incoming
       .slice(-MAX_MESSAGES)
       .filter(m => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
-      .map(m => ({ role: m.role, content: m.content.slice(0, MAX_CHARS) }));
+      .map(m => ({
+        role: m.role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: m.content.slice(0, MAX_CHARS) }],
+      }));
 
-    if (!messages.length) return json({ error: 'No usable messages' }, 400, origin, env);
+    if (!contents.length) return json({ error: 'No usable messages' }, 400, origin, env);
 
     try {
-      const res = await fetch(MISTRAL_URL, {
+      const res = await fetch(GEMINI_URL, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${env.MISTRAL_API_KEY}`,
+          'x-goog-api-key': env.GEMINI_API_KEY,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: env.MISTRAL_MODEL || 'mistral-small-latest',
-          temperature: 0.3,
-          max_tokens: MAX_TOKENS,
-          messages: [{ role: 'system', content: systemPrompt(lang) }, ...messages],
+          contents,
+          systemInstruction: { parts: [{ text: systemPrompt(lang) }] },
+          generationConfig: { temperature: 0.3, maxOutputTokens: MAX_TOKENS },
         }),
       });
 
       if (!res.ok) {
         const detail = await res.text();
-        console.error('Mistral API error', res.status, detail.slice(0, 500));
+        console.error('Gemini API error', res.status, detail.slice(0, 500));
         return json({ error: 'Assistant unavailable' }, 502, origin, env);
       }
 
       const data = await res.json();
-      const reply = data?.choices?.[0]?.message?.content?.trim();
+      const reply = data?.candidates?.[0]?.content?.parts?.map(p => p.text || '').join('').trim();
       if (!reply) return json({ error: 'Empty reply' }, 502, origin, env);
 
       return json({ reply }, 200, origin, env);

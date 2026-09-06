@@ -1,12 +1,20 @@
 # AZSCO Assistant — API proxy
 
-> Calling Mistral directly from the browser (`CHAT_MODE = "direct"`) turned out
-> not to work reliably in production — Mistral's API does not support being
-> called from an arbitrary website's browser (no CORS), so the widget opens
-> but every reply fails. This proxy is the fix: it holds the key server-side
-> and the browser talks to it instead, on a domain that can send the right
-> headers. Deploy one of the functions below, then set `CHAT_MODE = "proxy"`
-> and `CHAT_ENDPOINT` in `tools/build.py` and rebuild.
+> Calling an LLM directly from the browser (`CHAT_MODE = "direct"`) turned out
+> not to work reliably in production — most providers' APIs do not support
+> being called from an arbitrary website's browser (no CORS), so the widget
+> opens but every reply fails. This proxy is the fix: it holds the key
+> server-side and the browser talks to it instead, on a domain that can send
+> the right headers.
+>
+> **Provider: Google Gemini**, via a free API key from
+> <https://aistudio.google.com/apikey> (no payment method required). The site
+> started on Mistral, but its free tier rate-limits far too aggressively for
+> live visitor traffic — a single test message could exhaust it. Gemini's free
+> tier is built for exactly this kind of light, ongoing production use.
+>
+> Deploy one of the functions below, then set `CHAT_MODE = "proxy"` and
+> `CHAT_ENDPOINT` in `tools/build.py` and rebuild.
 
 This proxy adds the API key server-side, so it never reaches the browser.
 
@@ -21,15 +29,15 @@ This proxy adds the API key server-side, so it never reaches the browser.
 
 | Name | Required | Notes |
 | --- | --- | --- |
-| `MISTRAL_API_KEY` | yes | From <https://console.mistral.ai>. Set it as a secret, never in a file. |
-| `MISTRAL_MODEL` | no | Defaults to `mistral-small-latest`. |
+| `GEMINI_API_KEY` | yes | From <https://aistudio.google.com/apikey>. Set it as a secret, never in a file. |
+| `GEMINI_MODEL` | no | Defaults to `gemini-2.5-flash`. See <https://ai.google.dev/gemini-api/docs/models> for current free-tier models and rate limits. |
 | `ALLOWED_ORIGIN` | recommended | Comma-separated origins, e.g. `https://www.azsco.com`. Without it any site can call your endpoint and spend your quota. |
 
 ## Deploying on Vercel
 
 ```bash
 vercel deploy
-vercel env add MISTRAL_API_KEY        # paste the key when prompted
+vercel env add GEMINI_API_KEY         # paste the key when prompted
 vercel env add ALLOWED_ORIGIN         # https://www.azsco.com
 ```
 
@@ -47,9 +55,9 @@ the dashboard with no CLI or Node install:
    `azsco-chat`) and deploy the default template.
 3. **Edit code**, delete the placeholder, paste in the full contents of
    `workers/chat-worker.js`, then **Save and deploy**.
-4. **Settings → Variables and Secrets → Add.** Add `MISTRAL_API_KEY` as a
-   *secret* with your key from <https://console.mistral.ai>. Optionally add
-   `ALLOWED_ORIGIN` as a plain variable set to
+4. **Settings → Variables and Secrets → Add.** Add `GEMINI_API_KEY` as a
+   *secret* with your free key from <https://aistudio.google.com/apikey>.
+   Optionally add `ALLOWED_ORIGIN` as a plain variable set to
    `https://www.azsco.com,https://azsco.com`. Save and deploy again.
 5. Copy the worker's URL from the top of its dashboard page (looks like
    `https://azsco-chat.<your-subdomain>.workers.dev`).
@@ -60,7 +68,7 @@ Prefer the command line instead:
 
 ```bash
 npx wrangler deploy workers/chat-worker.js --name azsco-chat
-npx wrangler secret put MISTRAL_API_KEY --name azsco-chat
+npx wrangler secret put GEMINI_API_KEY --name azsco-chat
 ```
 
 Either way, keep this file's `FACTS` in sync by hand with `CHAT_FACTS` /
