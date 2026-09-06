@@ -28,7 +28,7 @@ WHATSAPP_URL = "https://wa.me/9651808606?text=Hello%20I%20would%20like%20more%20
 #              the key (see api/chat.js and api/README.md). Nothing is exposed.
 CHAT_MODE = "proxy"
 CHAT_ENDPOINT = "https://almailai.steep-band-c624.workers.dev/"
-CHAT_API_KEY = "nqiT2l7oBl5499RBMVgBQLFBoKwaiCi8"
+CHAT_API_KEY = "p1X26n4nrtk0iw1CCoewn6weL6mg8vOP"
 CHAT_MODEL = "mistral-small-latest"
 
 # The facts the assistant may rely on. This is the single source of truth: the
