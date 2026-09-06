@@ -1,10 +1,12 @@
 # AZSCO Assistant — API proxy
 
-> **Not currently in use.** The site is configured with `CHAT_MODE = "direct"` in
-> `tools/build.py`, so the browser calls Mistral itself with a key embedded in
-> `assets/js/chat-config.js`. To switch to this proxy — which keeps the key off
-> the site entirely — set `CHAT_MODE = "proxy"`, rebuild, and deploy one of the
-> functions below.
+> Calling Mistral directly from the browser (`CHAT_MODE = "direct"`) turned out
+> not to work reliably in production — Mistral's API does not support being
+> called from an arbitrary website's browser (no CORS), so the widget opens
+> but every reply fails. This proxy is the fix: it holds the key server-side
+> and the browser talks to it instead, on a domain that can send the right
+> headers. Deploy one of the functions below, then set `CHAT_MODE = "proxy"`
+> and `CHAT_ENDPOINT` in `tools/build.py` and rebuild.
 
 This proxy adds the API key server-side, so it never reaches the browser.
 
@@ -36,13 +38,34 @@ no change needed in the site itself.
 
 ## Deploying on Cloudflare Workers
 
+`workers/chat-worker.js` has no imports, so it can be deployed straight from
+the dashboard with no CLI or Node install:
+
+1. Sign up free at <https://dash.cloudflare.com/sign-up> if you don't have an
+   account.
+2. **Workers & Pages → Create → Create Worker.** Give it a name (e.g.
+   `azsco-chat`) and deploy the default template.
+3. **Edit code**, delete the placeholder, paste in the full contents of
+   `workers/chat-worker.js`, then **Save and deploy**.
+4. **Settings → Variables and Secrets → Add.** Add `MISTRAL_API_KEY` as a
+   *secret* with your key from <https://console.mistral.ai>. Optionally add
+   `ALLOWED_ORIGIN` as a plain variable set to
+   `https://www.azsco.com,https://azsco.com`. Save and deploy again.
+5. Copy the worker's URL from the top of its dashboard page (looks like
+   `https://azsco-chat.<your-subdomain>.workers.dev`).
+6. Set `CHAT_ENDPOINT` to that URL and `CHAT_MODE = "proxy"` in
+   `tools/build.py`, then run `python3 tools/build.py`.
+
+Prefer the command line instead:
+
 ```bash
 npx wrangler deploy workers/chat-worker.js --name azsco-chat
-npx wrangler secret put MISTRAL_API_KEY
+npx wrangler secret put MISTRAL_API_KEY --name azsco-chat
 ```
 
-Then set `CHAT_ENDPOINT` in `tools/build.py` to the worker's URL and run
-`python3 tools/build.py`.
+Either way, keep this file's `FACTS` in sync by hand with `CHAT_FACTS` /
+`CHAT_RULES` in `tools/build.py` and with `api/chat.js` whenever the business
+facts change — a deployed worker cannot read the static site's source.
 
 ## Checking it works
 

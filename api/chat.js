@@ -24,35 +24,54 @@ const MAX_TOKENS = 500;     // per reply
 
 /* What the assistant is allowed to say about AZSCO. Keeping the facts here,
    rather than relying on the model's own knowledge, is what stops it inventing
-   services, prices or coverage. */
+   services, prices or coverage.
+
+   This is a duplicate of CHAT_FACTS / CHAT_RULES in tools/build.py (which
+   feeds the "direct" mode config at assets/js/chat-config.js) — the two must
+   be kept in sync by hand whenever the business facts change, since a static
+   site has no way to share this at build time with an edge function deployed
+   separately. */
 const FACTS = `
 COMPANY
-- AZSCO for Facility Guard Services (AZSCO), established 2008, headquartered in
-  Qibla, Kuwait. Part of Almail Group.
-- Office: Floor 27, Kuwait Building Tower, Fahad Al Salem St., Qibla, Kuwait.
-- Telephone: (+965) 1808606. Email: info@azsco.com.
+- AZSCO Security Services Company (formerly Almail Zone Security Services),
+  established 2014, headquartered in Qibla, Kuwait.
+- Office: Floor 27B, Kuwait Building Tower, Fahad Al Salem St., Qibla, Kuwait.
+- Telephone: (+965) 1808606.
+- Email: info@azsco.com for general enquiries, sales@azsco.com for sales
+  and quotations.
 - Office hours: Sunday to Thursday, 8:00-17:00. Emergency response 24/7.
+- CEO: Dr. Abdulaziz Almail.
+- Certified ISO 9001:2015 for quality management, and compliant with
+  Anti-Money Laundering standards.
 
 WHAT AZSCO DOES
 AZSCO provides security manpower only. It does NOT sell, install or maintain
-security systems (no fire alarm, intrusion, CCTV, access control or smart home
+security systems (no fire alarm, intrusion, CCTV or access control
 installation). Services:
-- Manned Guarding: static security officers for apartments, malls, banks,
-  stores, offices, compounds and industrial sites.
-- Mobile Patrols: scheduled and random patrols, perimeter checks,
-  lock-and-unlock, key holding, alarm response.
-- Event & VIP Security: crowd management, access screening, stewarding,
-  close protection.
-- Reception & Concierge: front-of-house officers, visitor management,
-  contractor and delivery control.
-- Security Consulting: site surveys, risk assessments, post orders,
-  deployment planning.
-- Supervision & Reporting: field supervisors, shift audits, incident reporting.
+- Facility Guarding: trained, uniformed officers guarding apartments, malls,
+  banks, stores, offices, compounds, industrial sites and events.
+- VIP Protection & Rapid Intervention: physically and technically qualified
+  personal guards for individuals needing a high level of security, plus
+  rapid-intervention response to critical sites.
+- Central Operations Room: a 24/7 monitoring and communications room that
+  keeps continuous contact with every AZSCO-guarded site and dispatches a
+  rapid response to any incident.
+- Security Patrols: scheduled patrols by trained officers equipped with the
+  necessary tools, reinforcing the security of guarded sites and areas.
 
 OTHER FACTS
-- Officers are screened, licensed, uniformed, trained and supervised.
-- Technology partners: Ajax, Hikvision, Rasilient.
-- Clients include Xcite, Millennium Hotels and Resorts, and Alnasser.
+- Officers are screened, licensed, uniformed, trained (first aid,
+  fire-fighting, dealing with the public, dealing with accidents,
+  self-defense) and supervised.
+- Officers come from a range of nationalities: Kuwaiti, Indian, Egyptian,
+  Chadian, Nigerian, Nepalese and stateless individuals.
+- Serves government, commercial, financial, industrial, residential and many
+  other sectors across Kuwait.
+- Technology partners whose equipment feeds AZSCO's Central Operations Room
+  monitoring: Ajax, Rasilient, Avigilon, Teltonika, Inrico, Hikvision, Pelco
+  and Motorola. AZSCO does not itself sell or install this equipment.
+- Clients include Radisson Blu Hotel Kuwait, Alnasser, Millennium Hotels and
+  Resorts, and Kuwait Ports Authority, among others.
 - A free site survey is the normal first step for a new enquiry.
 `;
 
@@ -76,11 +95,11 @@ RULES
 - Never quote a price, promise a response time, or commit AZSCO to anything.
 - Be brief: two or three short paragraphs at most. Plain text, no markdown
   headings or bullet lists.
+- If a visitor appears to have an urgent security incident, tell them to call
+  (+965) 1808606 immediately rather than continuing to chat.
 - ${arabic
       ? 'Reply in Arabic (Modern Standard Arabic), in a professional tone.'
-      : 'Reply in English, in a professional tone.'}
-- If a visitor appears to have an urgent security incident, tell them to call
-  (+965) 1808606 immediately rather than continuing to chat.`;
+      : 'Reply in English, in a professional tone.'}`;
 }
 
 function corsHeaders(origin) {
