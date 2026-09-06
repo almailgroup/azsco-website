@@ -2,7 +2,7 @@
    Edit CHAT_* in tools/build.py and rebuild. */
 window.AZSCO_CHAT_CONFIG = {
   "mode": "proxy",
-  "endpoint": "https://almailai.steep-band-c624.workers.dev/",
+  "endpoint": "https://azsco-website-chatbot.steep-band-c624.workers.dev/",
   "model": "mistral-small-latest",
   "apiUrl": "https://api.mistral.ai/v1/chat/completions",
   "apiKey": "",
