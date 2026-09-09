@@ -414,25 +414,6 @@ SERVICES = [
    ]},
 ]
 
-# The 15 sectors named in AZSCO's own company profile.
-SECTORS = [
-    ("Government Sectors", "القطاعات الحكومية"),
-    ("Commercial Establishments", "المنشآت التجارية"),
-    ("Financial Institutions", "المؤسسات المالية"),
-    ("Industrial Sector", "القطاع الصناعي"),
-    ("Public Facilities", "المرافق العامة"),
-    ("Events &amp; Occasions", "الفعاليات والمناسبات"),
-    ("Tourist Sites", "المواقع السياحية"),
-    ("Residential Complexes", "المجمعات السكنية"),
-    ("Ports &amp; Airports", "الموانئ والمطارات"),
-    ("Critical Infrastructure", "المنشآت الحيوية"),
-    ("Warehouses &amp; Storage Facilities", "المخازن والمستودعات"),
-    ("Transport &amp; Logistics Sector", "قطاع النقل واللوجستيات"),
-    ("Special or Protected Areas", "المناطق الخاصة أو المحمية"),
-    ("Sports &amp; Recreational Facilities", "المرافق الرياضية والترفيهية"),
-    ("Vital Infrastructure", "البنية التحتية الحيوية"),
-]
-
 VALUES = [
     ("Trust", "الثقة"), ("Cooperation", "التعاون"), ("Quality", "الجودة"),
     ("Innovation", "الإبتكار"), ("Focus", "التركيز"), ("Determination", "الإصرار"),
@@ -486,6 +467,14 @@ PARTNERS_ALT = ("Logos of AZSCO technology partners: Ajax, Rasilient, Avigilon, 
                 "شعارات شركاء أزسكو التقنيين: Ajax وRasilient وAvigilon وTeltonika وInrico وHikvision وPelco وMotorola")
 CERT_ALT = ("AZSCO certification badges: SCK, IAS accredited and ISO 9001",
             "شهادات أزسكو: SCK، معتمدة من IAS، وISO 9001")
+SECTORS_ALT = ("Icons for the 15 sectors AZSCO protects: government, commercial, financial, "
+               "industrial, public facilities, events, tourist sites, residential complexes, "
+               "ports and airports, critical infrastructure, warehousing, transport and "
+               "logistics, protected areas, sports and recreation, and vital infrastructure",
+               "أيقونات للقطاعات الـ15 التي تحميها أزسكو: الحكومية والتجارية والمالية والصناعية "
+               "والمرافق العامة والفعاليات والمواقع السياحية والمجمعات السكنية والموانئ "
+               "والمطارات والبنية التحتية الحيوية والمخازن والنقل واللوجستيات والمناطق "
+               "المحمية والمرافق الرياضية والترفيهية والمنشآت الحيوية")
 HERO_SVG = '''<svg viewBox="0 0 320 300" role="img" aria-label="Illustration of a monitored, protected building">
 <defs><linearGradient id="hg" x1="0" y1="0" x2="0" y2="1">
 <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#9a9a9a"/></linearGradient></defs>
@@ -1366,6 +1355,17 @@ def build_home(lang):
 
 <section class="section section--alt">
   <div class="wrap">
+    <div class="sec-head center reveal">
+      <p class="eyebrow">{t(H["sec_eyebrow"], lang)}</p>
+      <h2>{t(H["sec_h2"], lang)}</h2>
+      <p>{t(H["sec_lead"], lang)}</p>
+    </div>
+    {logo_panel("assets/img/photos/service-sectors.png", SECTORS_ALT, lang)}
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
     <div class="split">
       <div class="split-visual reveal">
         <div class="visual-frame">{HERO_SVG}</div>
@@ -1387,19 +1387,6 @@ def build_home(lang):
 </section>
 
 {stats_block(lang)}
-
-<section class="section">
-  <div class="wrap">
-    <div class="sec-head center reveal">
-      <p class="eyebrow">{t(H["sec_eyebrow"], lang)}</p>
-      <h2>{t(H["sec_h2"], lang)}</h2>
-      <p>{t(H["sec_lead"], lang)}</p>
-    </div>
-    <div class="chips center">
-{chip_list(lang, SECTORS)}
-    </div>
-  </div>
-</section>
 
 <section class="section section--alt">
   <div class="wrap">
