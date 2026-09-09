@@ -6,7 +6,7 @@
  *
  * Deploy target: any host that runs a Node serverless function with the Web
  * Request/Response API (Vercel, Netlify Functions v2, Deno Deploy). A Cloudflare
- * Workers variant is in workers/chat-worker.js.
+ * Workers variant is in backend/workers/chat-worker.js.
  *
  * Required environment variable:
  *   GEMINI_API_KEY    your key from https://aistudio.google.com/apikey
@@ -35,7 +35,7 @@ const MAX_TOKENS = 500;     // per reply
 
    This is a duplicate of CHAT_FACTS / CHAT_RULES in tools/build.py (which
    feeds the "direct" mode config at assets/js/chat-config.js) and of
-   workers/chat-worker.js — the three must be kept in sync by hand whenever
+   backend/workers/chat-worker.js — the three must be kept in sync by hand whenever
    the business facts change, since a static site has no way to share this at
    build time with an edge function deployed separately. */
 const FACTS = `

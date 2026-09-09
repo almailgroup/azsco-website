@@ -3,11 +3,13 @@
  * Two modes, selected by CHAT_MODE in tools/build.py and read at runtime from
  * assets/js/chat-config.js:
  *
- *   direct — the browser calls api.mistral.ai itself. The key is in the
- *            generated config file and is readable by anyone who views the
- *            site; this is a deliberate configuration choice.
+ *   direct — the browser calls the LLM provider's API itself (CFG.apiUrl).
+ *            The key is in the generated config file and is readable by
+ *            anyone who views the site. Not used in production: most
+ *            providers don't allow being called directly from a browser.
  *   proxy  — the browser posts to an endpoint that holds the key server-side
- *            (see api/chat.js).
+ *            (see backend/api/chat.js and backend/workers/chat-worker.js).
+ *            The mode currently in use.
  *
  * Every visible string is authored per language in the markup, so this file
  * contains no copy of its own.

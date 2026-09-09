@@ -27,14 +27,14 @@ WHATSAPP_URL = "https://wa.me/9651808606?text=Hello%20I%20would%20like%20more%20
 #              readable by anyone who views the site. Set a spend limit on the
 #              Mistral account, and rotate the key if it is ever misused.
 #   "proxy"  — the browser calls CHAT_ENDPOINT, and a server-side function holds
-#              the key (see api/chat.js and api/README.md). Nothing is exposed.
+#              the key (see backend/api/chat.js and backend/README.md). Nothing is exposed.
 CHAT_MODE = "proxy"
 CHAT_ENDPOINT = "https://azsco-website-chatbot.steep-band-c624.workers.dev/"
 CHAT_API_KEY = "p1X26n4nrtk0iw1CCoewn6weL6mg8vOP"
 CHAT_MODEL = "mistral-small-latest"
 
 # The facts the assistant may rely on. This is the single source of truth: the
-# proxy in api/chat.js carries its own copy for when CHAT_MODE is "proxy".
+# proxy in backend/api/chat.js carries its own copy for when CHAT_MODE is "proxy".
 CHAT_FACTS = """
 COMPANY
 - AZSCO Security Services Company (formerly Almail Zone Security Services),

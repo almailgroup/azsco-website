@@ -84,6 +84,10 @@ page's identity in the URL is a directory, not a file.
 │   ├── js/main.js        # nav, mobile drawer, scroll reveal, counters, accordions, form validation
 │   └── img/               # brand lockup, white variant, favicons, photos/
 ├── tools/build.py        # regenerates every page, both languages, and the redirect stubs
+├── backend/              # chat widget's server-side proxy — not part of what GitHub Pages serves
+│   ├── api/chat.js       # Vercel / Netlify / Deno variant
+│   ├── workers/chat-worker.js  # Cloudflare Workers variant (currently deployed)
+│   └── README.md         # deployment steps for either one
 ├── robots.txt
 ├── sitemap.xml
 └── 404.html, ar/404.html                                     # kept flat: GitHub Pages requirement
@@ -167,34 +171,27 @@ with the rest of the layout), labelled **AZSCO Assistant**. It opens a panel wit
 questions, supports an expand toggle — a wider panel on desktop, full screen on phones — and
 keeps the conversation across page navigation via `sessionStorage`.
 
-**This site is currently configured to call Mistral directly from the browser**
-(`CHAT_MODE = "direct"` in `tools/build.py`). The key is compiled into
-`assets/js/chat-config.js` and served to every visitor, so it is readable by anyone who
-opens the page source. That is a deliberate choice, not an oversight — but it means:
-
-- **Set a spend limit on the Mistral account.** With the key public, that limit is the only
-  thing capping what a scraper can spend.
-- **Rotate the key if usage looks wrong**, and rotate it again before any handover.
-- Anyone can also use the key for their own unrelated requests, not just the chat widget.
-
-The safe alternative is already written and one line away. Set `CHAT_MODE = "proxy"` in
-`tools/build.py` and rebuild: the key drops out of the site entirely and the widget posts to
-a server-side function instead:
+**This site is configured in `proxy` mode** (`CHAT_MODE = "proxy"` in `tools/build.py`): the
+browser never sees an API key. It posts to a Cloudflare Worker (`backend/workers/chat-worker.js`,
+deployed separately — see `backend/README.md`), which holds the key server-side and calls
+Google Gemini's API on the widget's behalf:
 
 ```
-direct:  browser ──key──▶ api.mistral.ai
-proxy:   browser ─────▶ /api/chat ──key──▶ api.mistral.ai
+browser ─────▶ Cloudflare Worker ──key──▶ Gemini API
 ```
+
+An earlier `direct` mode (browser calling the LLM's API itself, with the key compiled into
+`assets/js/chat-config.js`) is still supported in the code for reference, but isn't used: most
+LLM providers don't allow being called directly from an arbitrary website's browser (no CORS),
+so `direct` mode opens the widget but every reply fails. `proxy` mode also happens to keep the
+key off the site entirely, which `direct` mode never did.
 
 - `assets/js/chat.js` — the widget; supports both modes, contains no key or copy of its own.
 - `assets/js/chat-config.js` — **generated**; holds the mode, model, system prompt, and in
   direct mode the key. Do not edit by hand; edit the `CHAT_*` values in `tools/build.py`.
-- `api/chat.js` — the proxy (Vercel / Netlify / Deno), used when the mode is `proxy`.
-- `workers/chat-worker.js` — the same proxy for Cloudflare Workers.
-- `api/README.md` — deployment steps and environment variables.
-
-If the widget fails on the live site with a CORS error in the browser console, it means
-Mistral does not permit browser-origin requests; switching to `proxy` mode fixes it.
+- `backend/api/chat.js` — the proxy (Vercel / Netlify / Deno), an alternative to the Worker.
+- `backend/workers/chat-worker.js` — the proxy for Cloudflare Workers, currently deployed.
+- `backend/README.md` — deployment steps and environment variables for either one.
 
 The system prompt lives in `CHAT_FACTS` and `CHAT_RULES` in `tools/build.py` and carries
 AZSCO's facts (services, address, hours, partners, clients), instructing the model to answer

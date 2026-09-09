@@ -1,5 +1,11 @@
 # AZSCO Assistant — API proxy
 
+This is the only part of the repository that isn't the static site: a small
+server-side proxy for the AZSCO Assistant chat widget, deployed separately
+(Cloudflare Workers, Vercel, ...) from wherever the site itself is hosted.
+Nothing here is served by GitHub Pages — the frontend (everything else in the
+repo) is unaffected by anything in this folder.
+
 > Calling an LLM directly from the browser (`CHAT_MODE = "direct"`) turned out
 > not to work reliably in production — most providers' APIs do not support
 > being called from an arbitrary website's browser (no CORS), so the widget
@@ -22,8 +28,8 @@ This proxy adds the API key server-side, so it never reaches the browser.
 
 | File | For |
 | --- | --- |
-| `api/chat.js` | Vercel, Netlify Functions, Deno Deploy — anything running a Node/Edge function |
-| `workers/chat-worker.js` | Cloudflare Workers |
+| `backend/api/chat.js` | Vercel, Netlify Functions, Deno Deploy — anything running a Node/Edge function |
+| `backend/workers/chat-worker.js` | Cloudflare Workers |
 
 ## Environment variables
 
@@ -35,19 +41,27 @@ This proxy adds the API key server-side, so it never reaches the browser.
 
 ## Deploying on Vercel
 
+Vercel auto-detects a top-level `api/` folder as serverless functions, but
+that folder now lives at `backend/api/`. Set the project's **Root Directory**
+to `backend` in the Vercel project settings (or pass `--cwd backend` /
+run the commands from inside `backend/`) so it finds `api/chat.js`:
+
 ```bash
+cd backend
 vercel deploy
 vercel env add GEMINI_API_KEY         # paste the key when prompted
 vercel env add ALLOWED_ORIGIN         # https://www.azsco.com
 ```
 
-The function is then served at `/api/chat`, which is the site's default endpoint —
-no change needed in the site itself.
+The function is then served at `/api/chat` on whatever domain Vercel gives
+that deployment — a separate domain from the site itself, since GitHub Pages
+hosts the site. Point `CHAT_ENDPOINT` in `tools/build.py` at that domain's
+`/api/chat` URL.
 
 ## Deploying on Cloudflare Workers
 
-`workers/chat-worker.js` has no imports, so it can be deployed straight from
-the dashboard with no CLI or Node install:
+`backend/workers/chat-worker.js` has no imports, so it can be deployed
+straight from the dashboard with no CLI or Node install:
 
 1. Sign up free at <https://dash.cloudflare.com/sign-up> if you don't have an
    account.
@@ -67,13 +81,13 @@ the dashboard with no CLI or Node install:
 Prefer the command line instead:
 
 ```bash
-npx wrangler deploy workers/chat-worker.js --name azsco-chat
+npx wrangler deploy backend/workers/chat-worker.js --name azsco-chat
 npx wrangler secret put GEMINI_API_KEY --name azsco-chat
 ```
 
 Either way, keep this file's `FACTS` in sync by hand with `CHAT_FACTS` /
-`CHAT_RULES` in `tools/build.py` and with `api/chat.js` whenever the business
-facts change — a deployed worker cannot read the static site's source.
+`CHAT_RULES` in `tools/build.py` and with `backend/api/chat.js` whenever the
+business facts change — a deployed worker cannot read the static site's source.
 
 ## Checking it works
 

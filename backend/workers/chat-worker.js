@@ -5,10 +5,10 @@
  * directly into the Cloudflare dashboard's Worker editor (Workers & Pages ->
  * Create -> Create Worker -> Edit code), with no CLI, build step or account
  * beyond a free Cloudflare sign-up. It is a Workers-native rewrite of
- * api/chat.js (same logic, "env" instead of "process.env") for anyone who
+ * backend/api/chat.js (same logic, "env" instead of "process.env") for anyone who
  * prefers deploying with Wrangler instead:
  *
- *   npx wrangler deploy workers/chat-worker.js --name azsco-chat
+ *   npx wrangler deploy backend/workers/chat-worker.js --name azsco-chat
  *   npx wrangler secret put GEMINI_API_KEY --name azsco-chat
  *
  * Either way, once deployed:
@@ -24,7 +24,7 @@
  *      set CHAT_MODE = "proxy", and run `python3 tools/build.py`.
  *
  * IMPORTANT: keep this file's FACTS in sync with CHAT_FACTS / CHAT_RULES in
- * tools/build.py (and with api/chat.js) by hand whenever the business facts
+ * tools/build.py (and with backend/api/chat.js) by hand whenever the business facts
  * change -- a deployed worker has no way to read the static site's source at
  * build time.
  *
