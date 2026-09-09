@@ -47,9 +47,7 @@ COMPANY
   Anti-Money Laundering standards.
 
 WHAT AZSCO DOES
-AZSCO provides security manpower only. It does NOT sell, install or maintain
-security systems (no fire alarm, intrusion, CCTV or access control
-installation). Services:
+AZSCO provides security manpower and security systems. Services:
 - Facility Guarding: trained, uniformed officers guarding apartments, malls,
   banks, stores, offices, compounds, industrial sites and events.
 - VIP Protection & Rapid Intervention: physically and technically qualified
@@ -60,6 +58,9 @@ installation). Services:
   rapid response to any incident.
 - Security Patrols: scheduled patrols by trained officers equipped with the
   necessary tools, reinforcing the security of guarded sites and areas.
+- Security Systems: advanced, site-specific systems -- surveillance cameras
+  and fire and theft alarm systems -- installed and monitored by AZSCO, with
+  alerts routed to the Central Operations Room for rapid patrol intervention.
 
 OTHER FACTS
 - Officers are screened, licensed, uniformed, trained (first aid,
@@ -69,25 +70,23 @@ OTHER FACTS
   Chadian, Nigerian, Nepalese and stateless individuals.
 - Serves government, commercial, financial, industrial, residential and many
   other sectors across Kuwait.
-- Technology partners whose equipment feeds AZSCO's Central Operations Room
-  monitoring: Ajax, Rasilient, Avigilon, Teltonika, Inrico, Hikvision, Pelco
-  and Motorola. AZSCO does not itself sell or install this equipment.
-- Clients include Radisson Blu Hotel Kuwait, Alnasser, Millennium Hotels and
-  Resorts, and Kuwait Ports Authority, among others.
+- Technology partners whose equipment powers AZSCO's Security Systems service
+  and Central Operations Room monitoring: Ajax, Rasilient, Avigilon,
+  Teltonika, Inrico, Hikvision, Pelco and Motorola.
+- Clients include Radisson Blu Hotel Kuwait, Millennium Hotels and Resorts,
+  Kuwait Ports Authority, Alghanim Industries and Alnasser, among others --
+  see the Clients page for more.
 - A free site survey is the normal first step for a new enquiry.
 """
 
 CHAT_RULES = """
 RULES
-- Answer ONLY questions about AZSCO, its security manpower services, and how to
-  get in touch. For anything else, politely say it is outside what you can help
-  with and offer to put the visitor in touch with the team.
+- Answer ONLY questions about AZSCO, its security services, and how to get in
+  touch. For anything else, politely say it is outside what you can help with
+  and offer to put the visitor in touch with the team.
 - Use ONLY the facts above. If you do not know something - pricing, guard
   numbers, availability, contract terms, staff names - say so plainly and point
   the visitor to (+965) 1808606 or info@azsco.com. Never guess or invent.
-- AZSCO does not install or maintain security systems. If asked for CCTV, alarm
-  or access control installation, say AZSCO provides security personnel and
-  suggest contacting the team to discuss what they need.
 - Never quote a price, promise a response time, or commit AZSCO to anything.
 - Be brief: two or three short paragraphs at most. Plain text, no markdown
   headings or bullet lists.
@@ -100,7 +99,7 @@ def chat_system_prompt(lang):
                 if lang == "ar" else
                 "Reply in English, in a professional tone.")
     return ("You are the AZSCO Assistant, the virtual assistant on the website of "
-            "AZSCO, a security manpower company in Kuwait.\n"
+            "AZSCO, a security company in Kuwait.\n"
             + CHAT_FACTS + CHAT_RULES + "- " + reply_in)
 FOUNDED = 2014
 YEARS = datetime.date.today().year - FOUNDED
@@ -126,7 +125,7 @@ ROUTES = {
     "index.html": "",
     "about.html": "about",
     "services.html": "services",
-    "projects.html": "projects",
+    "clients.html": "clients",
     "partners.html": "partners",
     "contact.html": "contact",
     "privacy-policy.html": "privacy-policy",
@@ -310,8 +309,9 @@ NAV = [
         (("VIP Protection &amp; Rapid Intervention", "حماية الشخصيات والتدخل السريع"), "services.html#protection"),
         (("Central Operations Room", "غرفة عمليات مركزية"), "services.html#operations"),
         (("Security Patrols", "دوريات أمنية"), "services.html#patrols"),
+        (("Security Systems", "أنظمة أمنية"), "services.html#systems"),
     ]),
-    (("Projects", "المشاريع"), "projects.html", []),
+    (("Clients", "عملاؤنا"), "clients.html", []),
     (("Partners", "شركاؤنا"), "partners.html", []),
     (("Contact", "اتصل بنا"), "contact.html", []),
 ]
@@ -328,7 +328,7 @@ FOOTER = {
         (("Home", "الرئيسية"), "index.html"),
         (("About AZSCO", "عن أزسكو"), "about.html"),
         (("Our Services", "خدماتنا"), "services.html"),
-        (("Our Projects", "مشاريعنا"), "projects.html"),
+        (("Our Clients", "عملاؤنا"), "clients.html"),
         (("Our Partners", "شركاؤنا"), "partners.html"),
         (("Contact Us", "اتصل بنا"), "contact.html"),
     ],
@@ -396,6 +396,19 @@ SERVICES = [
      ("Modern technical means and equipment", "وسائل تقنية حديثة ومعدّات لازمة"),
      ("Coordinated with the Central Operations Room", "تنسيق مع غرفة العمليات المركزية"),
      ("Time-stamped patrol reports for every visit", "تقارير دوريات موثّقة بالوقت لكل زيارة"),
+   ]},
+  {"anchor": "systems", "icon": "camera",
+   "name": ("Security Systems", "أنظمة أمنية"),
+   "card": ("Advanced, site-specific security systems — surveillance cameras and fire and theft alarms — feeding real-time alerts to our Central Operations Room.",
+            "أنظمة أمنية متطوّرة ومخصّصة لكل موقع — كاميرات مراقبة وأنظمة إنذار ضد الحريق والسرقة — ترسل تنبيهات فورية إلى غرفة عملياتنا المركزية."),
+   "intro": ("AZSCO offers a comprehensive service in security system solutions, tailored to meet the needs of the facilities and sites under its protection. This service focuses on providing advanced, site-specific security systems, ensuring the highest levels of protection and safety. Solutions include surveillance cameras, fire and theft alarm systems and other modern security technologies, helping monitor activity in and around the facility around the clock and enabling rapid patrol intervention based on alarms received by the Central Operations Room.",
+             "تقدّم أزسكو خدمة متكاملة في مجال حلول الأنظمة الأمنية، مصمّمة خصيصاً لتلبية احتياجات المنشآت والمواقع التي تتولى حمايتها. تركّز هذه الخدمة على توفير نظم أمنية متطوّرة ومخصّصة لكل موقع، بما يضمن أعلى مستويات الحماية والأمان. تشمل الحلول كاميرات مراقبة وأنظمة إنذار ضد الحريق والسرقة وغيرها من التقنيات الأمنية الحديثة، وتساعد في رصد الأنشطة داخل المنشأة وحولها على مدار اليوم، وتتيح إمكانية التدخّل السريع للدوريات بناءً على الإنذارات التي تصل إلى غرفة العمليات المركزية."),
+   "points": [
+     ("Surveillance cameras (CCTV) tailored to each site", "كاميرات مراقبة مخصّصة لكل موقع"),
+     ("Fire and theft alarm systems", "أنظمة إنذار ضد الحريق والسرقة"),
+     ("Round-the-clock monitoring in and around the facility", "مراقبة على مدار الساعة داخل المنشأة وحولها"),
+     ("Alerts routed directly to the Central Operations Room", "تنبيهات تصل مباشرة إلى غرفة العمليات المركزية"),
+     ("Rapid patrol intervention triggered by system alarms", "تدخّل سريع للدوريات عند تفعيل إنذارات الأنظمة"),
    ]},
 ]
 
@@ -668,6 +681,7 @@ ABOUT = {
   "clients_h2": ("Trusted Across Kuwait", "موثوقون في جميع أنحاء الكويت"),
   "clients_lead": ("AZSCO is committed to building long-term relationships with its clients in both the public and private sectors.",
                    "تلتزم أزسكو ببناء علاقات طويلة الأمد مع عملائها في القطاعين العام والخاص."),
+  "clients_btn": ("View All Clients", "عرض جميع العملاء"),
   "nat_eyebrow": ("Our People", "كوادرنا"),
   "nat_h2": ("Available Nationalities", "الجنسيات المتوفرة"),
   "nat_lead": ("AZSCO fields security guards from a range of nationalities. A diverse workforce brings cultural range, varied skills and multiple languages, along with a healthy, positive spirit of competition.",
@@ -706,13 +720,13 @@ ABOUT = {
 
 # ============================================================ services page
 SERVICES_PAGE = {
-  "title": ("Security Manpower Services in Kuwait | AZSCO Security",
-            "خدمات الكوادر الأمنية في الكويت | أزسكو للأمن"),
-  "desc": ("AZSCO security manpower services in Kuwait: facility guarding, VIP protection and rapid intervention, a central operations room, and security patrols.",
-           "خدمات الكوادر الأمنية من أزسكو في الكويت: حراسة المنشآت، وحماية الشخصيات والتدخل السريع، وغرفة عمليات مركزية، ودوريات أمنية."),
+  "title": ("Security Services in Kuwait | AZSCO Security",
+            "خدمات أمنية في الكويت | أزسكو للأمن"),
+  "desc": ("AZSCO security services in Kuwait: facility guarding, VIP protection and rapid intervention, a central operations room, security patrols, and security systems.",
+           "خدمات أزسكو الأمنية في الكويت: حراسة المنشآت، وحماية الشخصيات والتدخل السريع، وغرفة عمليات مركزية، ودوريات أمنية، وأنظمة أمنية."),
   "banner_h": ("Our Services", "خدماتنا"),
-  "banner_p": ("A comprehensive range of security manpower services — facility guarding, VIP protection, a central operations room and security patrols — tailored to each client.",
-               "مجموعة شاملة من خدمات الكوادر الأمنية — حراسة المنشآت، وحماية الشخصيات، وغرفة عمليات مركزية، ودوريات أمنية — مصمّمة لكل عميل."),
+  "banner_p": ("A comprehensive range of security services — manpower, a central operations room and monitored security systems — tailored to each client.",
+               "مجموعة شاملة من الخدمات الأمنية — كوادر أمنية، وغرفة عمليات مركزية، وأنظمة أمنية مراقَبة — مصمّمة لكل عميل."),
   "crumb": ("Services", "خدماتنا"),
   "over_eyebrow": ("Overview", "نظرة عامة"),
   "over_h2": ("What AZSCO Delivers", "ما تقدّمه أزسكو"),
@@ -739,20 +753,52 @@ SERVICES_PAGE = {
            "احجز معاينة مجانية للموقع. سنقيّم منشأتك ونوصي بالانتشار المناسب من الأفراد والدوريات والإشراف.")),
 }
 
-# ============================================================ projects page
-PROJECTS = {
-  "title": ("Our Projects | AZSCO Security Kuwait", "مشاريعنا | أزسكو للأمن الكويت"),
-  "desc": ("A look at the sites and sectors AZSCO Security protects across Kuwait. Project case studies are being added soon.",
-           "نظرة على المواقع والقطاعات التي تحميها أزسكو للأمن في جميع أنحاء الكويت. دراسات حالة المشاريع قيد الإضافة قريباً."),
-  "banner_h": ("Our Projects", "مشاريعنا"),
-  "banner_p": ("A closer look at the sites AZSCO protects across Kuwait.",
-               "نظرة أقرب على المواقع التي تحميها أزسكو في جميع أنحاء الكويت."),
-  "crumb": ("Projects", "المشاريع"),
-  "eyebrow": ("Coming Soon", "قريباً"),
-  "h2": ("Project Case Studies Are on Their Way", "دراسات حالة المشاريع قادمة قريباً"),
-  "lead": ("We are putting together case studies from the facilities, sectors and events AZSCO protects across Kuwait. In the meantime, our Services and Partners pages cover what we do and how, and our team is glad to talk through a specific site.",
-           "نعمل حالياً على إعداد دراسات حالة من المنشآت والقطاعات والفعاليات التي تحميها أزسكو في جميع أنحاء الكويت. في الأثناء، تغطي صفحتا خدماتنا وشركاؤنا ما نقدّمه وكيف نقدّمه، ويسعد فريقنا مناقشة موقعك تحديداً."),
-  "btn": ("Talk to Our Team", "تحدّث مع فريقنا"),
+# ============================================================ clients page
+# The 19 client logos legible in the official company profile's "Our
+# Clients" panel (assets/img/photos/clients-logos.jpg), listed here as text
+# for accessibility and for anyone who wants the names without reading the
+# image. A handful of marks in that panel carry no readable name and are
+# intentionally left out of this list -- the image itself is the complete,
+# authoritative record.
+CLIENTS = [
+    ("Radisson Blu Hotel Kuwait", "فندق راديسون بلو الكويت"),
+    ("Ream — Trusted Partners", "ريم - شركاء موثوقون"),
+    ("Alnasser", "النصر"),
+    ("Massaleh Real Estate", "المصالح العقارية"),
+    ("Wataniya Resort", "منتجع الوطنية"),
+    ("Al-Ahleia Switchgear Co. K.S.C.C.", "شركة الأهلية للوحات الكهربائية"),
+    ("Ewan Complex", "مجمع إيوان"),
+    ("NBTC", "NBTC"),
+    ("Awtad", "أوتاد"),
+    ("National Contracting Co. Ltd. (NCC)", "الشركة الوطنية للمقاولات المحدودة"),
+    ("National Investments Company", "الشركة الوطنية للاستثمارات"),
+    ("Millennium Hotels and Resorts", "فنادق ومنتجعات ميلينيوم"),
+    ("Sahara Kuwait", "صحارى الكويت"),
+    ("Alghanim Industries", "صناعات الغانم"),
+    ("Wafra Real Estate", "وفرة العقارية"),
+    ("Kuwait Ports Authority", "مؤسسة الموانئ الكويتية"),
+    ("SHBC", "SHBC"),
+    ("Ministry of Electricity &amp; Water", "وزارة الكهرباء والماء"),
+    ("The Regency", "الريجنسي"),
+]
+
+CLIENTS_PAGE = {
+  "title": ("Our Clients | AZSCO Security Kuwait", "عملاؤنا | أزسكو للأمن الكويت"),
+  "desc": ("AZSCO is trusted by hotels, real estate developers, government bodies and industrial groups across Kuwait, including Radisson Blu Hotel Kuwait, Millennium Hotels and Resorts and Kuwait Ports Authority.",
+           "تحظى أزسكو بثقة الفنادق والمطوّرين العقاريين والجهات الحكومية والمجموعات الصناعية في جميع أنحاء الكويت، ومنها فندق راديسون بلو الكويت وفنادق ومنتجعات ميلينيوم ومؤسسة الموانئ الكويتية."),
+  "banner_h": ("Our Clients", "عملاؤنا"),
+  "banner_p": ("Long-term relationships with clients across Kuwait's public and private sectors.",
+               "علاقات طويلة الأمد مع عملائنا في القطاعين العام والخاص في الكويت."),
+  "crumb": ("Clients", "عملاؤنا"),
+  "eyebrow": ("Trusted Across Kuwait", "موثوقون في جميع أنحاء الكويت"),
+  "h2": ("Organisations That Rely on AZSCO", "جهات تثق بأزسكو"),
+  "lead": ("AZSCO is dedicated to forging long-term relationships with clients in both public and private sectors, built on trust, collaboration, quality and development.",
+           "تلتزم أزسكو ببناء علاقات طويلة الأمد مع عملائها في القطاعين العام والخاص، ترتكز على الثقة والتعاون والجودة والتطوير."),
+  "list_eyebrow": ("The List", "القائمة"),
+  "list_h2": ("Some of the Organisations We Protect", "بعض الجهات التي نحرسها"),
+  "cta": (("Don't see your sector listed?", "لا ترى قطاعك ضمن القائمة؟"),
+          ("AZSCO protects premises across government, commercial, financial, industrial, residential and many other sectors. Talk to us about yours.",
+           "تحرس أزسكو منشآت في القطاعات الحكومية والتجارية والمالية والصناعية والسكنية وقطاعات أخرى عديدة. تحدّث معنا عن قطاعك.")),
 }
 
 # ============================================================ partners page
@@ -766,8 +812,8 @@ PARTNERS_PAGE = {
   "crumb": ("Partners", "شركاؤنا"),
   "eyebrow": ("Strategic Partnerships", "شراكات استراتيجية"),
   "h2": ("Backed by the Industry&rsquo;s Best", "بدعم من الأفضل في القطاع"),
-  "lead": ("AZSCO has partnerships with many global brands to provide unique products and solutions for projects, supporting the sites our officers protect.",
-           "لدى أزسكو شراكات مع العديد من العلامات التجارية العالمية لتوفير منتجات وحلول مميّزة للمشاريع، بما يدعم المواقع التي يحميها أفرادنا."),
+  "lead": ("AZSCO has partnerships with many global technology brands, whose cameras, alarms and monitoring equipment power our Security Systems service and support every site our officers protect.",
+           "لدى أزسكو شراكات مع العديد من العلامات التجارية التقنية العالمية، حيث تدعم كاميراتها وأنظمة إنذارها ومعدات المراقبة الخاصة بها خدمة الأنظمة الأمنية لدينا وكل موقع يحميه أفرادنا."),
   "why_eyebrow": ("Why It Matters", "لماذا يهمّ ذلك"),
   "why_h2": ("What Our Partnerships Give You", "ما الذي تمنحك إياه شراكاتنا"),
   "tiles": [
@@ -815,7 +861,7 @@ CONTACT = {
     "company_ph": ("Company name", "اسم الشركة"),
     "email":   ("Email", "البريد الإلكتروني"),
     "phone":   ("Phone", "الهاتف"),
-    "service": ("Service Required", "الخدمة المطلوبة"),
+    "service": ("Inquiry Type", "نوع الاستفسار"),
     "select":  ("Please select&hellip;", "اختر&hellip;"),
     "message": ("How Can We Help?", "كيف يمكننا مساعدتك؟"),
     "message_ph": ("Tell us about your site, the number of officers or posts you need, operating hours, and what you need protected.",
@@ -826,14 +872,11 @@ CONTACT = {
     "req":     ("This field is required.", "هذا الحقل مطلوب."),
     "bad_email": ("Please enter a valid email address.", "يُرجى إدخال بريد إلكتروني صحيح."),
     "bad_phone": ("Please enter a valid phone number.", "يُرجى إدخال رقم هاتف صحيح."),
-    "choose":  ("Please choose a service.", "يُرجى اختيار خدمة."),
+    "choose":  ("Please choose an inquiry type.", "يُرجى اختيار نوع الاستفسار."),
   },
   "options": [
-    ("Facility Guarding", "حراسة المنشآت"),
-    ("VIP Protection &amp; Rapid Intervention", "حماية الشخصيات والتدخل السريع"),
-    ("Central Operations Room", "غرفة عمليات مركزية"),
-    ("Security Patrols", "دوريات أمنية"),
-    ("Other enquiry", "استفسار آخر"),
+    ("General Inquiry", "استفسار عام"),
+    ("Inquiry About a Service", "استفسار عن خدمة"),
   ],
   "office_hours": ("Office hours", "ساعات العمل"),
   "emergency": ("Emergency response", "الاستجابة للطوارئ"),
@@ -1566,6 +1609,9 @@ def build_about(lang):
       <p>{t(A["clients_lead"], lang)}</p>
     </div>
     {logo_panel("assets/img/photos/clients-logos.jpg", CLIENTS_ALT, lang)}
+    <div class="center" style="margin-top:44px">
+      <a class="btn btn-dark" href="{link(lang, "clients.html")}">{t(A["clients_btn"], lang)} {I["arrow"]}</a>
+    </div>
   </div>
 </section>
 
@@ -1650,30 +1696,35 @@ def build_services(lang):
 '''
     page(lang, "services.html", t(S["title"], lang), t(S["desc"], lang), body)
 
-def build_projects(lang):
-    PJ = PROJECTS
-    body = banner(lang, t(PJ["banner_h"], lang), t(PJ["banner_p"], lang), t(PJ["crumb"], lang)) + f'''
+def build_clients(lang):
+    CL = CLIENTS_PAGE
+    body = banner(lang, t(CL["banner_h"], lang), t(CL["banner_p"], lang), t(CL["crumb"], lang)) + f'''
 <section class="section">
   <div class="wrap">
-    <div class="split">
-      <div class="reveal">
-        <p class="eyebrow">{t(PJ["eyebrow"], lang)}</p>
-        <h2>{t(PJ["h2"], lang)}</h2>
-        <p class="lead">{t(PJ["lead"], lang)}</p>
-        <div class="btn-row">
-          <a class="btn btn-dark" href="{link(lang, "contact.html")}">{t(PJ["btn"], lang)} {I["arrow"]}</a>
-        </div>
-      </div>
-      <div class="split-visual reveal" data-delay="120">
-        <div class="visual-frame"><div style="color:#fff;width:160px;max-width:55%">{I["grid"]}</div></div>
-      </div>
+    <div class="sec-head center reveal">
+      <p class="eyebrow">{t(CL["eyebrow"], lang)}</p>
+      <h2>{t(CL["h2"], lang)}</h2>
+      <p>{t(CL["lead"], lang)}</p>
+    </div>
+    {logo_panel("assets/img/photos/clients-logos.jpg", CLIENTS_ALT, lang)}
+  </div>
+</section>
+
+<section class="section section--alt">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <p class="eyebrow">{t(CL["list_eyebrow"], lang)}</p>
+      <h2>{t(CL["list_h2"], lang)}</h2>
+    </div>
+    <div class="chips center">
+{chip_list(lang, CLIENTS)}
     </div>
   </div>
 </section>
 
-{cta(lang)}
+{cta(lang, CL["cta"])}
 '''
-    page(lang, "projects.html", t(PJ["title"], lang), t(PJ["desc"], lang), body)
+    page(lang, "clients.html", t(CL["title"], lang), t(CL["desc"], lang), body)
 
 def build_partners(lang):
     P = PARTNERS_PAGE
@@ -1883,7 +1934,7 @@ def build_404(lang):
 # ============================================================ write
 SITEMAP_PRIORITY = {
     "index.html": "1.0", "services.html": "0.9", "about.html": "0.8",
-    "contact.html": "0.8", "partners.html": "0.6", "projects.html": "0.5",
+    "contact.html": "0.8", "partners.html": "0.6", "clients.html": "0.6",
     "privacy-policy.html": "0.3",
 }
 
@@ -1961,7 +2012,7 @@ if __name__ == "__main__":
         build_home(lang)
         build_about(lang)
         build_services(lang)
-        build_projects(lang)
+        build_clients(lang)
         build_partners(lang)
         build_contact(lang)
         build_privacy(lang)

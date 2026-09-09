@@ -1,8 +1,8 @@
 # AZSCO Security — Website
 
-The AZSCO Security website (azsco.com) — a Kuwait-based provider of security manpower
-services: facility guarding, VIP protection and rapid intervention, a central operations room,
-and security patrols.
+The AZSCO Security website (azsco.com) — a Kuwait-based provider of security services:
+facility guarding, VIP protection and rapid intervention, a central operations room, security
+patrols, and security systems.
 
 Built as plain HTML, CSS and vanilla JavaScript with no build dependencies, so it can be
 served from any static host (GitHub Pages, S3, Netlify, nginx) by copying the repository root.
@@ -26,7 +26,10 @@ addresses are wrapped in `dir="ltr"` so they read correctly inside Arabic text.
 > supplied by the client (About, Objective/Vision/Mission, Values, CEO's message, Services,
 > Sectors, Nationalities, Training, Equipment, Uniforms, Certifications). Page furniture around
 > that content — section eyebrows and leads, the FAQ, the privacy policy — is a translation of
-> English copy I wrote, and still needs a native review before launch.
+> English copy I wrote, and still needs a native review before launch. The Arabic names in
+> `CLIENTS` (`tools/build.py`) are my own renderings of client brand names for the ones not
+> already bilingual on their own logo, not text supplied by AZSCO — worth confirming, especially
+> the couple of legal-form company names.
 
 ## Pages
 
@@ -35,6 +38,7 @@ addresses are wrapped in `dir="ltr"` so they read correctly inside Arabic text.
 | Home — hero, services, sectors served, why-us, process, partners | `/` | `/ar/` |
 | About AZSCO — story, objective/vision/mission, values, commitment, nationalities, training, equipment, uniforms, certifications, CEO's message, clients, stats, FAQ | `/about/` | `/ar/about/` |
 | All services, with a detail section per service | `/services/` | `/ar/services/` |
+| Our clients — logo panel and a named list | `/clients/` | `/ar/clients/` |
 | Strategic partnerships | `/partners/` | `/ar/partners/` |
 | Contact details and enquiry form | `/contact/` | `/ar/contact/` |
 | Privacy policy | `/privacy-policy/` | `/ar/privacy-policy/` |
@@ -208,14 +212,13 @@ AZSCO's own official company profile (a bilingual PDF supplied directly by the c
 is treated as the single source of truth over anything guessed earlier from public search
 results. Three things worth knowing about how it was applied:
 
-- **Scope stays manpower-only by explicit instruction.** The source document lists a fifth
-  service, Security Systems (CCTV, fire and theft alarms), with named technology partners.
-  Per the client's standing direction, the site does not describe AZSCO as selling or
-  installing security systems — only the four manpower services appear (`SERVICES` in
-  `tools/build.py`: Facility Guarding, VIP Protection & Rapid Intervention, Central Operations
-  Room, Security Patrols). The 8 technology partners still appear on the Partners page,
-  reframed as the equipment ecosystem that feeds the Central Operations Room's monitoring —
-  not as something AZSCO sells or installs.
+- **All five services are covered, including Security Systems.** An earlier phase of this site
+  deliberately left out the source document's fifth service — Security Systems (CCTV, fire and
+  theft alarms) — at the client's own standing direction to stay manpower-only. That direction
+  was later reversed by the client, so `SERVICES` in `tools/build.py` now carries all five:
+  Facility Guarding, VIP Protection & Rapid Intervention, Central Operations Room, Security
+  Patrols, and Security Systems. The 8 technology partners on the Partners page are framed as
+  the equipment behind that service and the Central Operations Room's monitoring.
 - **Founding year corrected to 2014.** Earlier content (built before the official profile was
   available) said 2008. The source document is unambiguous — established 2014, formerly known
   as Almail Zone Security Services — and every mention (`FOUNDED` in `tools/build.py`, the
@@ -231,10 +234,10 @@ results. Three things worth knowing about how it was applied:
   submit anywhere. Point the `<form>` at a backend endpoint or form service to make it live.
 - **Social links**: placeholder `#` hrefs in the top bar and footer, except Instagram
   (`INSTAGRAM_URL` in `tools/build.py`) — replace the rest with the real profile URLs.
-- **Scope**: the site covers security manpower only — facility guarding, VIP protection and
-  rapid intervention, a central operations room, and security patrols. There is deliberately
-  no content describing AZSCO as selling or installing security systems (fire, intrusion,
-  CCTV, access control) — see "Content source" above.
+- **Scope**: facility guarding, VIP protection and rapid intervention, a central operations
+  room, security patrols, and security systems (CCTV, fire and theft alarms) — see
+  "Content source" above for how the last one was added back after an earlier manpower-only
+  phase.
 - **Photography**: `assets/img/photos/` holds `hero.jpg`, the extracted `partners-logos.png`,
   `clients-logos.jpg` and `certifications.jpg` panels, and `uniforms/` (front and back photos
   for the four official uniform models — formal, winter, patrol, duty — extracted from the

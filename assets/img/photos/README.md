@@ -28,7 +28,7 @@ These images are live on the site, sourced from AZSCO's official company profile
 | --- | --- | --- |
 | `hero.jpg` | Home page hero background | as supplied |
 | `partners-logos.png` | Partners page and home page, the 8 technology partner logos | 552 × 233 |
-| `clients-logos.jpg` | About page, the client logo wall | 748 × 489 |
+| `clients-logos.jpg` | About page and Clients page, the client logo wall | 748 × 489 |
 | `certifications.jpg` | About page, ISO 9001 / SCK / IAS certification badges | 473 × 180 |
 | `uniforms/formal-front.jpg`, `formal-back.jpg` | About page, Uniform Models — Formal Uniform | 232 × 349 |
 | `uniforms/winter-front.jpg`, `winter-back.jpg` | About page, Uniform Models — Winter Uniform | 232 × 349 |
