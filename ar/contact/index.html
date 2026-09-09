@@ -157,7 +157,8 @@
       </div>
 
       <div class="form-card reveal" data-delay="120">
-        <form data-contact-form novalidate data-sent-message="شكراً لتواصلك مع أزسكو. تم تسجيل طلبك وسيتواصل معك أحد أعضاء فريقنا قريباً. وللأمور العاجلة اتصل على (+965) 1808606.">
+        <form data-contact-form novalidate data-sent-message="شكراً لتواصلك مع أزسكو. تم تسجيل طلبك وسيتواصل معك أحد أعضاء فريقنا قريباً. وللأمور العاجلة اتصل على (+965) 1808606."
+              data-service-names='{"guarding": "حراسة المنشآت", "protection": "حماية الشخصيات والتدخل السريع", "operations": "غرفة عمليات مركزية", "patrols": "دوريات أمنية", "systems": "أنظمة أمنية"}' data-quote-prefill="أرغب في الحصول على عرض سعر لـ: {SERVICE}. ">
           <div class="form-status" role="status" aria-live="polite"></div>
 
           <div class="grid grid-2" style="gap:0 20px">
@@ -187,8 +188,8 @@
             <label for="service">نوع الاستفسار <span class="req">*</span></label>
             <select id="service" name="service" required>
               <option value="">اختر&hellip;</option>
-              <option>استفسار عام</option>
-              <option>استفسار عن خدمة</option>
+              <option value="general">استفسار عام</option>
+              <option value="service">استفسار عن خدمة</option>
             </select>
             <span class="err">يُرجى اختيار نوع الاستفسار.</span>
           </div>

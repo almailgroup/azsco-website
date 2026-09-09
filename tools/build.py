@@ -2,6 +2,8 @@
 """Static builder for the AZSCO Security site (English + Arabic)."""
 import os
 import datetime
+import html
+import json
 
 # Output to the repository root (this script lives in <repo>/tools).
 OUT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
@@ -875,9 +877,11 @@ CONTACT = {
     "choose":  ("Please choose an inquiry type.", "يُرجى اختيار نوع الاستفسار."),
   },
   "options": [
-    ("General Inquiry", "استفسار عام"),
-    ("Inquiry About a Service", "استفسار عن خدمة"),
+    ("general", ("General Inquiry", "استفسار عام")),
+    ("service", ("Inquiry About a Service", "استفسار عن خدمة")),
   ],
+  "quote_prefill": ("I would like a quote for: {SERVICE}. ",
+                     "أرغب في الحصول على عرض سعر لـ: {SERVICE}. "),
   "office_hours": ("Office hours", "ساعات العمل"),
   "emergency": ("Emergency response", "الاستجابة للطوارئ"),
   "emergency_v": ("Available 24 hours a day, 7 days a week", "متاحة على مدار 24 ساعة طوال أيام الأسبوع"),
@@ -1654,7 +1658,7 @@ def build_services(lang):
 {pts}
         </ul>
         <div class="btn-row">
-          <a class="btn btn-dark" href="{link(lang, "contact.html")}">{t(UI["req_quote"], lang)} {I["arrow"]}</a>
+          <a class="btn btn-dark" href="{link(lang, "contact.html")}?service={s["anchor"]}">{t(UI["req_quote"], lang)} {I["arrow"]}</a>
         </div>
       </div>
       <div class="split-visual reveal" data-delay="120">
@@ -1796,10 +1800,16 @@ def build_contact(lang):
         <span class="ico">{I[icon]}</span>
         <div><h4>{t(title, lang)}</h4>{value}{extra}</div>
       </div>''')
-    options = "\n".join(f'              <option>{t(o, lang)}</option>' for o in C["options"])
+    options = "\n".join(f'              <option value="{v}">{t(o, lang)}</option>' for v, o in C["options"])
     note = (t(F["note"], lang)
             .replace("{PRIVACY}", f'<a href="{link(lang, "privacy-policy.html")}">{t(FOOTER["privacy"], lang)}</a>')
             .replace("{PHONE}", f'<span dir="ltr">{PHONE}</span>'))
+    # Lets a "Request a Quote" link on the services page (contact.html?service=<anchor>)
+    # land here with the right inquiry type pre-selected and the message field
+    # pre-filled, instead of the visitor arriving at a blank general enquiry.
+    service_names = json.dumps(
+        {s["anchor"]: html.unescape(t(s["name"], lang)) for s in SERVICES},
+        ensure_ascii=False)
 
     body = banner(lang, t(C["banner_h"], lang), t(C["banner_p"], lang), t(C["crumb"], lang)) + f'''
 <section class="section">
@@ -1829,7 +1839,8 @@ def build_contact(lang):
       </div>
 
       <div class="form-card reveal" data-delay="120">
-        <form data-contact-form novalidate data-sent-message="{t(C["sent"], lang)}">
+        <form data-contact-form novalidate data-sent-message="{t(C["sent"], lang)}"
+              data-service-names='{service_names}' data-quote-prefill="{t(C["quote_prefill"], lang)}">
           <div class="form-status" role="status" aria-live="polite"></div>
 
           <div class="grid grid-2" style="gap:0 20px">

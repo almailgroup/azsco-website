@@ -181,10 +181,35 @@
     on(btn, 'click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
   }
 
+  /* ---------- pre-fill the enquiry from a "Request a Quote" link ----------
+     contact.html?service=<anchor> (sent by each service's quote button on
+     the services page) selects "Inquiry About a Service" and drops the
+     service's name into the message field, so the visitor lands ready to
+     send that enquiry rather than a blank general one. */
+  function prefillServiceQuery(form) {
+    var match = /[?&]service=([^&]+)/.exec(location.search);
+    if (!match) return;
+    var anchor = decodeURIComponent(match[1]);
+    var names = {};
+    try { names = JSON.parse(form.getAttribute('data-service-names') || '{}'); } catch (e) { return; }
+    var name = names[anchor];
+    if (!name) return;
+
+    var select = form.querySelector('#service');
+    if (select) select.value = 'service';
+
+    var message = form.querySelector('#message');
+    var template = form.getAttribute('data-quote-prefill') || '';
+    if (message && !message.value && template) {
+      message.value = template.replace('{SERVICE}', name);
+    }
+  }
+
   /* ---------- contact form validation ---------- */
   function contactForm() {
     var form = doc.querySelector('[data-contact-form]');
     if (!form) return;
+    prefillServiceQuery(form);
     var status = form.querySelector('.form-status');
 
     function fail(field, msg) {

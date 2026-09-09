@@ -157,7 +157,8 @@
       </div>
 
       <div class="form-card reveal" data-delay="120">
-        <form data-contact-form novalidate data-sent-message="Thank you for contacting AZSCO. Your request has been recorded — a member of our team will respond shortly. For urgent matters call (+965) 1808606.">
+        <form data-contact-form novalidate data-sent-message="Thank you for contacting AZSCO. Your request has been recorded — a member of our team will respond shortly. For urgent matters call (+965) 1808606."
+              data-service-names='{"guarding": "Facility Guarding", "protection": "VIP Protection & Rapid Intervention", "operations": "Central Operations Room", "patrols": "Security Patrols", "systems": "Security Systems"}' data-quote-prefill="I would like a quote for: {SERVICE}. ">
           <div class="form-status" role="status" aria-live="polite"></div>
 
           <div class="grid grid-2" style="gap:0 20px">
@@ -187,8 +188,8 @@
             <label for="service">Inquiry Type <span class="req">*</span></label>
             <select id="service" name="service" required>
               <option value="">Please select&hellip;</option>
-              <option>General Inquiry</option>
-              <option>Inquiry About a Service</option>
+              <option value="general">General Inquiry</option>
+              <option value="service">Inquiry About a Service</option>
             </select>
             <span class="err">Please choose an inquiry type.</span>
           </div>
