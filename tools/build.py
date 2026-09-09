@@ -43,7 +43,7 @@ COMPANY
 - Telephone: (+965) 1808606.
 - Email: info@azsco.com for general enquiries, sales@azsco.com for sales
   and quotations.
-- Office hours: Sunday to Thursday, 8:00-17:00. Emergency response 24/7.
+- Office hours: Sunday to Thursday, 8:30-16:30. Emergency response 24/7.
 - CEO: Dr. Abdulaziz Almail.
 - Certified ISO 9001:2015 for quality management, and compliant with
   Anti-Money Laundering standards.
@@ -243,9 +243,9 @@ ADDRESS_1L = ("Floor 27B, Kuwait Building Tower, Fahad Al Salem St., Qibla, Kuwa
               "الدور 27B، برج مبنى الكويت، شارع فهد السالم، القبلة، الكويت")
 ADDRESS_BR = ("Floor 27B, Kuwait Building Tower,<br>Fahad Al Salem St., Qibla, Kuwait",
               "الدور 27B، برج مبنى الكويت،<br>شارع فهد السالم، القبلة، الكويت")
-HOURS      = ("Sunday &ndash; Thursday, 8:00 &ndash; 17:00", "الأحد &ndash; الخميس، 8:00 &ndash; 17:00")
-HOURS_FOOT = ("Sunday &ndash; Thursday, 8:00 &ndash; 17:00<br>Emergency response 24/7",
-              "الأحد &ndash; الخميس، 8:00 &ndash; 17:00<br>استجابة الطوارئ على مدار الساعة")
+HOURS      = ("Sunday &ndash; Thursday, 8:30 AM &ndash; 4:30 PM", "الأحد &ndash; الخميس، 8:30 صباحاً &ndash; 4:30 مساءً")
+HOURS_FOOT = ("Sunday &ndash; Thursday, 8:30 AM &ndash; 4:30 PM<br>Emergency response 24/7",
+              "الأحد &ndash; الخميس، 8:30 صباحاً &ndash; 4:30 مساءً<br>استجابة الطوارئ على مدار الساعة")
 RESPONSE_24 = ("24/7 Response", "استجابة على مدار الساعة")
 LANG_SWITCH = ("العربية", "English")
 LANG_SWITCH_SHORT = ("ع", "EN")
@@ -715,8 +715,8 @@ ABOUT = {
      ("Timelines depend on the number of posts, the shift pattern and any vetting the site requires. After a free site survey we issue a proposal with a clear deployment schedule, the officers assigned and the supervision arrangements that come with them.",
       "تعتمد المدة على عدد النقاط ونمط الورديات وأي تدقيق أمني يتطلبه الموقع. وبعد معاينة مجانية للموقع نصدر عرضاً يتضمّن جدولاً واضحاً للانتشار والأفراد المكلّفين وترتيبات الإشراف المرافقة لهم.")),
     (("Is support available outside working hours?", "هل الدعم متاح خارج ساعات العمل؟"),
-     ("Our office hours are Sunday to Thursday, 8:00 to 17:00, but our team of dedicated professionals is available 24 hours a day, 7 days a week for supervision, emergency response and escalations.",
-      "ساعات عمل مكتبنا من الأحد إلى الخميس، من 8:00 إلى 17:00، لكن فريقنا من المتخصصين متاح على مدار 24 ساعة طوال أيام الأسبوع للإشراف والاستجابة للطوارئ والحالات العاجلة.")),
+     ("Our office hours are Sunday to Thursday, 8:30 AM to 4:30 PM, but our team of dedicated professionals is available 24 hours a day, 7 days a week for supervision, emergency response and escalations.",
+      "ساعات عمل مكتبنا من الأحد إلى الخميس، من 8:30 صباحاً إلى 4:30 مساءً، لكن فريقنا من المتخصصين متاح على مدار 24 ساعة طوال أيام الأسبوع للإشراف والاستجابة للطوارئ والحالات العاجلة.")),
   ],
 }
 

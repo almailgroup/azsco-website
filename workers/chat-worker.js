@@ -50,7 +50,7 @@ COMPANY
 - Telephone: (+965) 1808606.
 - Email: info@azsco.com for general enquiries, sales@azsco.com for sales
   and quotations.
-- Office hours: Sunday to Thursday, 8:00-17:00. Emergency response 24/7.
+- Office hours: Sunday to Thursday, 8:30-16:30. Emergency response 24/7.
 - CEO: Dr. Abdulaziz Almail.
 - Certified ISO 9001:2015 for quality management, and compliant with
   Anti-Money Laundering standards.
