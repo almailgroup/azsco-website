@@ -726,6 +726,12 @@ li{margin-bottom:.45em}
   color:var(--ink);font-size:.95rem;font-weight:600;
 }
 .form-status.is-visible{display:block}
+/* No red anywhere in this palette, so a failed send is marked the way field
+   errors are: heavier border, an inset rule and a warning glyph. */
+.form-status.is-error{border-width:2px;box-shadow:inset 3px 0 0 var(--ink)}
+.form-status.is-error::before{content:"\26A0";margin-right:8px;font-weight:700}
+[dir="rtl"] .form-status.is-error{box-shadow:inset -3px 0 0 var(--ink)}
+[dir="rtl"] .form-status.is-error::before{margin-right:0;margin-left:8px}
 
 .map-embed{
   border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line);

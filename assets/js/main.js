@@ -212,42 +212,56 @@
     prefillServiceQuery(form);
     var status = form.querySelector('.form-status');
 
-    function fail(field, msg) {
+    // The markup already carries each field's message, authored per language;
+    // reusing it keeps the Arabic form speaking Arabic when a check fails.
+    function fail(field) {
       var wrap = field.closest('.field');
-      wrap.classList.add('has-error');
-      var err = wrap.querySelector('.err');
-      if (err && msg) err.textContent = msg;
+      if (wrap) wrap.classList.add('has-error');
       return false;
     }
 
     function check(field) {
       var wrap = field.closest('.field');
+      if (!wrap) return true;           // honeypot and other unwrapped inputs
       wrap.classList.remove('has-error');
       var val = (field.value || '').trim();
 
-      if (field.hasAttribute('required') && !val) {
-        return fail(field, 'This field is required.');
-      }
+      if (field.hasAttribute('required') && !val) return fail(field);
       if (field.type === 'email' && val && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val)) {
-        return fail(field, 'Please enter a valid email address.');
+        return fail(field);
       }
       if (field.type === 'tel' && val && !/^[0-9+()\-\s]{6,}$/.test(val)) {
-        return fail(field, 'Please enter a valid phone number.');
+        return fail(field);
       }
       return true;
     }
 
-    all('input, select, textarea', form).forEach(function (f) {
+    function fields() {
+      return all('input, select, textarea', form).filter(function (f) {
+        return f.name !== 'website';    // the honeypot is never validated
+      });
+    }
+
+    fields().forEach(function (f) {
       on(f, 'blur', function () { check(f); });
       on(f, 'input', function () {
-        if (f.closest('.field').classList.contains('has-error')) check(f);
+        var wrap = f.closest('.field');
+        if (wrap && wrap.classList.contains('has-error')) check(f);
       });
     });
+
+    // Every message is authored per language on the form element itself.
+    function say(msg, isError) {
+      if (!status) return;
+      status.textContent = msg || '';
+      status.classList.add('is-visible');
+      status.classList.toggle('is-error', !!isError);
+    }
 
     on(form, 'submit', function (e) {
       e.preventDefault();
       var ok = true;
-      all('input, select, textarea', form).forEach(function (f) { if (!check(f)) ok = false; });
+      fields().forEach(function (f) { if (!check(f)) ok = false; });
 
       if (!ok) {
         var first = form.querySelector('.has-error input, .has-error select, .has-error textarea');
@@ -255,13 +269,49 @@
         return;
       }
 
-      if (status) {
-        // the message is authored per language on the form element itself
-        status.textContent = form.getAttribute('data-sent-message') || '';
-        status.classList.add('is-visible');
+      var endpoint = form.getAttribute('data-endpoint');
+      var submit = form.querySelector('[type="submit"]');
+      var payload = { lang: form.getAttribute('data-lang') || 'en' };
+      fields().forEach(function (f) {
+        if (!f.name) return;
+        // Send a select's visible label, not its value — the email should read
+        // "Inquiry About a Service", not "service" (and in Arabic on /ar/).
+        payload[f.name] = (f.tagName === 'SELECT' && f.selectedIndex >= 0)
+          ? f.options[f.selectedIndex].text
+          : f.value;
+      });
+      var honeypot = form.querySelector('[name="website"]');
+      if (honeypot) payload.website = honeypot.value;
+
+      if (!endpoint) {                      // nothing to post to — say so, don't pretend
+        say(form.getAttribute('data-error-message'), true);
         status.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
       }
-      form.reset();
+
+      if (submit) submit.disabled = true;
+      say(form.getAttribute('data-sending-message'));
+
+      fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+        .then(function (res) {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.json();
+        })
+        .then(function () {
+          say(form.getAttribute('data-sent-message'));
+          form.reset();
+        })
+        .catch(function () {
+          say(form.getAttribute('data-error-message'), true);
+        })
+        .then(function () {
+          if (submit) submit.disabled = false;
+          status.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
     });
   }
 

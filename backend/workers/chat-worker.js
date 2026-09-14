@@ -127,16 +127,89 @@ function json(body, status, origin, env) {
   return new Response(JSON.stringify(body), { status, headers: corsHeaders(origin, env) });
 }
 
-export default {
-  async fetch(request, env) {
-    const origin = request.headers.get('origin');
+/* ---------------------------------------------------------------- contact
+ * The contact form posts here. The form has no backend of its own -- this
+ * route relays a validated submission to Web3Forms, which emails it to
+ * whichever address the WEB3FORMS_KEY was issued for (sales@azsco.com).
+ * The key stays server-side, so the published form cannot be scraped and
+ * used to send mail by anyone who views the page source.
+ *
+ * Required secret: WEB3FORMS_KEY -- a free access key from
+ * https://web3forms.com (enter the destination email, the key arrives by
+ * return email; no account to create). To move to a provider that sends
+ * from azsco.com itself later, replace the fetch below -- everything else
+ * here, including the validation, stays as it is.
+ */
+const FIELD_LIMIT = 2000;   // per field, after trimming
 
-    if (request.method === 'OPTIONS') {
-      return new Response(null, { status: 204, headers: corsHeaders(origin, env) });
+async function handleContact(request, env, origin) {
+  if (!env.WEB3FORMS_KEY) {
+    console.error('WEB3FORMS_KEY is not set');
+    return json({ error: 'Contact form unavailable' }, 503, origin, env);
+  }
+
+  let form;
+  try {
+    form = await request.json();
+  } catch {
+    return json({ error: 'Invalid JSON' }, 400, origin, env);
+  }
+
+  const clean = k => (typeof form?.[k] === 'string' ? form[k].trim().slice(0, FIELD_LIMIT) : '');
+
+  // Honeypot: a field hidden from people but appealing to bots. Anything in
+  // it means a bot, so answer exactly as if it worked and send nothing --
+  // reporting the rejection just teaches the bot to try again.
+  if (clean('website')) return json({ ok: true }, 200, origin, env);
+
+  const name = clean('name');
+  const email = clean('email');
+  const phone = clean('phone');
+  const message = clean('message');
+  if (!name || !email || !phone || !message) {
+    return json({ error: 'Missing required fields' }, 400, origin, env);
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+    return json({ error: 'Invalid email' }, 400, origin, env);
+  }
+
+  const lang = form?.lang === 'ar' ? 'ar' : 'en';
+  const company = clean('company');
+  const service = clean('service');
+
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        access_key: env.WEB3FORMS_KEY,
+        subject: `Website enquiry: ${service || 'General'} — ${name}`,
+        from_name: 'AZSCO Website',
+        replyto: email,
+        // Flat keys: whatever is listed here is what appears in the email.
+        Name: name,
+        Company: company || '—',
+        Email: email,
+        Phone: phone,
+        'Inquiry type': service || '—',
+        Message: message,
+        'Sent from': lang === 'ar' ? 'Arabic site (/ar/)' : 'English site',
+      }),
+    });
+
+    if (!res.ok) {
+      const detail = await res.text();
+      console.error('Web3Forms error', res.status, detail.slice(0, 500));
+      return json({ error: 'Could not send' }, 502, origin, env);
     }
-    if (request.method !== 'POST') {
-      return json({ error: 'Method not allowed' }, 405, origin, env);
-    }
+    return json({ ok: true }, 200, origin, env);
+  } catch (err) {
+    console.error('Contact relay failure', err);
+    return json({ error: 'Could not send' }, 502, origin, env);
+  }
+}
+
+async function handleChat(request, env, origin) {
     if (!env.GEMINI_API_KEY) {
       // Configuration problem, not the visitor's fault — do not leak details.
       console.error('GEMINI_API_KEY is not set');
@@ -196,5 +269,24 @@ export default {
       console.error('Proxy failure', err);
       return json({ error: 'Assistant unavailable' }, 502, origin, env);
     }
+}
+
+export default {
+  async fetch(request, env) {
+    const origin = request.headers.get('origin');
+
+    if (request.method === 'OPTIONS') {
+      return new Response(null, { status: 204, headers: corsHeaders(origin, env) });
+    }
+    if (request.method !== 'POST') {
+      return json({ error: 'Method not allowed' }, 405, origin, env);
+    }
+
+    // One worker, two jobs: /contact takes the contact form, everything else
+    // is the chat widget (which has always posted to the worker root).
+    const path = new URL(request.url).pathname.replace(/\/+$/, '');
+    return path === '/contact'
+      ? handleContact(request, env, origin)
+      : handleChat(request, env, origin);
   },
 };

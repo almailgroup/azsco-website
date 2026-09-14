@@ -6,6 +6,8 @@ Thumbs.db
 .vscode/
 
 # Dependencies / build output (if tooling is added later)
+__pycache__/
+*.pyc
 node_modules/
 dist/
 .cache/

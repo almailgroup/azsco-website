@@ -33,6 +33,36 @@ CHAT_ENDPOINT = "https://azsco-website-chatbot.steep-band-c624.workers.dev/"
 CHAT_API_KEY = "p1X26n4nrtk0iw1CCoewn6weL6mg8vOP"
 CHAT_MODEL = "mistral-small-latest"
 
+# Cloudflare Web Analytics: paste the token from the Cloudflare dashboard
+# (Analytics & Logs -> Web Analytics -> add azsco.com -> copy the token out of
+# the snippet it shows). Left empty, no analytics script is emitted at all --
+# the site ships clean rather than with a dead beacon. Chosen over Google
+# Analytics because it sets no cookies and stores no personal data, so it
+# needs no cookie banner and nothing changes in the privacy policy's terms.
+ANALYTICS_TOKEN = ""
+
+# Google Search Console verification. Paste only the content value from the
+# "HTML tag" method (the long string, not the whole tag); empty emits nothing.
+SEARCH_CONSOLE_TOKEN = ""
+
+def search_console_tag():
+    if not SEARCH_CONSOLE_TOKEN:
+        return ""
+    return '<meta name="google-site-verification" content="%s">\n' % SEARCH_CONSOLE_TOKEN
+
+def analytics_tag():
+    if not ANALYTICS_TOKEN:
+        return ""
+    return ('<script defer src="https://static.cloudflareinsights.com/beacon.min.js" '
+            'data-cf-beacon=\'{"token": "%s"}\'></script>' % ANALYTICS_TOKEN)
+
+# The contact form posts here: the same worker, on its /contact route, which
+# relays the submission to the email address the WEB3FORMS_KEY was issued for.
+# Without that secret set on the worker the route answers 503 and the form
+# tells the visitor to call or email instead -- it never claims to have sent
+# something it did not send.
+CONTACT_ENDPOINT = CHAT_ENDPOINT.rstrip("/") + "/contact"
+
 # The facts the assistant may rely on. This is the single source of truth: the
 # proxy in backend/api/chat.js carries its own copy for when CHAT_MODE is "proxy".
 CHAT_FACTS = """
@@ -229,7 +259,7 @@ def logo(variant="dark"):
     `light` is the white artwork used on dark backgrounds (the footer)."""
     src = "AZSCO_Logo_white.png" if variant == "light" else "AZSCO_Logo.png"
     return ('<img class="brand-logo" src="assets/img/%s" '
-            'alt="AZSCO Security" width="1730" height="798">' % src)
+            'alt="AZSCO Security" width="347" height="160">' % src)
 
 
 # ============================================================ shared strings
@@ -509,8 +539,8 @@ ABOUT_SVG = '''<svg viewBox="0 0 320 300" role="img" aria-label="Illustration of
 HOME = {
   "title": ("AZSCO Security | Professional Security Services for Kuwait",
             "أزسكو للأمن | خدمات أمنية احترافية في الكويت"),
-  "desc": ("AZSCO Security Services Company provides professional security manpower in Kuwait since 2014 — facility guarding, VIP protection and rapid intervention, a 24/7 central operations room, and security patrols.",
-           "تقدّم شركة أزسكو لخدمات حراسة المنشآت كوادر أمنية احترافية في الكويت منذ عام 2014 — حراسة المنشآت، وحماية الشخصيات والتدخّل السريع، وغرفة عمليات مركزية على مدار الساعة، ودوريات أمنية."),
+  "desc": ("AZSCO Security Services Company provides professional security services in Kuwait since 2014 — facility guarding, VIP protection and rapid intervention, a 24/7 central operations room, security patrols, and security systems.",
+           "تقدّم شركة أزسكو لخدمات حراسة المنشآت خدمات أمنية احترافية في الكويت منذ عام 2014 — حراسة المنشآت، وحماية الشخصيات والتدخّل السريع، وغرفة عمليات مركزية على مدار الساعة، ودوريات أمنية، وأنظمة أمنية."),
   "badge": ("Licensed Security Provider &mdash; Kuwait", "مزوّد خدمات أمنية مرخّص &mdash; الكويت"),
   "h1a": ("Professional Security", "خدمات أمنية"),
   "h1b": ("Services for Kuwait", "احترافية في الكويت"),
@@ -877,8 +907,12 @@ CONTACT = {
   "cta": (("Prefer to speak to someone now?", "تفضّل التحدّث مع أحدهم الآن؟"),
           ("Our team is available 24 hours a day, 7 days a week for urgent security matters.",
            "فريقنا متاح على مدار 24 ساعة طوال أيام الأسبوع للأمور الأمنية العاجلة.")),
-  "sent": ("Thank you for contacting AZSCO. Your request has been recorded — a member of our team will respond shortly. For urgent matters call (+965) 1808606.",
-           "شكراً لتواصلك مع أزسكو. تم تسجيل طلبك وسيتواصل معك أحد أعضاء فريقنا قريباً. وللأمور العاجلة اتصل على (+965) 1808606."),
+  "sent": ("Thank you for contacting AZSCO. Your enquiry has been sent — a member of our team will respond shortly. For urgent matters call (+965) 1808606.",
+           "شكراً لتواصلك مع أزسكو. تم إرسال طلبك وسيتواصل معك أحد أعضاء فريقنا قريباً. وللأمور العاجلة اتصل على (+965) 1808606."),
+  "sending": ("Sending your enquiry&hellip;", "جارٍ إرسال طلبك&hellip;"),
+  "send_failed": ("Sorry, your enquiry could not be sent just now. Please call (+965) 1808606 or email sales@azsco.com and we will pick it up straight away.",
+                  "عذراً، تعذّر إرسال طلبك في الوقت الحالي. يُرجى الاتصال على (+965) 1808606 أو مراسلتنا على sales@azsco.com وسنتابع طلبك فوراً."),
+  "honeypot": ("Leave this field empty", "اترك هذا الحقل فارغاً"),
 }
 
 # ============================================================ 404
@@ -923,8 +957,8 @@ PRIVACY = {
               ("To improve this website, our services and our communications.", "لتحسين هذا الموقع وخدماتنا وتواصلنا."),
               ("To comply with legal, regulatory and licensing obligations in the State of Kuwait.", "للامتثال للالتزامات القانونية والتنظيمية والترخيصية في دولة الكويت.")])]),
     (("Cookies", "ملفات تعريف الارتباط"),
-     [("p", ("This website uses cookies and similar technologies to keep the site working correctly and to understand how visitors use it. You can control or delete cookies through your browser settings. Disabling cookies may affect parts of the site&rsquo;s functionality.",
-             "يستخدم هذا الموقع ملفات تعريف الارتباط وتقنيات مشابهة للحفاظ على عمل الموقع بشكل صحيح ولفهم كيفية استخدام الزوار له. ويمكنك التحكم بها أو حذفها من إعدادات متصفحك. وقد يؤثر تعطيلها على بعض وظائف الموقع."))]),
+     [("p", ("This website does not use advertising or tracking cookies. The AZSCO Assistant chat widget stores your conversation in your own browser (session storage) so it survives moving between pages; it is cleared when you close the tab and is never sent anywhere except to answer your questions. Where we measure visitor numbers, we use a privacy-friendly analytics service that sets no cookies and does not identify individual visitors. You can clear this storage at any time through your browser settings.",
+             "لا يستخدم هذا الموقع ملفات تعريف ارتباط للإعلانات أو التتبّع. يحتفظ مساعد أزسكو بمحادثتك داخل متصفحك أنت (تخزين الجلسة) لتبقى متاحة أثناء تنقّلك بين الصفحات، وتُمسح عند إغلاق التبويب ولا تُرسل إلى أي جهة إلا للردّ على أسئلتك. وعند قياس أعداد الزوار نستخدم خدمة تحليلات تحترم الخصوصية لا تضع ملفات تعريف ارتباط ولا تحدّد هوية الزوار. ويمكنك مسح هذا التخزين في أي وقت من إعدادات متصفحك."))]),
     (("Sharing Your Information", "مشاركة معلوماتك"),
      [("p", ("We do not sell your personal information. We may share it with:", "نحن لا نبيع معلوماتك الشخصية. وقد نشاركها مع:")),
       ("ul", [("Service providers who support our operations, such as hosting and IT providers, under confidentiality obligations.",
@@ -979,6 +1013,7 @@ def head(lang, fname, title, desc):
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <meta name="theme-color" content="#0d0d0d">
+{search_console_tag()}
 <link rel="canonical" href="{canonical(lang, fname)}">
 <link rel="alternate" hreflang="en" href="{canonical("en", fname)}">
 <link rel="alternate" hreflang="ar" href="{canonical("ar", fname)}">
@@ -989,8 +1024,12 @@ def head(lang, fname, title, desc):
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
 <meta property="og:url" content="{canonical(lang, fname)}">
-<meta property="og:image" content="https://www.azsco.com/assets/img/AZSCO_Logo.png">
+<meta property="og:image" content="https://www.azsco.com/assets/img/og-share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="AZSCO Security — professional security services for Kuwait">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.azsco.com/assets/img/og-share.jpg">
 <link rel="icon" type="image/png" sizes="32x32" href="{a}assets/img/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="{a}assets/img/favicon-192.png">
 <link rel="apple-touch-icon" href="{a}assets/img/apple-touch-icon.png">
@@ -1064,7 +1103,7 @@ def header(lang, fname):
 <header class="site-header">
   <div class="wrap">
     <a class="brand" href="{link(lang, "index.html")}" aria-label="{t(UI["home_label"], lang)}">
-      <img class="brand-logo" src="{a}assets/img/AZSCO_Logo.png" alt="{t(SITE_NAME, lang)}" width="1730" height="798">
+      <img class="brand-logo" src="{a}assets/img/AZSCO_Logo.png" alt="{t(SITE_NAME, lang)}" width="347" height="160">
     </a>
 
     <nav aria-label="{t(UI["main_nav"], lang)}">
@@ -1081,7 +1120,7 @@ def header(lang, fname):
 <div class="backdrop"></div>
 <nav class="mobile-nav" id="mobile-nav" aria-label="{t(UI["mob_nav"], lang)}">
   <div class="mobile-nav-head">
-    <img class="brand-logo" src="{a}assets/img/AZSCO_Logo.png" alt="{t(SITE_NAME, lang)}" width="1730" height="798">
+    <img class="brand-logo" src="{a}assets/img/AZSCO_Logo.png" alt="{t(SITE_NAME, lang)}" width="347" height="160">
     <button class="close" type="button" aria-label="{t(UI["menu_close"], lang)}">{I["close"]}</button>
   </div>
       {mobile_nav(lang)}
@@ -1148,7 +1187,7 @@ def footer(lang):
     <div class="footer-grid">
       <div>
         <a class="brand" href="{link(lang, "index.html")}" aria-label="{t(UI["home_label"], lang)}">
-          <img class="brand-logo" src="{a}assets/img/AZSCO_Logo_white.png" alt="{t(SITE_NAME, lang)}" width="1730" height="798">
+          <img class="brand-logo" src="{a}assets/img/AZSCO_Logo_white.png" alt="{t(SITE_NAME, lang)}" width="347" height="160">
         </a>
         <p>{t(FOOTER["blurb"], lang)}</p>
         <div class="footer-social">
@@ -1205,6 +1244,7 @@ def footer(lang):
 <script src="{a}assets/js/main.js"></script>
 <script src="{a}assets/js/chat-config.js"></script>
 <script src="{a}assets/js/chat.js" defer></script>
+{analytics_tag()}
 </body>
 </html>
 '''
@@ -1827,7 +1867,15 @@ def build_contact(lang):
 
       <div class="form-card reveal" data-delay="120">
         <form data-contact-form novalidate data-sent-message="{t(C["sent"], lang)}"
+              data-endpoint="{CONTACT_ENDPOINT}" data-lang="{lang}"
+              data-sending-message="{t(C["sending"], lang)}" data-error-message="{t(C["send_failed"], lang)}"
               data-service-names='{service_names}' data-quote-prefill="{t(C["quote_prefill"], lang)}">
+          <!-- Honeypot: hidden from people, tempting to bots. A filled-in
+               value marks the submission as spam, server-side. -->
+          <div class="visually-hidden" aria-hidden="true">
+            <label for="website">{t(C["honeypot"], lang)}</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+          </div>
           <div class="form-status" role="status" aria-live="polite"></div>
 
           <div class="grid grid-2" style="gap:0 20px">
