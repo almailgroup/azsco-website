@@ -1,15 +1,13 @@
 /* AZSCO Assistant — chat widget.
  *
- * Two modes, selected by CHAT_MODE in tools/build.py and read at runtime from
- * assets/js/chat-config.js:
+ * Posts {lang, messages} to the proxy named in data-endpoint (set by
+ * tools/build.py from CHAT_ENDPOINT) and renders the {reply} that comes back.
+ * The proxy — backend/workers/chat-worker.js, or backend/api/chat.js on a Node
+ * host — holds the model API key and builds the system prompt, so neither ever
+ * reaches the browser.
  *
- *   direct — the browser calls the LLM provider's API itself (CFG.apiUrl).
- *            The key is in the generated config file and is readable by
- *            anyone who views the site. Not used in production: most
- *            providers don't allow being called directly from a browser.
- *   proxy  — the browser posts to an endpoint that holds the key server-side
- *            (see backend/api/chat.js and backend/workers/chat-worker.js).
- *            The mode currently in use.
+ * Calling a model API straight from the page was tried and dropped: providers
+ * reject browser-origin requests, and the key would be readable in the source.
  *
  * Every visible string is authored per language in the markup, so this file
  * contains no copy of its own.
@@ -30,8 +28,7 @@
   var btnClose = root.querySelector('[data-chat-close]');
   var btnExpand= root.querySelector('[data-chat-expand]');
 
-  var CFG = window.AZSCO_CHAT_CONFIG || {};
-  var endpoint = root.getAttribute('data-endpoint') || CFG.endpoint || '';
+  var endpoint = root.getAttribute('data-endpoint') || '';
   var lang     = root.getAttribute('data-lang') || 'en';
   var greeting = root.getAttribute('data-greeting') || '';
   var errText  = root.getAttribute('data-error') || '';
@@ -164,50 +161,24 @@
     setBusy(true);
     typing(true);
 
-    var direct = CFG.mode === 'direct' && CFG.apiKey;
-    if (!direct && !endpoint) {
+    if (!endpoint) {
       typing(false);
       setBusy(false);
       addMsg('bot', offline, true);
       return;
     }
 
-    var turns = history.slice(-MAX_TURNS * 2);
-    var request = direct
-      ? {
-          url: CFG.apiUrl || 'https://api.mistral.ai/v1/chat/completions',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + CFG.apiKey
-          },
-          body: {
-            model: CFG.model || 'mistral-small-latest',
-            temperature: 0.3,
-            max_tokens: 500,
-            messages: [{ role: 'system', content: (CFG.system || {})[lang] || '' }].concat(turns)
-          }
-        }
-      : {
-          url: endpoint,
-          headers: { 'Content-Type': 'application/json' },
-          body: { lang: lang, messages: turns }
-        };
-
-    fetch(request.url, {
+    fetch(endpoint, {
       method: 'POST',
-      headers: request.headers,
-      body: JSON.stringify(request.body)
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ lang: lang, messages: history.slice(-MAX_TURNS * 2) })
     })
       .then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.json();
       })
       .then(function (data) {
-        // Mistral answers with choices[]; the proxy answers with {reply}.
-        var reply = (data && data.reply) ||
-          (data && data.choices && data.choices[0] && data.choices[0].message &&
-           data.choices[0].message.content);
-        reply = reply && String(reply).trim();
+        var reply = data && data.reply && String(data.reply).trim();
         if (!reply) throw new Error('empty reply');
         typing(false);
         addMsg('bot', reply);

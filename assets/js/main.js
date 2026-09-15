@@ -258,6 +258,12 @@
       status.classList.toggle('is-error', !!isError);
     }
 
+    // Guarded: a form built without a .form-status element would otherwise
+    // throw here and take the whole submit handler down with it.
+    function scrollToStatus() {
+      if (status) status.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
     on(form, 'submit', function (e) {
       e.preventDefault();
       var ok = true;
@@ -285,7 +291,7 @@
 
       if (!endpoint) {                      // nothing to post to — say so, don't pretend
         say(form.getAttribute('data-error-message'), true);
-        status.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        scrollToStatus();
         return;
       }
 
@@ -310,7 +316,7 @@
         })
         .then(function () {
           if (submit) submit.disabled = false;
-          status.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          scrollToStatus();
         });
     });
   }

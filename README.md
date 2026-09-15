@@ -171,32 +171,34 @@ with the rest of the layout), labelled **AZSCO Assistant**. It opens a panel wit
 questions, supports an expand toggle — a wider panel on desktop, full screen on phones — and
 keeps the conversation across page navigation via `sessionStorage`.
 
-**This site is configured in `proxy` mode** (`CHAT_MODE = "proxy"` in `tools/build.py`): the
-browser never sees an API key. It posts to a Cloudflare Worker (`backend/workers/chat-worker.js`,
-deployed separately — see `backend/README.md`), which holds the key server-side and calls
-Google Gemini's API on the widget's behalf:
+**The browser never sees an API key.** The widget posts to a Cloudflare Worker
+(`backend/workers/chat-worker.js`, deployed separately — see `backend/README.md`), which holds
+the key server-side and calls Google Gemini's API on the widget's behalf:
 
 ```
 browser ─────▶ Cloudflare Worker ──key──▶ Gemini API
 ```
 
-An earlier `direct` mode (browser calling the LLM's API itself, with the key compiled into
-`assets/js/chat-config.js`) is still supported in the code for reference, but isn't used: most
-LLM providers don't allow being called directly from an arbitrary website's browser (no CORS),
-so `direct` mode opens the widget but every reply fails. `proxy` mode also happens to keep the
-key off the site entirely, which `direct` mode never did.
+Calling the model API straight from the page was tried and dropped: providers don't allow
+browser-origin requests (no CORS), so the widget opened but every reply failed — and the key
+would have been readable by anyone viewing source. There is deliberately no switch for it now.
 
-- `assets/js/chat.js` — the widget; supports both modes, contains no key or copy of its own.
-- `assets/js/chat-config.js` — **generated**; holds the mode, model, system prompt, and in
-  direct mode the key. Do not edit by hand; edit the `CHAT_*` values in `tools/build.py`.
-- `backend/api/chat.js` — the proxy (Vercel / Netlify / Deno), an alternative to the Worker.
-- `backend/workers/chat-worker.js` — the proxy for Cloudflare Workers, currently deployed.
+- `assets/js/chat.js` — the widget. Reads its endpoint and every visible string from the
+  markup, so it holds no key, no prompt and no copy of its own.
+- `backend/workers/chat-worker.js` — the proxy currently deployed. Also carries the contact
+  form's `/contact` route.
+- `backend/api/chat.js` — the same chat proxy for a Node host (Vercel / Netlify / Deno).
 - `backend/README.md` — deployment steps and environment variables for either one.
+
+Both proxies enforce `ALLOWED_ORIGIN` themselves and rate-limit per IP, rather than trusting
+the browser to discard a reply the free-tier quota has already paid for.
 
 The system prompt lives in `CHAT_FACTS` and `CHAT_RULES` in `tools/build.py` and carries
 AZSCO's facts (services, address, hours, partners, clients), instructing the model to answer
 only from them, refuse pricing and commitments, and hand off to the team when it does not
-know. Update it there and rebuild when the business changes.
+know. That is the single source of truth: `python3 tools/build.py` rewrites the generated
+`AZSCO-PROMPT` block in both proxy files from it, so a deployed assistant cannot drift from
+what the site says. Edit it there, rebuild, then redeploy the Worker.
 
 **Model replies are escaped before display.** `chat.js` escapes all HTML, then re-introduces a
 closed set of formatting (bold, phone and email links) — nothing from the model reaches the

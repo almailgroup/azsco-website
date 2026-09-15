@@ -6,12 +6,11 @@ server-side proxy for the AZSCO Assistant chat widget, deployed separately
 Nothing here is served by GitHub Pages — the frontend (everything else in the
 repo) is unaffected by anything in this folder.
 
-> Calling an LLM directly from the browser (`CHAT_MODE = "direct"`) turned out
-> not to work reliably in production — most providers' APIs do not support
-> being called from an arbitrary website's browser (no CORS), so the widget
-> opens but every reply fails. This proxy is the fix: it holds the key
-> server-side and the browser talks to it instead, on a domain that can send
-> the right headers.
+> Calling an LLM directly from the browser turned out not to work in
+> production — most providers' APIs do not support being called from an
+> arbitrary website's browser (no CORS), so the widget opens but every reply
+> fails. This proxy is the fix: it holds the key server-side and the browser
+> talks to it instead, on a domain that can send the right headers.
 >
 > **Provider: Google Gemini**, via a free API key from
 > <https://aistudio.google.com/apikey> (no payment method required). The site
@@ -19,8 +18,8 @@ repo) is unaffected by anything in this folder.
 > live visitor traffic — a single test message could exhaust it. Gemini's free
 > tier is built for exactly this kind of light, ongoing production use.
 >
-> Deploy one of the functions below, then set `CHAT_MODE = "proxy"` and
-> `CHAT_ENDPOINT` in `tools/build.py` and rebuild.
+> Deploy one of the functions below, then set `CHAT_ENDPOINT` in
+> `tools/build.py` and rebuild.
 
 This proxy adds the API key server-side, so it never reaches the browser.
 
@@ -71,12 +70,15 @@ straight from the dashboard with no CLI or Node install:
    `workers/chat-worker.js`, then **Save and deploy**.
 4. **Settings → Variables and Secrets → Add.** Add `GEMINI_API_KEY` as a
    *secret* with your free key from <https://aistudio.google.com/apikey>.
-   Optionally add `ALLOWED_ORIGIN` as a plain variable set to
-   `https://www.azsco.com,https://azsco.com`. Save and deploy again.
+   Add `ALLOWED_ORIGIN` as a plain variable set to
+   `https://www.azsco.com,https://azsco.com` — the worker refuses any other
+   origin before calling Gemini, so without it anyone can point their own site
+   at your worker and spend the quota. For the contact form, also add
+   `WEB3FORMS_KEY` as a *secret*. Save and deploy again.
 5. Copy the worker's URL from the top of its dashboard page (looks like
    `https://azsco-chat.<your-subdomain>.workers.dev`).
-6. Set `CHAT_ENDPOINT` to that URL and `CHAT_MODE = "proxy"` in
-   `tools/build.py`, then run `python3 tools/build.py`.
+6. Set `CHAT_ENDPOINT` to that URL in `tools/build.py`, then run
+   `python3 tools/build.py`.
 
 Prefer the command line instead:
 
