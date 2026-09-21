@@ -1323,12 +1323,45 @@ def chip_list(lang, items):
         f'      <span class="chip reveal" data-delay="{min(i*30, 300)}">{t(item, lang)}</span>'
         for i, item in enumerate(items))
 
+def _jpeg_width(path):
+    """Pixel width from a JPEG's SOF marker, so srcset cannot disagree with the
+    file on disk. Stdlib only: the build has no image dependency."""
+    with open(path, "rb") as fh:
+        data = fh.read()
+    i = 2
+    while i < len(data) - 9:
+        if data[i] != 0xFF:
+            i += 1
+            continue
+        marker = data[i + 1]
+        if 0xC0 <= marker <= 0xCF and marker not in (0xC4, 0xC8, 0xCC):
+            return int.from_bytes(data[i + 7:i + 9], "big")
+        i += 2 + int.from_bytes(data[i + 2:i + 4], "big")
+    raise ValueError(f"{path}: no JPEG size marker found")
+
+# The panel is at most 1130px wide, so a logo wall is worth shipping at two
+# densities: visitors read these sheets closely, looking for their own company.
+# A "<name>@2x.<ext>" sitting next to the image is picked up automatically.
+LOGO_PANEL_MAX = 1130
+
 def logo_panel(src, alt_pair, lang, cls=""):
     """A white bordered panel holding a supplied logo-wall image (partners or
     clients), so it reads as a deliberate panel on any section background
     rather than a stray white rectangle."""
+    stem, ext = os.path.splitext(src)
+    retina = f"{stem}@2x{ext}"
+    extra = ""
+    retina_path = os.path.join(OUT, retina)
+    if os.path.exists(retina_path):
+        # Width descriptors rather than 1x/2x: with sizes they let the browser
+        # weigh viewport and pixel density together and fetch exactly one file.
+        # The base image is the panel's full width, so a standard screen maps it
+        # 1:1 instead of upscaling; the @2x covers denser screens.
+        widths = [_jpeg_width(os.path.join(OUT, src)), _jpeg_width(retina_path)]
+        extra = (f' srcset="/{src} {widths[0]}w, /{retina} {widths[1]}w"'
+                 f' sizes="(max-width: {LOGO_PANEL_MAX}px) 100vw, {LOGO_PANEL_MAX}px"')
     return (f'<div class="logo-panel{(" " + cls) if cls else ""} reveal">'
-            f'<img src="/{src}" alt="{t(alt_pair, lang)}" loading="lazy"></div>')
+            f'<img src="/{src}"{extra} alt="{t(alt_pair, lang)}" loading="lazy"></div>')
 
 def tiles(lang, items, cols=3):
     return "\n".join(
@@ -1639,7 +1672,7 @@ def build_about(lang):
       <h2>{t(A["clients_h2"], lang)}</h2>
       <p>{t(A["clients_lead"], lang)}</p>
     </div>
-    {logo_panel("assets/img/photos/clients-logos.jpg", CLIENTS_ALT, lang)}
+    {logo_panel("assets/img/photos/clients-logos-bw.jpg", CLIENTS_ALT, lang)}
     <div class="center" style="margin-top:44px">
       <a class="btn btn-dark" href="{link(lang, "clients.html")}">{t(A["clients_btn"], lang)} {I["arrow"]}</a>
     </div>
@@ -1737,7 +1770,7 @@ def build_clients(lang):
       <h2>{t(CL["h2"], lang)}</h2>
       <p>{t(CL["lead"], lang)}</p>
     </div>
-    {logo_panel("assets/img/photos/clients-logos.jpg", CLIENTS_ALT, lang)}
+    {logo_panel("assets/img/photos/clients-logos-bw.jpg", CLIENTS_ALT, lang)}
   </div>
 </section>
 
