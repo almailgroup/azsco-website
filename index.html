@@ -28,7 +28,9 @@
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" fetchpriority="high" href="/assets/img/photos/hero-mobile.jpg" media="(max-width: 640px)">
+<link rel="preload" as="image" fetchpriority="high" href="/assets/img/photos/hero.jpg" media="(min-width: 641px)">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
@@ -192,7 +194,7 @@
       <h2>Sectors We Protect</h2>
       <p>AZSCO is distinguished in offering security services such as security guards for apartments, malls, banks, stores and much more.</p>
     </div>
-    <div class="logo-panel reveal"><img src="/assets/img/photos/service-sectors.png" alt="Icons for the 15 sectors AZSCO protects: government, commercial, financial, industrial, public facilities, events, tourist sites, residential complexes, ports and airports, critical infrastructure, warehousing, transport and logistics, protected areas, sports and recreation, and vital infrastructure" loading="lazy"></div>
+    <div class="logo-panel reveal"><img src="/assets/img/photos/service-sectors.png" srcset="/assets/img/photos/service-sectors.png 760w, /assets/img/photos/service-sectors@2x.png 1200w" sizes="(max-width: 1074px) 88vw, 1074px" alt="Icons for the 15 sectors AZSCO protects: government, commercial, financial, industrial, public facilities, events, tourist sites, residential complexes, ports and airports, critical infrastructure, warehousing, transport and logistics, protected areas, sports and recreation, and vital infrastructure" width="760" height="1013" loading="lazy" decoding="async"></div>
   </div>
 </section>
 
@@ -282,7 +284,7 @@
       <h2>Strategic Partnerships</h2>
       <p>AZSCO has established strategic partnerships with leading industry players to enhance the range and quality of our security solutions.</p>
     </div>
-    <div class="logo-panel reveal"><img src="/assets/img/photos/partners-logos.png" alt="Logos of AZSCO technology partners: Ajax, Rasilient, Avigilon, Teltonika, Inrico, Hikvision, Pelco and Motorola" loading="lazy"></div>
+    <div class="logo-panel reveal"><img src="/assets/img/photos/partners-logos.png" alt="Logos of AZSCO technology partners: Ajax, Rasilient, Avigilon, Teltonika, Inrico, Hikvision, Pelco and Motorola" width="552" height="233" loading="lazy" decoding="async"></div>
     <div class="center" style="margin-top:44px">
       <a class="btn btn-dark" href="/partners/">About Our Partnerships <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
     </div>

@@ -995,16 +995,20 @@ PRIVACY = {
 }
 
 # ============================================================ templates
-FONTS_EN = ('<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700'
-            '&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">')
-FONTS_AR = ('<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700'
-            '&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">')
+# Exactly the weights the pages actually render, measured across every page at
+# both breakpoints -- not a guessed set. Barlow 600 and Cairo 600 were being
+# downloaded and never used; Tajawal 600 is used by ~290 elements and was
+# missing, so the browser had been synthesising it.
+FONTS_EN = ('<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700'
+            '&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">')
+FONTS_AR = ('<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700'
+            '&family=Tajawal:wght@400;600;700&display=swap" rel="stylesheet">')
 
 def ltr(text):
     """Keep phone numbers and emails readable inside right-to-left text."""
     return f'<span dir="ltr">{text}</span>'
 
-def head(lang, fname, title, desc):
+def head(lang, fname, title, desc, preload=""):
     a = asset(lang, "")
     return f'''<!DOCTYPE html>
 <html {lang_attrs(lang)}>
@@ -1036,7 +1040,7 @@ def head(lang, fname, title, desc):
 <link rel="apple-touch-icon" href="{a}assets/img/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-{FONTS_AR if lang == "ar" else FONTS_EN}
+{preload}{FONTS_AR if lang == "ar" else FONTS_EN}
 <link rel="stylesheet" href="{a}assets/css/style.css">
 </head>
 <body>
@@ -1301,9 +1305,23 @@ def stats_block(lang):
 
 PAGES = {}
 
-def page(lang, fname, title, desc, body):
-    PAGES[(lang, fname)] = (head(lang, fname, title, desc) + header(lang, fname)
+def page(lang, fname, title, desc, body, preload=""):
+    PAGES[(lang, fname)] = (head(lang, fname, title, desc, preload) + header(lang, fname)
                             + f'<main id="main">\n{body}\n</main>' + footer(lang))
+
+
+def hero_preload(lang):
+    """Starts the hero photo downloading with the HTML rather than after the CSS.
+
+    It is a CSS background, so the browser cannot see it until the stylesheet
+    has arrived and been parsed -- which is exactly the element that decides
+    this page's largest paint. The two candidates are mutually exclusive, so
+    only one is ever fetched; they mirror the breakpoint in style.css."""
+    a = asset(lang, "")
+    return (f'<link rel="preload" as="image" fetchpriority="high"'
+            f' href="{a}assets/img/photos/hero-mobile.jpg" media="(max-width: 640px)">\n'
+            f'<link rel="preload" as="image" fetchpriority="high"'
+            f' href="{a}assets/img/photos/hero.jpg" media="(min-width: 641px)">\n')
 
 # ============================================================ shared blocks
 def service_cards(lang):
@@ -1323,45 +1341,73 @@ def chip_list(lang, items):
         f'      <span class="chip reveal" data-delay="{min(i*30, 300)}">{t(item, lang)}</span>'
         for i, item in enumerate(items))
 
-def _jpeg_width(path):
-    """Pixel width from a JPEG's SOF marker, so srcset cannot disagree with the
-    file on disk. Stdlib only: the build has no image dependency."""
+def _image_size(path):
+    """(width, height) of a PNG or JPEG, read from the file itself so srcset and
+    the width/height attributes cannot disagree with what is on disk. Stdlib
+    only: the build deliberately has no image dependency."""
     with open(path, "rb") as fh:
         data = fh.read()
-    i = 2
+    if data[:8] == b"\x89PNG\r\n\x1a\n":          # IHDR is always the first chunk
+        return (int.from_bytes(data[16:20], "big"),
+                int.from_bytes(data[20:24], "big"))
+    i = 2                                           # JPEG: walk to the SOF marker
     while i < len(data) - 9:
         if data[i] != 0xFF:
             i += 1
             continue
         marker = data[i + 1]
         if 0xC0 <= marker <= 0xCF and marker not in (0xC4, 0xC8, 0xCC):
-            return int.from_bytes(data[i + 7:i + 9], "big")
+            return (int.from_bytes(data[i + 7:i + 9], "big"),
+                    int.from_bytes(data[i + 5:i + 7], "big"))
         i += 2 + int.from_bytes(data[i + 2:i + 4], "big")
-    raise ValueError(f"{path}: no JPEG size marker found")
+    raise ValueError(f"{path}: no size marker found")
 
-# The panel is at most 1130px wide, so a logo wall is worth shipping at two
-# densities: visitors read these sheets closely, looking for their own company.
+# Measured, not assumed: a logo wall renders at about 88% of the viewport on
+# phones and tops out at 1074px on any desktop. Telling the browser 100vw/1130px
+# (as this did) overstates the need and makes it fetch the larger candidate when
+# the smaller one would have been sharp. Visitors read these sheets closely --
+# they are looking for their own company -- so both densities are worth having.
 # A "<name>@2x.<ext>" sitting next to the image is picked up automatically.
-LOGO_PANEL_MAX = 1130
+LOGO_PANEL_MAX = 1074
+LOGO_PANEL_VW = 88
+
+def _uniform_dims(key, side):
+    """Intrinsic size of a uniform photo, read from the file. The CSS already
+    reserves the box with aspect-ratio, so this is belt and braces -- but it
+    keeps the box correct if that rule is ever changed."""
+    return _image_size(os.path.join(OUT, "assets", "img", "photos", "uniforms",
+                                    f"{key}-{side}.jpg"))
+
 
 def logo_panel(src, alt_pair, lang, cls=""):
     """A white bordered panel holding a supplied logo-wall image (partners or
     clients), so it reads as a deliberate panel on any section background
     rather than a stray white rectangle."""
+    # Candidates, smallest first: "<name>@sm" for phones, the base image at the
+    # panel's own width, and "<name>@2x" for dense screens. Whichever exist on
+    # disk are offered; the browser fetches exactly one. Width descriptors
+    # rather than 1x/2x, so it can weigh viewport and density together -- a
+    # phone needing ~690px takes the @sm instead of a full-width file.
     stem, ext = os.path.splitext(src)
-    retina = f"{stem}@2x{ext}"
+    candidates = []
+    for rel in (f"{stem}@sm{ext}", src, f"{stem}@2x{ext}"):
+        full = os.path.join(OUT, rel)
+        if os.path.exists(full):
+            candidates.append((rel, _image_size(full)[0]))
+
     extra = ""
-    retina_path = os.path.join(OUT, retina)
-    if os.path.exists(retina_path):
-        # Width descriptors rather than 1x/2x: with sizes they let the browser
-        # weigh viewport and pixel density together and fetch exactly one file.
-        # The base image is the panel's full width, so a standard screen maps it
-        # 1:1 instead of upscaling; the @2x covers denser screens.
-        widths = [_jpeg_width(os.path.join(OUT, src)), _jpeg_width(retina_path)]
-        extra = (f' srcset="/{src} {widths[0]}w, /{retina} {widths[1]}w"'
-                 f' sizes="(max-width: {LOGO_PANEL_MAX}px) 100vw, {LOGO_PANEL_MAX}px"')
+    if len(candidates) > 1:
+        srcset = ", ".join(f"/{rel} {w}w" for rel, w in candidates)
+        extra = (f' srcset="{srcset}"'
+                 f' sizes="(max-width: {LOGO_PANEL_MAX}px) {LOGO_PANEL_VW}vw,'
+                 f' {LOGO_PANEL_MAX}px"')
+
+    # Intrinsic size, so the browser reserves the right box before the image
+    # arrives instead of reflowing the page around it once it does.
+    dims = _image_size(os.path.join(OUT, src))
     return (f'<div class="logo-panel{(" " + cls) if cls else ""} reveal">'
-            f'<img src="/{src}"{extra} alt="{t(alt_pair, lang)}" loading="lazy"></div>')
+            f'<img src="/{src}"{extra} alt="{t(alt_pair, lang)}"'
+            f' width="{dims[0]}" height="{dims[1]}" loading="lazy" decoding="async"></div>')
 
 def tiles(lang, items, cols=3):
     return "\n".join(
@@ -1503,7 +1549,8 @@ def build_home(lang):
 
 {cta(lang)}
 '''
-    page(lang, "index.html", t(H["title"], lang), t(H["desc"], lang), body)
+    page(lang, "index.html", t(H["title"], lang), t(H["desc"], lang), body,
+         preload=hero_preload(lang))
 
 def build_about(lang):
     A = ABOUT
@@ -1525,8 +1572,12 @@ def build_about(lang):
     uniform_html = "\n".join(
         f'      <div class="uniform reveal" data-delay="{i*70}">'
         f'<div class="uniform-photos">'
-        f'<img src="/assets/img/photos/uniforms/{key}-front.jpg" alt="{t(title, lang)}" loading="lazy">'
-        f'<img src="/assets/img/photos/uniforms/{key}-back.jpg" alt="{t(title, lang)}" loading="lazy">'
+        f'<img src="/assets/img/photos/uniforms/{key}-front.jpg" alt="{t(title, lang)}"'
+        f' width="{_uniform_dims(key, "front")[0]}" height="{_uniform_dims(key, "front")[1]}"'
+        f' loading="lazy" decoding="async">'
+        f'<img src="/assets/img/photos/uniforms/{key}-back.jpg" alt="{t(title, lang)}"'
+        f' width="{_uniform_dims(key, "back")[0]}" height="{_uniform_dims(key, "back")[1]}"'
+        f' loading="lazy" decoding="async">'
         f'</div><h4>{t(title, lang)}</h4></div>'
         for i, (key, title) in enumerate(UNIFORMS))
     cert_items_html = "\n      ".join(f'<p>{t(c, lang)}</p>' for c in CERTIFICATIONS)
