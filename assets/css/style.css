@@ -960,10 +960,10 @@ li{margin-bottom:.45em}
   .whatsapp-fab{width:50px;height:50px}
   .whatsapp-fab svg{width:24px;height:24px}
 
-  /* top bar carries the phone number only; social lives in the footer */
-  .topbar .wrap{justify-content:center;padding-top:0;padding-bottom:0}
-  .topbar-social{display:none}
-  .topbar-list li{min-height:42px}
+  /* At this width the top bar had shrunk to the phone number alone, which the
+     persistent call bar below repeats and keeps on screen the whole way down
+     the page. Dropping it returns 44px of the first screen on every page. */
+  .topbar{display:none}
 
   /* persistent call bar, plus clearance so it never covers page content
      (bar height + breathing room + any home-indicator inset) */
@@ -984,6 +984,12 @@ li{margin-bottom:.45em}
   .brand-logo{height:44px}
   .card{padding:22px 18px}
   .mobile-bar a{font-size:.74rem;letter-spacing:.06em;gap:7px}
+}
+
+/* Tap feedback in the site's own palette. Left unset, mobile browsers paint
+   their default blue-grey box over every button and link. */
+a,button,input,select,textarea,summary,.mobile-bar a,.chat-launcher{
+  -webkit-tap-highlight-color:rgba(20,20,20,.12);
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -1096,6 +1102,7 @@ li{margin-bottom:.45em}
   display:none;flex-direction:column;
   width:min(390px,calc(100vw - 48px));
   height:min(580px,calc(100vh - var(--chat-bottom) - var(--chat-safe-top)));
+  height:min(580px,calc(100dvh - var(--chat-bottom) - var(--chat-safe-top)));
   background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);
   box-shadow:0 30px 80px rgba(0,0,0,.30);overflow:hidden;
   opacity:0;transform:translateY(16px) scale(.98);
@@ -1105,6 +1112,7 @@ li{margin-bottom:.45em}
 .chat-panel.is-expanded{
   width:min(780px,calc(100vw - 48px));
   height:min(760px,calc(100vh - var(--chat-bottom) - var(--chat-safe-top)));
+  height:min(760px,calc(100dvh - var(--chat-bottom) - var(--chat-safe-top)));
 }
 
 /* Too little height to sit clear of the header — take the whole screen instead. */
@@ -1218,6 +1226,7 @@ li{margin-bottom:.45em}
     left:12px;right:12px;
     width:auto;
     height:min(480px,calc(100vh - var(--chat-bottom) - var(--chat-safe-top)));
+    height:min(480px,calc(100dvh - var(--chat-bottom) - var(--chat-safe-top)));
   }
   [dir="rtl"] .chat-panel{left:12px;right:12px}
   .chat-panel.is-expanded{
@@ -1230,4 +1239,13 @@ li{margin-bottom:.45em}
 @media (max-width:400px){
   .chat-launcher .chat-launcher-text{display:none}
   .chat-launcher{padding:12px;border-radius:50%;min-height:48px}
+}
+
+/* Kept last in the file: the chat widget's own textarea rule is declared
+   further up at equal specificity, so this has to come after it to win.
+   Touch devices: iOS Safari zooms the whole page in when a focused form
+   control is smaller than 16px, and does not zoom back out afterwards. Exactly
+   16px is the threshold, so this is the smallest change that stops it. */
+@media (pointer:coarse){
+  .field input,.field select,.field textarea,.chat-form textarea{font-size:16px}
 }
