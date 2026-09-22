@@ -264,7 +264,7 @@ def logo(variant="dark"):
 
 
 # ============================================================ shared strings
-COMPANY   = ("AZSCO Security Services Company", "شركة أزكو لخدمات حراسة المنشآت ذ.م.م")
+COMPANY   = ("AZSCO Security Services Company", "شركة أزسكو لخدمات حراسة المنشآت ذ.م.م")
 # The company's own profile document: "Azsco Security Services LLC, formerly
 # known as Almail Zone Security Services." Used once, in the About page story.
 FORMER_NAME = ("Almail Zone Security Services", "شركة الميل زون للخدمات الأمنية")
@@ -447,7 +447,7 @@ SERVICES = [
 
 VALUES = [
     ("Trust", "الثقة"), ("Cooperation", "التعاون"), ("Quality", "الجودة"),
-    ("Innovation", "الإبتكار"), ("Focus", "التركيز"), ("Determination", "الإصرار"),
+    ("Innovation", "الابتكار"), ("Focus", "التركيز"), ("Determination", "الإصرار"),
 ]
 
 NATIONALITIES = [
@@ -649,7 +649,7 @@ ABOUT = {
   "story_h2": ("Protecting Kuwait Since 2014", "نحمي الكويت منذ عام 2014"),
   "story": [
     ("AZSCO Security Services Company &mdash; formerly known as Almail Zone Security Services &mdash; was established in 2014 in Kuwait. AZSCO specialises in comprehensive security services including facility guarding, personal protection, security patrols, a central operations room and security systems, delivered by carefully selected, well-trained personnel.",
-     "تأسّست شركة أزسكو لخدمات حراسة المنشآت &mdash; المعروفة سابقاً بـ&laquo;شركة الميل زون للخدمات الأمنية&raquo; &mdash; عام 2014 في الكويت. ركّزت أزسكو على توفير خدمات أمنية متكاملة تشمل حراسة المنشآت وحماية الشخصيات والدوريات الأمنية وغرفة عمليات مركزية وأنظمة أمنية، من خلال كوادر مدرّبة يتم اختيارهم بعناية."),
+     "تأسّست شركة أزسكو لخدمات حراسة المنشآت &mdash; المعروفة سابقاً بـ&laquo;شركة الميل زون للخدمات الأمنية&raquo; &mdash; عام 2014 في الكويت. وتتخصّص أزسكو في تقديم خدمات أمنية متكاملة تشمل حراسة المنشآت وحماية الشخصيات والدوريات الأمنية وغرفة عمليات مركزية وأنظمة أمنية، من خلال كوادر مدرّبة يتم اختيارها بعناية."),
     ("AZSCO is committed to continuous development and embracing modern technologies, such as advanced security systems and specialised applications for managing sites and security personnel, aiming to deliver exceptional security services to its clients.",
      "أظهرت أزسكو التزاماً قوياً بالتطوير المستمر وتبنّي التقنيات الحديثة مثل الأنظمة الأمنية المتطوّرة وتطبيقات خاصة لإدارة المواقع وأفراد الأمن، وذلك لتقديم خدمات أمنية مميّزة إلى عملائها."),
     ("AZSCO is dedicated to forging long-term relationships with clients in both the public and private sectors, built on trust, collaboration, quality and development, with a focus on rapid response and efficient risk and threat management. Its continuous success and growth are a testament to its commitment to excellence and innovation in providing security and guarding services.",

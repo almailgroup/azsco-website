@@ -965,6 +965,12 @@ li{margin-bottom:.45em}
      the page. Dropping it returns 44px of the first screen on every page. */
   .topbar{display:none}
 
+  /* The hero photo sits under an 80-94% opaque gradient, so it reads as
+     texture rather than content -- a phone-sized, lower-quality encode is
+     indistinguishable from the full one and saves ~200KB on the first view,
+     which is about 40% of the page. */
+  .hero{background-image:linear-gradient(115deg,rgba(8,8,8,.94) 0%,rgba(13,13,13,.88) 45%,rgba(28,28,28,.80) 100%),url("../img/photos/hero-mobile.jpg")}
+
   /* persistent call bar, plus clearance so it never covers page content
      (bar height + breathing room + any home-indicator inset) */
   .mobile-bar{display:flex}
@@ -1018,15 +1024,32 @@ a,button,input,select,textarea,summary,.mobile-bar a,.chat-launcher{
 [dir="rtl"] .visual-badge b,
 [dir="rtl"] .site-footer h4,[dir="rtl"] .quote .quote-line{font-family:var(--display-ar)}
 
-/* Arabic script has no case and letter-spacing harms its joins */
+/* Arabic letters join into words, so tracking pulls those joins apart and the
+   text stops reading as connected script. This was an enumerated list of
+   selectors and it had already drifted -- h4 headings, the skip link and the
+   privacy page's "last updated" line had all picked up tracking again, and any
+   new component would have done the same silently. Resetting everything and
+   exempting the Latin runs is the version that stays correct.
+
+   !important because this has to beat whatever specificity a component
+   happens to use -- "[dir=rtl] *" scores below a plain ".stat .label" -- and
+   correct rendering of the script is not something a component should be able
+   to opt out of by accident. */
+[dir="rtl"] *{letter-spacing:0 !important}
+
+/* Latin islands -- phone numbers, email addresses, the AZSCO wordmark -- are
+   marked dir="ltr" and keep normal Latin spacing. */
+[dir="rtl"] [dir="ltr"],[dir="rtl"] [dir="ltr"] *{letter-spacing:normal !important}
+
+/* Arabic has no upper case, so these transforms are a no-op on the script
+   itself; dropping them keeps any Latin caught inside a label as authored. */
 [dir="rtl"] h1,[dir="rtl"] h2,[dir="rtl"] h3,
 [dir="rtl"] .eyebrow,[dir="rtl"] .btn,[dir="rtl"] .nav > li > a,
 [dir="rtl"] .m-nav > li > a,[dir="rtl"] .m-toggle,[dir="rtl"] .stat .label,
 [dir="rtl"] .field label,[dir="rtl"] .card .more,[dir="rtl"] .quote-by,
 [dir="rtl"] .site-footer h4,[dir="rtl"] .div-card .tag,[dir="rtl"] .hero-badge,
-[dir="rtl"] .visual-badge span,
+[dir="rtl"] .visual-badge span,[dir="rtl"] .skip-link,[dir="rtl"] .updated,
 [dir="rtl"] .quote .quote-line,[dir="rtl"] .mobile-bar a,[dir="rtl"] .lang-switch{
-  letter-spacing:0;
   text-transform:none;
 }
 [dir="rtl"] h1,[dir="rtl"] h2{line-height:1.32}
