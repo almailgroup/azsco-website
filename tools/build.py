@@ -488,7 +488,7 @@ UNIFORMS = [
 ]
 
 # 8 official technology partners; rendered as a single logo panel image
-# (assets/img/photos/partners-logos.png), this list backs the count shown in
+# (assets/img/photos/partners-logos-bw.png), this list backs the count shown in
 # the statistics row and the image's alt text.
 PARTNERS = ["Ajax", "Rasilient", "Avigilon", "Teltonika", "Inrico", "Hikvision", "Pelco", "Motorola"]
 
@@ -1540,7 +1540,7 @@ def build_home(lang):
       <h2>{t(H["part_h2"], lang)}</h2>
       <p>{t(H["part_lead"], lang)}</p>
     </div>
-    {logo_panel("assets/img/photos/partners-logos.png", PARTNERS_ALT, lang)}
+    {logo_panel("assets/img/photos/partners-logos-bw.png", PARTNERS_ALT, lang)}
     <div class="center" style="margin-top:44px">
       <a class="btn btn-dark" href="{link(lang, "partners.html")}">{t(H["part_btn"], lang)} {I["arrow"]}</a>
     </div>
@@ -1854,7 +1854,7 @@ def build_partners(lang):
       <h2>{t(P["h2"], lang)}</h2>
       <p>{t(P["lead"], lang)}</p>
     </div>
-    {logo_panel("assets/img/photos/partners-logos.png", PARTNERS_ALT, lang)}
+    {logo_panel("assets/img/photos/partners-logos-bw.png", PARTNERS_ALT, lang)}
   </div>
 </section>
 
