@@ -1,0 +1,23 @@
+{
+  "slug": "intruder-alarm-systems",
+  "published": true,
+  "order": 3,
+  "category": "alarms",
+  "brands": ["Ajax", "Teltonika"],
+  "image": "",
+  "image_alt_en": "",
+  "image_alt_ar": "",
+  "name_en": "Theft and Intruder Alarm Systems",
+  "name_ar": "أنظمة الإنذار ضد السرقة والتسلّل",
+  "summary_en": "Intrusion detection for premises and perimeters, triggering a patrol response rather than only a siren.",
+  "summary_ar": "كشف التسلّل للمنشآت والأسوار، بما يُفعّل استجابة من الدوريات لا مجرّد صافرة إنذار.",
+  "description_en": "An alarm is only as useful as what happens after it sounds. AZSCO installs intrusion detection and connects it to the Central Operations Room, where an operator verifies the alert and dispatches the nearest patrol. For sites that already have AZSCO officers on post, detection and guarding work to the same plan.",
+  "description_ar": "لا تكون قيمة الإنذار إلا بما يحدث بعد انطلاقه. تتولى أزسكو تركيب أنظمة كشف التسلّل وربطها بغرفة العمليات المركزية، حيث يتحقّق المشغّل من التنبيه ويوجّه أقرب دورية. وفي المواقع التي يتواجد فيها أفراد أزسكو، يعمل الكشف والحراسة وفق الخطة نفسها.",
+  "features": [
+    {"en": "Perimeter and internal intrusion detection", "ar": "كشف التسلّل على الأسوار وداخل المنشأة"},
+    {"en": "Alerts verified by an operations room operator", "ar": "التحقّق من التنبيهات عبر مشغّل غرفة العمليات"},
+    {"en": "Nearest patrol dispatched on a confirmed alert", "ar": "توجيه أقرب دورية عند تأكيد التنبيه"},
+    {"en": "Works alongside on-site guarding", "ar": "يعمل جنباً إلى جنب مع الحراسة في الموقع"}
+  ],
+  "specs": []
+}

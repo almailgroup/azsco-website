@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>AZSCO — Content</title>
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+<style>
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+  .cms-fallback{max-width:34rem;margin:18vh auto;padding:0 24px;line-height:1.7;color:#333}
+  .cms-fallback h1{font-size:1.3rem;margin:0 0 .6em;color:#111}
+  .cms-fallback code{background:#f1f1f1;padding:2px 6px;border-radius:4px;font-size:.92em}
+</style>
+</head>
+<body>
+<!-- Shown only if the CMS bundle below fails to load; the CMS replaces the
+     whole body once it starts. -->
+<div class="cms-fallback" id="cms-fallback">
+  <h1>Content editor did not load</h1>
+  <p>The editor is loaded from a CDN. If this message stays on screen, the
+     script could not be fetched — check the browser console.</p>
+  <p>Products can always be edited directly in the repository under
+     <code>content/products/</code>; the site rebuilds either way.</p>
+</div>
+
+<!-- Sveltia CMS: reads the same config.yml format as Decap CMS, with better
+     handling of right-to-left text, which matters for the Arabic fields.
+     To switch to Decap instead, replace this one tag with:
+       <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+     The config.yml beside this file needs no change either way. -->
+<script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js" type="module"></script>
+</body>
+</html>

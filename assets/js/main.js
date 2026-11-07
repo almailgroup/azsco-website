@@ -181,17 +181,58 @@
     on(btn, 'click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
   }
 
+
+  /* ---------- product category filter ----------
+     Cards are hidden in place rather than re-rendered, so the grid does not
+     jump and the browser keeps any images it has already decoded. With JS off
+     every product stays visible, which is the right fallback for a catalogue. */
+  function productFilter() {
+    var bar = doc.querySelector('[data-product-filter]');
+    var grid = doc.querySelector('[data-product-grid]');
+    if (!bar || !grid) return;
+    var cards = all('[data-category]', grid);
+    var empty = doc.querySelector('[data-product-empty]');
+    var chips = all('.filter-chip', bar);
+
+    function apply(filter) {
+      var shown = 0;
+      cards.forEach(function (card) {
+        var match = filter === 'all' || card.getAttribute('data-category') === filter;
+        card.hidden = !match;
+        if (match) shown++;
+      });
+      if (empty) empty.hidden = shown !== 0;
+      chips.forEach(function (c) {
+        var on = c.getAttribute('data-filter') === filter;
+        c.classList.toggle('is-active', on);
+        c.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+    }
+
+    on(bar, 'click', function (e) {
+      var chip = e.target.closest('.filter-chip');
+      if (chip) apply(chip.getAttribute('data-filter'));
+    });
+  }
+
   /* ---------- pre-fill the enquiry from a "Request a Quote" link ----------
      contact.html?service=<anchor> (sent by each service's quote button on
      the services page) selects "Inquiry About a Service" and drops the
      service's name into the message field, so the visitor lands ready to
      send that enquiry rather than a blank general one. */
   function prefillServiceQuery(form) {
+    // Services link with ?service=<anchor>, products with ?product=<slug>;
+    // both land on the same "about a service" enquiry with the name filled in.
     var match = /[?&]service=([^&]+)/.exec(location.search);
+    var attr = 'data-service-names';
+    if (!match) {
+      match = /[?&]product=([^&]+)/.exec(location.search);
+      attr = 'data-product-names';
+    }
     if (!match) return;
     var anchor = decodeURIComponent(match[1]);
     var names = {};
-    try { names = JSON.parse(form.getAttribute('data-service-names') || '{}'); } catch (e) { return; }
+    try { names = JSON.parse(form.getAttribute(attr) || '{}'); } catch (e) { return; }
     var name = names[anchor];
     if (!name) return;
 
@@ -348,6 +389,7 @@
     yearsSince();   // must run before counters() so it animates to the right figure
     counters();
     accordions();
+    productFilter();
     backToTop();
     contactForm();
     year();

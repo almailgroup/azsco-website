@@ -15,6 +15,9 @@ let upstream = [];                         // what the worker sent onward
 const realFetch = globalThis.fetch;
 globalThis.fetch = async (url, init) => {
   upstream.push(String(url));
+  if (String(url).includes('login/oauth/access_token')) {
+    return new Response(JSON.stringify({ access_token: 'gh-token-123' }), { status: 200 });
+  }
   if (String(url).includes('generativelanguage')) {
     return new Response(JSON.stringify({
       candidates: [{ content: { parts: [{ text: 'Hello from AZSCO.' }] } }],
@@ -123,6 +126,60 @@ r = await worker.fetch(new Request('https://w.example/contact', {
   method: 'POST', headers: { Origin: 'https://azsco.com' }, body: JSON.stringify(FORM),
 }), { ALLOWED_ORIGIN: ENV.ALLOWED_ORIGIN });
 check('no WEB3FORMS_KEY -> 503', r.status, 503);
+
+/* --- CMS sign-in routes ---------------------------------------------- */
+const CMS_ENV = { ...ENV, GITHUB_OAUTH_CLIENT_ID: 'cid', GITHUB_OAUTH_CLIENT_SECRET: 'secret' };
+const get = (path, env = CMS_ENV) =>
+  worker.fetch(new Request('https://w.example' + path, { method: 'GET' }), env);
+
+upstream = [];
+r = await get('/auth');
+check('/auth redirects', r.status, 302);
+const loc = new URL(r.headers.get('location'));
+check('/auth goes to GitHub', loc.origin + loc.pathname, 'https://github.com/login/oauth/authorize');
+check('/auth sends the client id', loc.searchParams.get('client_id'), 'cid');
+check('/auth never sends the secret', r.headers.get('location').includes('secret'), false);
+check('/auth works without an Origin header', r.status, 302);
+
+r = await get('/auth', { ALLOWED_ORIGIN: ENV.ALLOWED_ORIGIN });
+check('/auth unconfigured -> 503', r.status, 503);
+
+r = await get('/callback?code=abc');
+let html = await r.text();
+check('/callback with a good code -> 200', r.status, 200);
+check('/callback returns the token to the page', html.includes('gh-token-123'), true);
+check('/callback posts only to allowed origins',
+      html.includes('https://www.azsco.com') && html.includes('https://azsco.com'), true);
+check('/callback never leaks the client secret', html.includes('secret'), false);
+
+r = await get('/callback');
+check('/callback with no code -> 400', r.status, 400);
+
+globalThis.fetch = async (url, init) => {
+  if (String(url).includes('login/oauth/access_token')) {
+    return new Response(JSON.stringify({ error: 'bad_verification_code' }), { status: 200 });
+  }
+  return new Response('{}', { status: 200 });
+};
+r = await get('/callback?code=bad');
+html = await r.text();
+check('/callback on a rejected code -> 400', r.status, 400);
+check('/callback failure carries no token', html.includes('access_token'), false);
+
+/* the sign-in routes must not have opened a hole in the other routes */
+upstream = [];
+r = await post('/', CHAT, 'https://evil.example');
+check('origin check still enforced after adding /auth', r.status, 403);
+check('blocked origin still reaches no API', upstream.length, 0);
+// A GET to the chat route carries no Origin, so the origin check refuses it
+// before the method is even considered. 403 rather than 405 is the correct
+// answer: it is rejected for who is calling, not for how.
+r = await worker.fetch(new Request('https://w.example/', { method: 'GET' }), CMS_ENV);
+check('GET / is still rejected', r.status, 403);
+r = await worker.fetch(new Request('https://w.example/', {
+  method: 'GET', headers: { Origin: 'https://azsco.com' },
+}), CMS_ENV);
+check('GET / from an allowed origin -> 405', r.status, 405);
 
 /* --- the generated prompt actually made it in ------------------------ */
 const src = await (await import('node:fs/promises')).readFile(

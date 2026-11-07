@@ -1,0 +1,24 @@
+{
+  "slug": "surveillance-cameras",
+  "published": true,
+  "order": 1,
+  "category": "surveillance",
+  "brands": ["Hikvision", "Avigilon", "Pelco", "Rasilient"],
+  "image": "",
+  "image_alt_en": "",
+  "image_alt_ar": "",
+  "name_en": "Surveillance Camera Systems (CCTV)",
+  "name_ar": "أنظمة كاميرات المراقبة",
+  "summary_en": "Site-specific camera systems, installed and monitored by AZSCO, with footage and alerts routed to our Central Operations Room.",
+  "summary_ar": "أنظمة كاميرات مخصّصة لكل موقع، تتولى أزسكو تركيبها ومراقبتها، مع توجيه التسجيلات والتنبيهات إلى غرفة العمليات المركزية.",
+  "description_en": "AZSCO designs camera coverage around the premises rather than fitting a fixed package: entry points, perimeters, service areas and anywhere a blind spot would matter. Systems are installed, configured and maintained by our own team, and feed into the Central Operations Room so that an alert becomes a patrol response rather than a recording nobody watches.",
+  "description_ar": "تصمّم أزسكو تغطية الكاميرات بما يناسب كل منشأة بدلاً من تركيب حزمة جاهزة: المداخل والأسوار ومناطق الخدمات وأي موضع قد تشكّل فيه نقطة عمياء خطراً. يتولى فريقنا التركيب والإعداد والصيانة، وتُربط الأنظمة بغرفة العمليات المركزية بحيث يتحوّل التنبيه إلى استجابة من الدوريات لا إلى تسجيل لا يطّلع عليه أحد.",
+  "features": [
+    {"en": "Coverage planned from a free site survey", "ar": "تخطيط التغطية بناءً على معاينة مجانية للموقع"},
+    {"en": "Installed and configured by AZSCO technicians", "ar": "التركيب والإعداد على يد فنيي أزسكو"},
+    {"en": "Monitored from the Central Operations Room", "ar": "مراقبة من غرفة العمليات المركزية"},
+    {"en": "Rapid patrol intervention on an alert", "ar": "تدخّل سريع للدوريات عند ورود تنبيه"},
+    {"en": "Ongoing maintenance and support", "ar": "صيانة ودعم مستمرّان"}
+  ],
+  "specs": []
+}

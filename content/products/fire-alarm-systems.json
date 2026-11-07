@@ -1,0 +1,23 @@
+{
+  "slug": "fire-alarm-systems",
+  "published": true,
+  "order": 2,
+  "category": "alarms",
+  "brands": ["Ajax"],
+  "image": "",
+  "image_alt_en": "",
+  "image_alt_ar": "",
+  "name_en": "Fire Alarm Systems",
+  "name_ar": "أنظمة إنذار الحريق",
+  "summary_en": "Detection and alarm systems for premises of every kind, with alerts reaching our Central Operations Room around the clock.",
+  "summary_ar": "أنظمة كشف وإنذار لمختلف أنواع المنشآت، مع وصول التنبيهات إلى غرفة العمليات المركزية على مدار الساعة.",
+  "description_en": "Fire detection is specified for the building it protects and installed by AZSCO as part of a wider security system rather than as a standalone box. Alerts are routed to the Central Operations Room, which is staffed 24/7, so a detection at three in the morning reaches a person rather than an empty office.",
+  "description_ar": "تُحدّد أنظمة كشف الحريق بما يتناسب مع المبنى الذي تحميه، وتتولى أزسكو تركيبها كجزء من منظومة أمنية متكاملة لا كجهاز منفصل. وتُوجَّه التنبيهات إلى غرفة العمليات المركزية التي تعمل على مدار الساعة، بحيث يصل الإنذار في أي وقت إلى شخص مسؤول لا إلى مكتب خالٍ.",
+  "features": [
+    {"en": "Specified around the building, not a fixed package", "ar": "تُحدّد بما يناسب المبنى لا كحزمة ثابتة"},
+    {"en": "Alerts routed to the Central Operations Room", "ar": "توجيه التنبيهات إلى غرفة العمليات المركزية"},
+    {"en": "Monitored 24 hours a day, 7 days a week", "ar": "مراقبة على مدار الساعة طوال أيام الأسبوع"},
+    {"en": "Coordinated with on-site guarding where in place", "ar": "تنسيق مع الحراسة في الموقع عند وجودها"}
+  ],
+  "specs": []
+}

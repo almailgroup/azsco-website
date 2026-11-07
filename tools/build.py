@@ -137,6 +137,98 @@ def chat_system_prompt(lang):
 FOUNDED = 2014
 YEARS = datetime.date.today().year - FOUNDED
 
+# ----------------------------------------------------------------- products
+# Products are the one part of the site that is NOT authored in this file.
+# They live as one JSON file per product under content/products/, so the CMS at
+# /admin/ can add and edit them through GitHub without anyone touching Python.
+# Everything else about them -- URLs, layout, both languages, the sitemap -- is
+# still generated here, so a product page is as static and as indexable as any
+# other page on the site.
+PRODUCTS_DIR = os.path.join(OUT, "content", "products")
+
+# Categories are defined here rather than in the content files so that the
+# filter chips have a fixed order and a translated label. A product naming a
+# category that is not on this list still builds; it just lands under "All".
+PRODUCT_CATEGORIES = [
+    ("surveillance", ("Surveillance", "المراقبة")),
+    ("alarms",       ("Alarms &amp; Detection", "الإنذار والكشف")),
+    ("access",       ("Access Control", "التحكم في الدخول")),
+    ("comms",        ("Communications", "الاتصالات")),
+]
+
+# Icon shown in place of a photo until a product has one. Keyed by category so
+# a catalogue without photography still reads as a set of distinct things.
+PRODUCT_ICONS = {
+    "surveillance": "camera", "alarms": "alarm",
+    "access": "lock", "comms": "headset",
+}
+
+
+def product_icon(item):
+    return I[PRODUCT_ICONS.get(item.get("category"), "shield")]
+
+
+def load_products():
+    """Every published product, ordered by its "order" field then its slug.
+
+    Unreadable or unpublished files are skipped rather than failing the build:
+    a malformed file saved by the CMS should cost one product, not the site.
+    """
+    if not os.path.isdir(PRODUCTS_DIR):
+        return []
+    items = []
+    for name in sorted(os.listdir(PRODUCTS_DIR)):
+        if not name.endswith(".json"):
+            continue
+        path = os.path.join(PRODUCTS_DIR, name)
+        try:
+            with open(path, encoding="utf-8") as fh:
+                data = json.load(fh)
+        except (OSError, ValueError) as err:
+            print(f"  skipped {name}: {err}")
+            continue
+        if not data.get("published", True):
+            continue
+        slug = data.get("slug") or os.path.splitext(name)[0]
+        if not data.get("name_en"):
+            print(f"  skipped {name}: no name_en")
+            continue
+        data["slug"] = slug
+        items.append(data)
+    items.sort(key=lambda d: (d.get("order", 999), d["slug"]))
+    return items
+
+
+PRODUCTS = load_products()
+
+
+def product_fname(slug):
+    """The ROUTES key for a product, so it uses the same URL machinery as
+    every other page rather than a second, parallel one."""
+    return f"product--{slug}.html"
+
+
+def pt(item, key, lang):
+    """One bilingual field off a product dict, falling back to English so a
+    half-translated product still renders rather than showing a blank."""
+    val = item.get(f"{key}_ar" if lang == "ar" else f"{key}_en", "")
+    return val or item.get(f"{key}_en", "")
+
+
+def pair_text(entry, lang):
+    """One {"en": ..., "ar": ...} row from a features or specs list."""
+    if not isinstance(entry, dict):
+        return str(entry)
+    return entry.get("ar" if lang == "ar" else "en") or entry.get("en", "")
+
+
+def product_categories_present():
+    """Only the categories that actually have a product, in the fixed order
+    above -- an empty filter chip is worse than no chip."""
+    used = {p.get("category") for p in PRODUCTS}
+    return [(key, label) for key, label in PRODUCT_CATEGORIES if key in used]
+
+
 # Every visible string is a pair: (English, Arabic).
 def t(pair, lang):
     return pair[0] if lang == "en" else pair[1]
@@ -161,8 +253,15 @@ ROUTES = {
     "clients.html": "clients",
     "partners.html": "partners",
     "contact.html": "contact",
+    "products.html": "products",
     "privacy-policy.html": "privacy-policy",
 }
+
+# One route per product, so /products/<slug>/ is a real pre-rendered page with
+# its own canonical URL, its own Arabic twin and its own sitemap entry.
+for _p in PRODUCTS:
+    ROUTES[product_fname(_p["slug"])] = f'products/{_p["slug"]}'
+
 
 def path_for(lang, fname):
     """Root-relative clean URL for a page: '/', '/about/', '/ar/services/'."""
@@ -344,6 +443,7 @@ NAV = [
         (("Security Patrols", "دوريات أمنية"), "services.html#patrols"),
         (("Security Systems", "أنظمة أمنية"), "services.html#systems"),
     ]),
+    (("Products", "المنتجات"), "products.html", []),
     (("Clients", "عملاؤنا"), "clients.html", []),
     (("Partners", "شركاؤنا"), "partners.html", []),
     (("Contact", "اتصل بنا"), "contact.html", []),
@@ -917,6 +1017,38 @@ CONTACT = {
 }
 
 # ============================================================ 404
+PRODUCTS_PAGE = {
+    "title": ("Security Products | AZSCO Security Kuwait",
+              "المنتجات الأمنية | أزسكو للأمن الكويت"),
+    "desc": ("Security systems supplied, installed and monitored by AZSCO in Kuwait — surveillance cameras, fire alarms and intruder detection, all routed to our 24/7 Central Operations Room.",
+             "أنظمة أمنية توردها أزسكو وتركّبها وتراقبها في الكويت — كاميرات مراقبة وأنظمة إنذار حريق وكشف تسلّل، جميعها مرتبطة بغرفة العمليات المركزية العاملة على مدار الساعة."),
+    "banner_h": ("Security Products", "المنتجات الأمنية"),
+    "banner_p": ("Systems we supply, install and monitor — specified around your premises and connected to our Central Operations Room.",
+                 "أنظمة نوردها ونركّبها ونراقبها — تُحدَّد بما يناسب منشأتك وتُربط بغرفة العمليات المركزية لدينا."),
+    "crumb": ("Products", "المنتجات"),
+    "eyebrow": ("What We Supply", "ما نوفّره"),
+    "h2": ("Security systems, installed and monitored",
+           "أنظمة أمنية، تركيب ومراقبة"),
+    "lead": ("AZSCO does not sell equipment off a shelf. Every system below is specified from a free site survey, installed by our own technicians, and connected to the Central Operations Room so an alert becomes a response.",
+             "لا تبيع أزسكو المعدات جاهزة من الرفّ. كل نظام مما يلي يُحدَّد بناءً على معاينة مجانية للموقع، ويركّبه فنيونا، ويُربط بغرفة العمليات المركزية بحيث يتحوّل التنبيه إلى استجابة."),
+    "filter_all": ("All Products", "جميع المنتجات"),
+    "filter_label": ("Filter products by category", "تصفية المنتجات حسب الفئة"),
+    "empty": ("No products in this category yet.", "لا توجد منتجات في هذه الفئة بعد."),
+    "brands_label": ("Brands we work with", "العلامات التي نعمل بها"),
+    "features_h": ("What it includes", "ما يشمله"),
+    "specs_h": ("Specifications", "المواصفات"),
+    "detail_crumb": ("Products", "المنتجات"),
+    "quote": ("Request a Quote", "اطلب عرض سعر"),
+    "survey": ("Every quote starts with a free site survey.",
+               "كل عرض سعر يبدأ بمعاينة مجانية للموقع."),
+    "related_h": ("Other systems", "أنظمة أخرى"),
+    "back": ("All products", "جميع المنتجات"),
+    "cta": ("Not sure which system fits your site?",
+            "لست متأكداً أي نظام يناسب موقعك؟"),
+    "cta_p": ("Tell us about the premises and an AZSCO consultant will recommend a system and arrange a free survey.",
+              "أخبرنا عن المنشأة وسيقترح مستشار من أزسكو النظام المناسب ويرتّب معاينة مجانية."),
+}
+
 NOTFOUND = {
   "title": ("Page Not Found | AZSCO Security", "الصفحة غير موجودة | أزسكو للأمن"),
   "desc": ("The page you requested could not be found on the AZSCO Security website.",
@@ -1921,6 +2053,11 @@ def build_contact(lang):
     service_names = json.dumps(
         {s["anchor"]: html.unescape(t(s["name"], lang)) for s in SERVICES},
         ensure_ascii=False)
+    # The same mechanism for products (contact.html?product=<slug>), so a quote
+    # button on a product page arrives with that product named in the message.
+    product_names = json.dumps(
+        {item["slug"]: html.unescape(pt(item, "name", lang)) for item in PRODUCTS},
+        ensure_ascii=False)
 
     body = banner(lang, t(C["banner_h"], lang), t(C["banner_p"], lang), t(C["crumb"], lang)) + f'''
 <section class="section">
@@ -1953,7 +2090,8 @@ def build_contact(lang):
         <form data-contact-form novalidate data-sent-message="{t(C["sent"], lang)}"
               data-endpoint="{CONTACT_ENDPOINT}" data-lang="{lang}"
               data-sending-message="{t(C["sending"], lang)}" data-error-message="{t(C["send_failed"], lang)}"
-              data-service-names='{service_names}' data-quote-prefill="{t(C["quote_prefill"], lang)}">
+              data-service-names='{service_names}'
+              data-product-names='{product_names}' data-quote-prefill="{t(C["quote_prefill"], lang)}">
           <!-- Honeypot: hidden from people, tempting to bots. A filled-in
                value marks the submission as spam, server-side. -->
           <div class="visually-hidden" aria-hidden="true">
@@ -2012,6 +2150,145 @@ def build_contact(lang):
 '''
     page(lang, "contact.html", t(C["title"], lang), t(C["desc"], lang), body)
 
+def product_card(lang, item):
+    """One product in the listing grid. data-category drives the filter."""
+    P = PRODUCTS_PAGE
+    href = link(lang, product_fname(item["slug"]))
+    brands = item.get("brands") or []
+    brand_line = ("" if not brands else
+                  f'<p class="product-brands" dir="ltr">{" &middot; ".join(html.escape(b) for b in brands)}</p>')
+    if item.get("image"):
+        media = (f'<div class="product-thumb"><img src="{html.escape(item["image"])}" '
+                 f'alt="{html.escape(pt(item, "image_alt", lang) or pt(item, "name", lang))}" '
+                 f'loading="lazy" decoding="async"></div>')
+    else:
+        # No photo yet: the icon keeps the card the same shape as its neighbours
+        # instead of leaving a collapsed hole in the grid.
+        media = f'<div class="product-thumb product-thumb--empty">{product_icon(item)}</div>'
+    return f'''      <article class="card product-card reveal" data-category="{html.escape(item.get("category",""))}">
+        {media}
+        <h3><a href="{href}">{pt(item, "name", lang)}</a></h3>
+        <p>{pt(item, "summary", lang)}</p>
+        {brand_line}
+        <span class="more">{t(P["quote"], lang)} {I["arrow"]}</span>
+      </article>'''
+
+
+def build_products(lang):
+    P = PRODUCTS_PAGE
+    cats = product_categories_present()
+    chips = "\n".join(
+        f'        <button type="button" class="filter-chip" data-filter="{key}">{t(label, lang)}</button>'
+        for key, label in cats)
+    filter_bar = "" if not cats else f'''
+    <div class="filter-bar reveal" role="group" aria-label="{t(P["filter_label"], lang)}" data-product-filter>
+        <button type="button" class="filter-chip is-active" data-filter="all" aria-pressed="true">{t(P["filter_all"], lang)}</button>
+{chips}
+    </div>'''
+
+    cards = "\n".join(product_card(lang, item) for item in PRODUCTS)
+    grid = (f'<p class="center">{t(P["empty"], lang)}</p>' if not PRODUCTS else
+            f'''<div class="grid grid-3" data-product-grid>
+{cards}
+    </div>
+    <p class="center product-empty" data-product-empty hidden>{t(P["empty"], lang)}</p>''')
+
+    body = banner(lang, t(P["banner_h"], lang), t(P["banner_p"], lang), t(P["crumb"], lang)) + f'''
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <p class="eyebrow">{t(P["eyebrow"], lang)}</p>
+      <h2>{t(P["h2"], lang)}</h2>
+      <p>{t(P["lead"], lang)}</p>
+    </div>{filter_bar}
+    {grid}
+  </div>
+</section>
+
+{cta(lang, (P["cta"], P["cta_p"]))}
+'''
+    page(lang, "products.html", t(P["title"], lang), t(P["desc"], lang), body)
+
+
+def build_product(lang, item):
+    P = PRODUCTS_PAGE
+    name = pt(item, "name", lang)
+
+    features = item.get("features") or []
+    feat_html = "" if not features else '''
+        <h2>{h}</h2>
+        <ul class="check-list">
+{rows}
+        </ul>'''.format(
+        h=t(P["features_h"], lang),
+        rows="\n".join(
+            f'          <li><span class="ico">{I["check"]}</span><span>{pair_text(f, lang)}</span></li>'
+            for f in features))
+
+    specs = item.get("specs") or []
+    spec_html = "" if not specs else '''
+        <h2>{h}</h2>
+        <div class="spec-table">
+{rows}
+        </div>'''.format(
+        h=t(P["specs_h"], lang),
+        rows="\n".join(
+            '          <div class="spec-row"><dt>{l}</dt><dd>{v}</dd></div>'.format(
+                l=pt(sp, "label", lang) if isinstance(sp, dict) else "",
+                v=pt(sp, "value", lang) if isinstance(sp, dict) else "")
+            for sp in specs))
+
+    brands = item.get("brands") or []
+    brand_html = "" if not brands else f'''
+        <p class="eyebrow">{t(P["brands_label"], lang)}</p>
+        <div class="chips" dir="ltr">
+{chr(10).join(f'          <span class="chip">{html.escape(b)}</span>' for b in brands)}
+        </div>'''
+
+    if item.get("image"):
+        visual = (f'<div class="product-hero-img"><img src="{html.escape(item["image"])}" '
+                  f'alt="{html.escape(pt(item, "image_alt", lang) or name)}" decoding="async"></div>')
+    else:
+        visual = f'<div class="visual-frame"><div style="color:#fff;width:150px;max-width:55%">{product_icon(item)}</div></div>'
+
+    others = [o for o in PRODUCTS if o["slug"] != item["slug"]][:3]
+    related = "" if not others else '''
+<section class="section section--alt">
+  <div class="wrap">
+    <div class="sec-head center reveal"><h2>{h}</h2></div>
+    <div class="grid grid-3">
+{cards}
+    </div>
+  </div>
+</section>'''.format(h=t(P["related_h"], lang),
+                      cards="\n".join(product_card(lang, o) for o in others))
+
+    body = banner(lang, name, pt(item, "summary", lang), t(P["detail_crumb"], lang)) + f'''
+<section class="section">
+  <div class="wrap">
+    <div class="split">
+      <div class="reveal">
+        <p>{pt(item, "description", lang)}</p>
+{feat_html}
+{spec_html}
+{brand_html}
+        <div class="btn-row">
+          <a class="btn btn-dark" href="{link(lang, "contact.html")}?product={item["slug"]}">{t(P["quote"], lang)} {I["arrow"]}</a>
+          <a class="btn btn-outline" href="{link(lang, "products.html")}">{t(P["back"], lang)}</a>
+        </div>
+        <p class="product-note">{t(P["survey"], lang)}</p>
+      </div>
+      <div class="split-visual reveal" data-delay="120">{visual}</div>
+    </div>
+  </div>
+</section>
+{related}
+{cta(lang, (P["cta"], P["cta_p"]))}
+'''
+    title = f'{name} | {t(SITE_NAME, lang)}'
+    page(lang, product_fname(item["slug"]), title, pt(item, "summary", lang), body)
+
+
 def build_privacy(lang):
     P = PRIVACY
     out = [f'<span class="updated">{t(P["updated"], lang)}</span>',
@@ -2064,7 +2341,8 @@ def build_404(lang):
 # ============================================================ write
 SITEMAP_PRIORITY = {
     "index.html": "1.0", "services.html": "0.9", "about.html": "0.8",
-    "contact.html": "0.8", "partners.html": "0.6", "clients.html": "0.6",
+    "contact.html": "0.8", "products.html": "0.8",
+    "partners.html": "0.6", "clients.html": "0.6",
     "privacy-policy.html": "0.3",
 }
 
@@ -2126,11 +2404,57 @@ def sync_backend_prompt():
     return changed
 
 
+CMS_CONFIG = os.path.join("admin", "config.yml")
+CMS_CAT_BEGIN = "        # CMS-CATEGORIES:BEGIN"
+CMS_CAT_END = "        # CMS-CATEGORIES:END"
+
+
+def sync_cms_categories():
+    """Writes PRODUCT_CATEGORIES into the CMS config's category dropdown.
+
+    The CMS offering a category the build does not know would silently drop a
+    product out of every filter, so the two lists are generated from one place
+    rather than kept in step by hand.
+    """
+    path = os.path.join(OUT, CMS_CONFIG)
+    if not os.path.exists(path):
+        return False
+    with open(path, encoding="utf-8") as fh:
+        src = fh.read()
+    head, mark, rest = src.partition(CMS_CAT_BEGIN)
+    if not mark:
+        return False
+    _, mark, tail = rest.partition(CMS_CAT_END)
+    if not mark:
+        raise SystemExit(f"{CMS_CONFIG}: missing {CMS_CAT_END} marker")
+
+    rows = "\n".join(
+        "          - {{label: '{label}', value: {value}}}".format(
+            label=html.unescape(label[0]).replace("'", "''"), value=key)
+        for key, label in PRODUCT_CATEGORIES)
+    block = (CMS_CAT_BEGIN + " -- generated by tools/build.py; do not edit by\n"
+             "        # hand. Edit PRODUCT_CATEGORIES there and rebuild, so the list the CMS\n"
+             "        # offers can never drift from the list the site can actually render.\n"
+             "        options:\n" + rows + "\n" + CMS_CAT_END)
+    out = head + block + tail
+    if out == src:
+        return False
+    with open(path, "w", encoding="utf-8") as fh:
+        fh.write(out)
+    return True
+
+
 def write_sitemap():
     """Built from the pages that exist, with an alternate for each language."""
     today = datetime.date.today().isoformat()
     rows = []
-    for fname, priority in SITEMAP_PRIORITY.items():
+    # Product detail pages are generated from content/, so they are added here
+    # rather than being listed by hand -- a product added through the CMS
+    # reaches the sitemap without anyone remembering to update it.
+    entries = dict(SITEMAP_PRIORITY)
+    for item in PRODUCTS:
+        entries[product_fname(item["slug"])] = "0.7"
+    for fname, priority in entries.items():
         for lang in LANGS:
             alts = "".join(
                 f'\n    <xhtml:link rel="alternate" hreflang="{l}" href="{canonical(l, fname)}"/>'
@@ -2178,17 +2502,22 @@ if __name__ == "__main__":
         build_services(lang)
         build_clients(lang)
         build_partners(lang)
+        build_products(lang)
+        for _item in PRODUCTS:
+            build_product(lang, _item)
         build_contact(lang)
         build_privacy(lang)
         build_404(lang)
 
-    for (lang, fname), html in PAGES.items():
+    # Not named "html": that would shadow the html module at module scope for
+    # everything that runs after this loop.
+    for (lang, fname), markup in PAGES.items():
         out_path = out_file_for(lang, fname)
         full = os.path.join(OUT, out_path)
         os.makedirs(os.path.dirname(full) or OUT, exist_ok=True)
         with open(full, "w", encoding="utf-8") as fh:
-            fh.write(html)
-        print("wrote", out_path, len(html), "bytes")
+            fh.write(markup)
+        print("wrote", out_path, len(markup), "bytes")
 
     # Retire the flat ".html" URLs this migration replaces, and add the /home/
     # alias, without breaking anyone already pointed at the old address.
@@ -2197,6 +2526,8 @@ if __name__ == "__main__":
         for fname in ROUTES:
             if fname == "index.html":
                 continue  # no flat URL to retire: index.html *is* the file behind "/"
+            if fname.startswith("product--"):
+                continue  # products are new; they never had a flat .html URL
             old_path = fname if lang == "en" else f"ar/{fname}"
             write_redirect(old_path, canonical(lang, fname), lang)
             redirects += 1
@@ -2208,3 +2539,4 @@ if __name__ == "__main__":
     print("wrote sitemap.xml with", write_sitemap(), "urls")
     synced = sync_backend_prompt()
     print("backend prompt:", ", ".join(synced) if synced else "already in sync")
+    print("cms categories:", "rewritten" if sync_cms_categories() else "already in sync")

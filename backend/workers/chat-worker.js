@@ -1,9 +1,11 @@
 /**
  * AZSCO — Cloudflare Worker behind the website's assistant and contact form.
  *
- * Two routes:
+ * Routes:
  *   POST /          the chat widget, relayed to the Gemini API
  *   POST /contact   the contact form, relayed to Web3Forms
+ *   GET  /auth      GitHub sign-in for the content editor at /admin/
+ *   GET  /callback  the other half of that sign-in
  *
  * Self-contained on purpose: no imports, so it can be pasted straight into the
  * Cloudflare dashboard's Worker editor (Workers & Pages -> Create -> Create
@@ -320,6 +322,109 @@ async function handleChat(request, env, ctx) {
   }
 }
 
+/* ------------------------------------------------------------------ cms
+ * GitHub sign-in for the content editor at /admin/.
+ *
+ * The editor is a Git-based CMS: it commits product files straight to the
+ * repository, so it needs a GitHub token for the person using it. GitHub will
+ * not hand one to a static page, because that would mean publishing the OAuth
+ * client secret. These two routes are the standard bridge:
+ *
+ *   /auth      sends the editor to GitHub to approve access
+ *   /callback  takes the code GitHub returns, swaps it for a token using the
+ *              secret (which stays here), and hands the token to the editor
+ *              window through postMessage
+ *
+ * Secrets, both from an OAuth App created at
+ * https://github.com/settings/developers with its callback URL set to this
+ * worker's /callback:
+ *   GITHUB_OAUTH_CLIENT_ID      plain variable is fine
+ *   GITHUB_OAUTH_CLIENT_SECRET  must be a secret
+ *
+ * Without them both routes answer 503 and the editor simply cannot sign in;
+ * nothing else on the worker is affected.
+ */
+function cmsConfigured(env) {
+  return !!(env.GITHUB_OAUTH_CLIENT_ID && env.GITHUB_OAUTH_CLIENT_SECRET);
+}
+
+/* The editor window is told the result by postMessage. Only origins on
+   ALLOWED_ORIGIN are addressed, so a token can never be posted to a page on
+   someone else's domain that happened to open this flow. */
+function cmsOrigins(env) {
+  return (env.ALLOWED_ORIGIN || '').split(',').map(s => s.trim()).filter(Boolean);
+}
+
+function handleCmsAuth(request, env) {
+  if (!cmsConfigured(env)) {
+    return new Response('Content editor sign-in is not configured.', { status: 503 });
+  }
+  const url = new URL(request.url);
+  const redirect = `${url.origin}/callback`;
+  // "repo" is the narrowest scope that still allows committing to a repository
+  // that may be private; GitHub has no finer scope for this.
+  const target = new URL('https://github.com/login/oauth/authorize');
+  target.searchParams.set('client_id', env.GITHUB_OAUTH_CLIENT_ID);
+  target.searchParams.set('redirect_uri', redirect);
+  target.searchParams.set('scope', 'repo,user');
+  return Response.redirect(target.toString(), 302);
+}
+
+function cmsResult(status, payload, env) {
+  // The editor listens for this exact message shape.
+  const message = `authorization:github:${status}:${JSON.stringify(payload)}`;
+  const targets = cmsOrigins(env);
+  const body = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Signing in…</title></head>
+<body><p>Completing sign-in…</p><script>
+(function () {
+  var message = ${JSON.stringify(message)};
+  var targets = ${JSON.stringify(targets)};
+  function send(e) {
+    if (!window.opener) return;
+    // Answer only the window that started this, and only on an allowed origin.
+    if (targets.length && targets.indexOf(e.origin) === -1) return;
+    window.opener.postMessage(message, e.origin);
+  }
+  window.addEventListener('message', send, false);
+  if (window.opener) window.opener.postMessage('authorizing:github', '*');
+  setTimeout(function () { document.body.innerHTML = '<p>You can close this window.</p>'; }, 1500);
+})();
+</script></body></html>`;
+  return new Response(body, {
+    status: status === 'success' ? 200 : 400,
+    headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' },
+  });
+}
+
+async function handleCmsCallback(request, env) {
+  if (!cmsConfigured(env)) {
+    return new Response('Content editor sign-in is not configured.', { status: 503 });
+  }
+  const code = new URL(request.url).searchParams.get('code');
+  if (!code) return cmsResult('error', { message: 'No code returned by GitHub' }, env);
+
+  try {
+    const res = await fetch('https://github.com/login/oauth/access_token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        client_id: env.GITHUB_OAUTH_CLIENT_ID,
+        client_secret: env.GITHUB_OAUTH_CLIENT_SECRET,
+        code,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.access_token) {
+      console.error('GitHub token exchange failed', res.status, data && data.error);
+      return cmsResult('error', { message: 'GitHub did not return a token' }, env);
+    }
+    return cmsResult('success', { token: data.access_token, provider: 'github' }, env);
+  } catch (err) {
+    console.error('CMS auth failure', err);
+    return cmsResult('error', { message: 'Sign-in failed' }, env);
+  }
+}
+
 /* ------------------------------------------------------------- dispatch */
 
 export default {
@@ -337,6 +442,15 @@ export default {
       ip: request.headers.get('cf-connecting-ip') || 'unknown',
     };
 
+    // The two sign-in routes are ordinary browser navigations, not fetches:
+    // they carry no Origin header, so they are handled before the origin check
+    // that the chat and contact routes rely on. Neither reads a request body
+    // nor touches an API key; the token they return is posted only to an
+    // ALLOWED_ORIGIN window.
+    const route = new URL(request.url).pathname.replace(/\/+$/, '');
+    if (route === '/auth') return handleCmsAuth(request, env);
+    if (route === '/callback') return handleCmsCallback(request, env);
+
     if (request.method === 'OPTIONS') {
       return new Response(null, { status: 204, headers: corsHeaders(ctx.origin, allowed) });
     }
@@ -348,8 +462,8 @@ export default {
       return json({ error: 'Method not allowed' }, 405, ctx);
     }
 
-    // One worker, two jobs: /contact takes the contact form, everything else
-    // is the chat widget (which has always posted to the worker root).
+    // /contact takes the contact form; everything else is the chat widget,
+    // which has always posted to the worker root.
     const path = new URL(request.url).pathname.replace(/\/+$/, '');
     return path === '/contact'
       ? handleContact(request, env, ctx)
