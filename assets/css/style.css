@@ -127,13 +127,11 @@ li{margin-bottom:.45em}
 
 /* ---------- section heading ---------- */
 .eyebrow{
-  display:inline-flex;align-items:center;gap:10px;
+  display:inline-flex;align-items:center;
   font-family:var(--sans);
   font-size:.74rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
   color:var(--accent-strong);margin:0 0 14px;
 }
-.eyebrow::before{content:"";width:28px;height:2px;background:var(--accent)}
-.center .eyebrow::after{content:"";width:28px;height:2px;background:var(--accent)}
 .section--dark .eyebrow{color:var(--accent)}
 
 .sec-head{max-width:720px;margin-bottom:56px}
@@ -1065,7 +1063,6 @@ a,button,input,select,textarea,summary,.mobile-bar a,.chat-launcher{
 [dir="rtl"] .m-sub a{border-left:0;border-right:2px solid var(--line);padding:10px 16px 10px 2px}
 [dir="rtl"] .m-sub a:hover{border-right-color:var(--ink)}
 [dir="rtl"] .site-footer h4::after{left:auto;right:0}
-[dir="rtl"] .eyebrow::before,[dir="rtl"] .center .eyebrow::after{transform:none}
 [dir="rtl"] .card::after{transform-origin:right}
 [dir="rtl"] .visual-badge{right:auto;left:-16px}
 [dir="rtl"] .to-top{right:auto;left:24px}
