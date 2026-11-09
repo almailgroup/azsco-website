@@ -640,8 +640,8 @@ ABOUT_SVG = '''<svg viewBox="0 0 320 300" role="img" aria-label="Illustration of
 HOME = {
   "title": ("AZSCO Security | Professional Security Services for Kuwait",
             "أزسكو للأمن | خدمات أمنية احترافية في الكويت"),
-  "desc": ("AZSCO Security Services Company provides professional security services in Kuwait since 2014 — facility guarding, VIP protection and rapid intervention, a 24/7 central operations room, security patrols, and security systems.",
-           "تقدّم شركة أزسكو لخدمات حراسة المنشآت خدمات أمنية احترافية في الكويت منذ عام 2014 — حراسة المنشآت، وحماية الشخصيات والتدخّل السريع، وغرفة عمليات مركزية على مدار الساعة، ودوريات أمنية، وأنظمة أمنية."),
+  "desc": ("Licensed security services in Kuwait since 2014 — facility guarding, VIP protection, a 24/7 operations room, patrols and monitored security systems.",
+           "خدمات أمنية مرخّصة في الكويت منذ 2014 — حراسة المنشآت وحماية الشخصيات وغرفة عمليات على مدار الساعة ودوريات وأنظمة أمنية مراقبة."),
   "badge": ("Licensed Security Provider &mdash; Kuwait", "مزوّد خدمات أمنية مرخّص &mdash; الكويت"),
   "h1a": ("Professional Security", "خدمات أمنية"),
   "h1b": ("Services for Kuwait", "احترافية في الكويت"),
@@ -739,8 +739,8 @@ STATS = [
 # ============================================================ about
 ABOUT = {
   "title": ("About Us | AZSCO Security Kuwait", "من نحن | أزسكو للأمن الكويت"),
-  "desc": ("AZSCO Security Services Company was established in 2014 in Qibla, Kuwait, offering facility guarding, VIP protection and rapid intervention, a central operations room, and security patrols.",
-           "تأسّست شركة أزسكو لخدمات حراسة المنشآت عام 2014 في القبلة بالكويت، وتقدّم حراسة المنشآت، وحماية الشخصيات والتدخّل السريع، وغرفة عمليات مركزية، ودوريات أمنية."),
+  "desc": ("AZSCO has protected premises, assets and people across Kuwait since 2014, with screened, licensed and closely supervised security personnel.",
+           "تحمي أزسكو المنشآت والممتلكات والأشخاص في الكويت منذ 2014، بكوادر أمنية مدقّقة ومرخّصة وتخضع لإشراف دقيق."),
   "banner_h": ("About AZSCO", "عن أزسكو"),
   "banner_p": ("A leading provider of security services in Kuwait, with a strong reputation for quality and reliability.",
                "مزوّد رائد للخدمات الأمنية في الكويت، بسمعة قوية في الجودة والموثوقية."),
@@ -844,7 +844,7 @@ ABOUT = {
 SERVICES_PAGE = {
   "title": ("Security Services in Kuwait | AZSCO Security",
             "خدمات أمنية في الكويت | أزسكو للأمن"),
-  "desc": ("AZSCO security services in Kuwait: facility guarding, VIP protection and rapid intervention, a central operations room, security patrols, and security systems.",
+  "desc": ("AZSCO security services in Kuwait — facility guarding, VIP protection, rapid intervention, a central operations room, patrols and security systems.",
            "خدمات أزسكو الأمنية في الكويت: حراسة المنشآت، وحماية الشخصيات والتدخل السريع، وغرفة عمليات مركزية، ودوريات أمنية، وأنظمة أمنية."),
   "banner_h": ("Our Services", "خدماتنا"),
   "banner_p": ("A comprehensive range of security services — manpower, a central operations room and monitored security systems — tailored to each client.",
@@ -906,8 +906,8 @@ CLIENTS = [
 
 CLIENTS_PAGE = {
   "title": ("Our Clients | AZSCO Security Kuwait", "عملاؤنا | أزسكو للأمن الكويت"),
-  "desc": ("AZSCO is trusted by hotels, real estate developers, government bodies and industrial groups across Kuwait, including Radisson Blu Hotel Kuwait, Millennium Hotels and Resorts and Kuwait Ports Authority.",
-           "تحظى أزسكو بثقة الفنادق والمطوّرين العقاريين والجهات الحكومية والمجموعات الصناعية في جميع أنحاء الكويت، ومنها فندق راديسون بلو الكويت وفنادق ومنتجعات ميلينيوم ومؤسسة الموانئ الكويتية."),
+  "desc": ("Hotels, developers, government bodies and industrial groups across Kuwait trust AZSCO — including Radisson Blu, Millennium and Kuwait Ports Authority.",
+           "تثق بأزسكو فنادق ومطوّرون عقاريون وجهات حكومية ومجموعات صناعية في الكويت، منها راديسون بلو وميلينيوم ومؤسسة الموانئ الكويتية."),
   "banner_h": ("Our Clients", "عملاؤنا"),
   "banner_p": ("Long-term relationships with clients across Kuwait's public and private sectors.",
                "علاقات طويلة الأمد مع عملائنا في القطاعين العام والخاص في الكويت."),
@@ -961,8 +961,8 @@ PARTNERS_PAGE = {
 # ============================================================ contact page
 CONTACT = {
   "title": ("Contact AZSCO Security | Kuwait", "اتصل بأزسكو للأمن | الكويت"),
-  "desc": ("Contact AZSCO Security in Kuwait. Office: Floor 27B, Kuwait Building Tower, Fahad Al Salem St., Qibla, Kuwait. Tel (+965) 1808606. Email info@azsco.com. Request a free site survey.",
-           "تواصل مع أزسكو للأمن في الكويت. المكتب: الدور 27B، برج مبنى الكويت، شارع فهد السالم، القبلة، الكويت. هاتف (+965) 1808606. بريد إلكتروني info@azsco.com. اطلب معاينة مجانية للموقع."),
+  "desc": ("Contact AZSCO Security in Kuwait — Qibla, Kuwait City. Call (+965) 1808606 or email info@azsco.com to request a free site survey.",
+           "تواصل مع أزسكو للأمن في الكويت — القبلة، مدينة الكويت. اتصل على (+965) 1808606 أو راسلنا على info@azsco.com لطلب معاينة مجانية."),
   "banner_h": ("Contact Us", "اتصل بنا"),
   "banner_p": ("Talk to AZSCO about guarding or a free site survey. Our team is available 24 hours a day, 7 days a week.",
                "تحدّث مع أزسكو حول خدمات الحراسة أو معاينة مجانية للموقع. فريقنا متاح على مدار 24 ساعة طوال أيام الأسبوع."),
@@ -1020,8 +1020,8 @@ CONTACT = {
 PRODUCTS_PAGE = {
     "title": ("Security Products | AZSCO Security Kuwait",
               "المنتجات الأمنية | أزسكو للأمن الكويت"),
-    "desc": ("Security systems supplied, installed and monitored by AZSCO in Kuwait — surveillance cameras, fire alarms and intruder detection, all routed to our 24/7 Central Operations Room.",
-             "أنظمة أمنية توردها أزسكو وتركّبها وتراقبها في الكويت — كاميرات مراقبة وأنظمة إنذار حريق وكشف تسلّل، جميعها مرتبطة بغرفة العمليات المركزية العاملة على مدار الساعة."),
+    "desc": ("Security systems supplied, installed and monitored by AZSCO in Kuwait — surveillance cameras, fire alarms and intruder detection, with 24/7 response.",
+             "أنظمة أمنية توردها أزسكو وتركّبها وتراقبها في الكويت — كاميرات مراقبة وإنذار حريق وكشف تسلّل، مع استجابة على مدار الساعة."),
     "banner_h": ("Security Products", "المنتجات الأمنية"),
     "banner_p": ("Systems we supply, install and monitor — specified around your premises and connected to our Central Operations Room.",
                  "أنظمة نوردها ونركّبها ونراقبها — تُحدَّد بما يناسب منشأتك وتُربط بغرفة العمليات المركزية لدينا."),
@@ -1150,6 +1150,7 @@ def head(lang, fname, title, desc, preload=""):
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <meta name="theme-color" content="#0d0d0d">
+{'<meta name="robots" content="noindex">' if fname == "404.html" else ""}
 {search_console_tag()}
 <link rel="canonical" href="{canonical(lang, fname)}">
 <link rel="alternate" hreflang="en" href="{canonical("en", fname)}">
@@ -1335,21 +1336,21 @@ def footer(lang):
       </div>
 
       <div>
-        <h4>{t(FOOTER["company"], lang)}</h4>
+        <h2>{t(FOOTER["company"], lang)}</h2>
         <ul class="footer-links">
           {links}
         </ul>
       </div>
 
       <div>
-        <h4>{t(FOOTER["services"], lang)}</h4>
+        <h2>{t(FOOTER["services"], lang)}</h2>
         <ul class="footer-links">
           {svc}
         </ul>
       </div>
 
       <div>
-        <h4>{t(FOOTER["touch"], lang)}</h4>
+        <h2>{t(FOOTER["touch"], lang)}</h2>
         <ul class="footer-contact">
           <li>{I["pin"]}<span>{t(ADDRESS_BR, lang)}</span></li>
           <li>{I["phone"]}<a href="tel:{PHONE_HREF}" dir="ltr">{PHONE}</a></li>
@@ -1544,7 +1545,7 @@ def logo_panel(src, alt_pair, lang, cls=""):
 def tiles(lang, items, cols=3):
     return "\n".join(
         f'      <div class="tile reveal" data-delay="{(i%cols)*80}"><span class="ico">'
-        f'{I["award"] if icon == "award2" else I[icon]}</span><div><h4>{t(title, lang)}</h4>'
+        f'{I["award"] if icon == "award2" else I[icon]}</span><div><h3>{t(title, lang)}</h3>'
         f'<p>{t(text, lang).replace("{YEARS}", str(YEARS))}</p></div></div>'
         for i, (icon, title, text) in enumerate(items))
 
@@ -1560,7 +1561,7 @@ def build_home(lang):
         f'<span>{t(b, lang)}</span></span></li>' for a, b in H["about_checks"])
     steps = "\n".join(
         f'      <div class="step reveal" data-delay="{i*80}"><span class="n">{i+1:02d}</span>'
-        f'<h4>{t(a, lang)}</h4><p>{t(b, lang)}</p></div>'
+        f'<h3>{t(a, lang)}</h3><p>{t(b, lang)}</p></div>'
         for i, (a, b) in enumerate(H["steps"]))
 
     body = f'''
@@ -1581,7 +1582,7 @@ def build_home(lang):
       </div>
 
       <aside class="hero-card reveal" data-delay="120">
-        <h3>{t(H["card_h"], lang)}</h3>
+        <h2>{t(H["card_h"], lang)}</h2>
         <p>{t(H["card_p"], lang)}</p>
         <ul class="hero-card-list">
 {cards}
@@ -1699,7 +1700,7 @@ def build_about(lang):
     equip_html = chip_list(lang, EQUIPMENT)
     training_html = "\n".join(
         f'      <div class="tile reveal" data-delay="{(i%3)*80}"><span class="ico">{I[icon]}</span>'
-        f'<div><h4>{t(title, lang)}</h4></div></div>'
+        f'<div><h3>{t(title, lang)}</h3></div></div>'
         for i, (icon, title) in enumerate(TRAINING))
     uniform_html = "\n".join(
         f'      <div class="uniform reveal" data-delay="{i*70}">'
@@ -1710,7 +1711,7 @@ def build_about(lang):
         f'<img src="/assets/img/photos/uniforms/{key}-back.jpg" alt="{t(title, lang)}"'
         f' width="{_uniform_dims(key, "back")[0]}" height="{_uniform_dims(key, "back")[1]}"'
         f' loading="lazy" decoding="async">'
-        f'</div><h4>{t(title, lang)}</h4></div>'
+        f'</div><h3>{t(title, lang)}</h3></div>'
         for i, (key, title) in enumerate(UNIFORMS))
     cert_items_html = "\n      ".join(f'<p>{t(c, lang)}</p>' for c in CERTIFICATIONS)
     faqs = []
@@ -2041,7 +2042,7 @@ def build_contact(lang):
         extra = (f'<p style="color:var(--muted);font-size:.86rem">{t(sub, lang)}</p>') if sub else ""
         cards.append(f'''      <div class="info-card reveal" data-delay="{i*80}">
         <span class="ico">{I[icon]}</span>
-        <div><h4>{t(title, lang)}</h4>{value}{extra}</div>
+        <div><h2>{t(title, lang)}</h2>{value}{extra}</div>
       </div>''')
     options = "\n".join(f'              <option value="{v}">{t(o, lang)}</option>' for v, o in C["options"])
     note = (t(F["note"], lang)
@@ -2075,7 +2076,7 @@ def build_contact(lang):
         <div class="map-embed" style="margin-top:32px">
           <a class="pin" href="{MAPS_URL}" target="_blank" rel="noopener noreferrer" aria-label="{t(UI["map_label"], lang)}">
             {I["pin"]}
-            <h4>{t(COMPANY, lang)}</h4>
+            <h2>{t(COMPANY, lang)}</h2>
             <p>{t(ADDRESS_1L, lang)}</p>
           </a>
         </div>
@@ -2444,9 +2445,49 @@ def sync_cms_categories():
     return True
 
 
+# Pages whose bytes actually changed on this run. The sitemap uses it so that
+# lastmod reflects a real edit rather than the time the build happened to run.
+CHANGED_PAGES = set()
+
+
+def write_if_changed(full_path, text):
+    """Writes only when the content differs. Rewriting an identical file would
+    show up as a change in git and, for the sitemap, would tell search engines
+    every page was edited every time anything was rebuilt."""
+    try:
+        with open(full_path, encoding="utf-8") as fh:
+            if fh.read() == text:
+                return False
+    except OSError:
+        pass
+    os.makedirs(os.path.dirname(full_path) or OUT, exist_ok=True)
+    with open(full_path, "w", encoding="utf-8") as fh:
+        fh.write(text)
+    return True
+
+
+def existing_lastmod():
+    """lastmod for each URL already in sitemap.xml, so unchanged pages keep the
+    date they genuinely last changed."""
+    path = os.path.join(OUT, "sitemap.xml")
+    dates = {}
+    try:
+        with open(path, encoding="utf-8") as fh:
+            xml = fh.read()
+    except OSError:
+        return dates
+    for block in xml.split("<url>")[1:]:
+        loc = block.split("<loc>")[1].split("</loc>")[0] if "<loc>" in block else None
+        mod = block.split("<lastmod>")[1].split("</lastmod>")[0] if "<lastmod>" in block else None
+        if loc and mod:
+            dates[loc] = mod
+    return dates
+
+
 def write_sitemap():
     """Built from the pages that exist, with an alternate for each language."""
     today = datetime.date.today().isoformat()
+    previous = existing_lastmod()
     rows = []
     # Product detail pages are generated from content/, so they are added here
     # rather than being listed by hand -- a product added through the CMS
@@ -2459,14 +2500,16 @@ def write_sitemap():
             alts = "".join(
                 f'\n    <xhtml:link rel="alternate" hreflang="{l}" href="{canonical(l, fname)}"/>'
                 for l in LANGS)
-            rows.append(f'  <url>\n    <loc>{canonical(lang, fname)}</loc>{alts}\n'
-                        f'    <lastmod>{today}</lastmod>\n    <priority>{priority}</priority>\n  </url>')
+            loc = canonical(lang, fname)
+            # A page that did not change keeps the date it last did.
+            stamp = today if (lang, fname) in CHANGED_PAGES else previous.get(loc, today)
+            rows.append(f'  <url>\n    <loc>{loc}</loc>{alts}\n'
+                        f'    <lastmod>{stamp}</lastmod>\n    <priority>{priority}</priority>\n  </url>')
     xml = ('<?xml version="1.0" encoding="UTF-8"?>\n'
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n'
            '        xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
            + "\n".join(rows) + "\n</urlset>\n")
-    with open(os.path.join(OUT, "sitemap.xml"), "w", encoding="utf-8") as fh:
-        fh.write(xml)
+    write_if_changed(os.path.join(OUT, "sitemap.xml"), xml)
     return len(rows)
 
 def write_redirect(out_path, target_url, lang="en"):
@@ -2490,10 +2533,7 @@ def write_redirect(out_path, target_url, lang="en"):
 </body>
 </html>
 '''
-    full = os.path.join(OUT, out_path)
-    os.makedirs(os.path.dirname(full) or OUT, exist_ok=True)
-    with open(full, "w", encoding="utf-8") as fh:
-        fh.write(html)
+    write_if_changed(os.path.join(OUT, out_path), html)
 
 if __name__ == "__main__":
     for lang in LANGS:
@@ -2514,10 +2554,11 @@ if __name__ == "__main__":
     for (lang, fname), markup in PAGES.items():
         out_path = out_file_for(lang, fname)
         full = os.path.join(OUT, out_path)
-        os.makedirs(os.path.dirname(full) or OUT, exist_ok=True)
-        with open(full, "w", encoding="utf-8") as fh:
-            fh.write(markup)
-        print("wrote", out_path, len(markup), "bytes")
+        if write_if_changed(full, markup):
+            CHANGED_PAGES.add((lang, fname))
+            print("wrote", out_path, len(markup), "bytes")
+    print(f"{len(CHANGED_PAGES)} page(s) changed, "
+          f"{len(PAGES) - len(CHANGED_PAGES)} unchanged")
 
     # Retire the flat ".html" URLs this migration replaces, and add the /home/
     # alias, without breaking anyone already pointed at the old address.

@@ -401,7 +401,6 @@ li{margin-bottom:.45em}
   backdrop-filter:blur(8px);border-radius:var(--radius-lg);
   padding:34px;box-shadow:var(--shadow-lg);
 }
-.hero-card h3{color:#fff;font-size:1.28rem;margin-bottom:6px}
 .hero-card > p{font-size:.94rem;color:#a6a6a6;margin-bottom:24px}
 .hero-card-list{list-style:none;margin:0;padding:0;display:grid;gap:14px}
 .hero-card-list li{
@@ -571,7 +570,7 @@ li{margin-bottom:.45em}
 }
 .tile:hover .ico{background:var(--accent);color:var(--accent-ink)}
 .tile .ico svg{width:25px;height:25px}
-.tile h4{margin-bottom:7px;font-size:1.08rem;color:var(--ink)}
+.tile h3{margin-bottom:7px;font-size:1.08rem;color:var(--ink)}
 .tile p{font-size:.94rem;margin:0}
 
 /* ==========================================================================
@@ -583,7 +582,7 @@ li{margin-bottom:.45em}
   font-family:var(--display);font-size:3.4rem;font-weight:700;line-height:1;
   color:var(--accent-ghost);
 }
-.step h4{margin:10px 0 8px;font-size:1.1rem}
+.step h3{margin:10px 0 8px;font-size:1.1rem}
 .step p{font-size:.94rem;margin:0}
 .step::after{
   content:"";position:absolute;top:34px;right:-14px;width:28px;height:2px;
@@ -608,7 +607,7 @@ li{margin-bottom:.45em}
 .uniform:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:var(--shadow)}
 .uniform-photos{display:grid;grid-template-columns:1fr 1fr}
 .uniform-photos img{display:block;width:100%;height:100%;object-fit:cover;aspect-ratio:2/3}
-.uniform h4{padding:14px 16px;margin:0;font-size:.98rem;text-align:center;color:var(--ink)}
+.uniform h3{padding:14px 16px;margin:0;font-size:.98rem;text-align:center;color:var(--ink)}
 
 /* ==========================================================================
    Accordion (FAQ)
@@ -679,7 +678,7 @@ li{margin-bottom:.45em}
   background:var(--accent-soft);color:var(--accent-strong);display:grid;place-items:center;
 }
 .info-card .ico svg{width:22px;height:22px}
-.info-card h4{margin-bottom:5px;font-size:1.02rem}
+.info-card h2{margin-bottom:5px;font-size:1.02rem}
 .info-card p,.info-card a{font-size:.95rem;margin:0;color:var(--body);display:block}
 .info-card .info-note{
   display:block;font-size:.78rem;color:var(--muted);
@@ -743,7 +742,7 @@ li{margin-bottom:.45em}
 }
 .map-embed .pin{position:relative;z-index:2;color:var(--accent)}
 .map-embed .pin svg{width:52px;height:52px;margin:0 auto 16px}
-.map-embed h4{color:#fff;margin-bottom:6px}
+.map-embed h3{color:#fff;margin-bottom:6px}
 .map-embed p{color:#a6a6a6;font-size:.95rem;margin:0}
 
 /* ==========================================================================
@@ -765,11 +764,11 @@ li{margin-bottom:.45em}
    ========================================================================== */
 .site-footer{background:var(--grey-950);color:#999999;padding:80px 0 0;font-size:.95rem}
 .footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.35fr;gap:48px;padding-bottom:56px}
-.site-footer h4{
+.site-footer h2{
   color:#fff;font-family:var(--display);font-size:1.2rem;text-transform:uppercase;
   letter-spacing:.09em;margin-bottom:24px;position:relative;padding-bottom:14px;
 }
-.site-footer h4::after{content:"";position:absolute;left:0;bottom:0;width:34px;height:2px;background:var(--accent)}
+.site-footer h2::after{content:"";position:absolute;left:0;bottom:0;width:34px;height:2px;background:var(--accent)}
 .site-footer .brand{margin-bottom:20px}
 .site-footer p{color:#999999;font-size:.95rem}
 .footer-links{list-style:none;margin:0;padding:0}
@@ -882,7 +881,7 @@ li{margin-bottom:.45em}
   .steps{grid-template-columns:1fr;gap:14px}
   .step{display:grid;grid-template-columns:auto 1fr;gap:0 16px;padding:0}
   .step .n{grid-row:span 2;font-size:2.5rem;line-height:.9}
-  .step h4{margin:0 0 4px;align-self:end}
+  .step h3{margin:0 0 4px;align-self:end}
   .step p{font-size:.93rem}
 
   .section{padding:52px 0}
@@ -932,7 +931,7 @@ li{margin-bottom:.45em}
   }
   .footer-grid > :first-child,
   .footer-grid > :last-child{grid-column:1 / -1}
-  .site-footer h4{margin-bottom:16px;font-size:1.1rem}
+  .site-footer h2{margin-bottom:16px;font-size:1.1rem}
   .footer-links a{min-height:40px;align-items:center}
   .footer-links li{margin-bottom:2px}
   .footer-bottom{flex-direction:column;text-align:center;gap:14px}
@@ -1007,6 +1006,21 @@ a,button,input,select,textarea,summary,.mobile-bar a,.chat-launcher{
   body{color:#000}
 }
 
+/* These are h3 so the document outline never skips a level, but they are small
+   component titles rather than section headings -- so they keep the compact
+   sans treatment the h4 base rule used to give them. The footer headings are
+   deliberately NOT in this list: they declare the display face themselves.
+
+   Placed before the RTL block on purpose. That block gives every Arabic
+   heading the display face at the same specificity, and must keep winning --
+   exactly as it did when these were h4 and took sans from the base rule. */
+.tile h3,.step h3,.uniform h3,.map-embed h3,.info-card h2{
+  font-family:var(--sans);font-weight:700;
+}
+/* info-card's title is an h2 only so the contact page's outline does not jump
+   from h1 to h3; it is not a section heading and must not take h2's uppercase. */
+.info-card h2{text-transform:none}
+
 /* ==========================================================================
    Arabic / right-to-left
    Direction itself is handled by dir="rtl"; what follows are the physical
@@ -1020,7 +1034,7 @@ a,button,input,select,textarea,summary,.mobile-bar a,.chat-launcher{
 [dir="rtl"] h1,[dir="rtl"] h2,[dir="rtl"] h3,[dir="rtl"] h4,[dir="rtl"] h5,
 [dir="rtl"] .brand-name,[dir="rtl"] .stat .num,[dir="rtl"] .step .n,
 [dir="rtl"] .visual-badge b,
-[dir="rtl"] .site-footer h4,[dir="rtl"] .quote .quote-line{font-family:var(--display-ar)}
+[dir="rtl"] .site-footer h2,[dir="rtl"] .quote .quote-line{font-family:var(--display-ar)}
 
 /* Arabic letters join into words, so tracking pulls those joins apart and the
    text stops reading as connected script. This was an enumerated list of
@@ -1045,13 +1059,16 @@ a,button,input,select,textarea,summary,.mobile-bar a,.chat-launcher{
 [dir="rtl"] .eyebrow,[dir="rtl"] .btn,[dir="rtl"] .nav > li > a,
 [dir="rtl"] .m-nav > li > a,[dir="rtl"] .m-toggle,[dir="rtl"] .stat .label,
 [dir="rtl"] .field label,[dir="rtl"] .card .more,[dir="rtl"] .quote-by,
-[dir="rtl"] .site-footer h4,[dir="rtl"] .div-card .tag,[dir="rtl"] .hero-badge,
+[dir="rtl"] .site-footer h2,[dir="rtl"] .div-card .tag,[dir="rtl"] .hero-badge,
 [dir="rtl"] .visual-badge span,[dir="rtl"] .skip-link,[dir="rtl"] .updated,
 [dir="rtl"] .quote .quote-line,[dir="rtl"] .mobile-bar a,[dir="rtl"] .lang-switch{
   text-transform:none;
 }
 [dir="rtl"] h1,[dir="rtl"] h2{line-height:1.32}
 [dir="rtl"] h3,[dir="rtl"] h4{line-height:1.45}
+/* footer headings are h2 for the outline, but keep the roomier leading they
+   had as h3 -- Arabic needs it at this size. */
+[dir="rtl"] .site-footer h2{line-height:1.45}
 [dir="rtl"] .hero h1{line-height:1.3}
 [dir="rtl"] .stat .num,[dir="rtl"] .step .n,[dir="rtl"] .visual-badge b{line-height:1.1}
 
@@ -1062,7 +1079,7 @@ a,button,input,select,textarea,summary,.mobile-bar a,.chat-launcher{
 [dir="rtl"] .quote{border-left:0;border-right:3px solid var(--accent);padding:0 28px 0 0}
 [dir="rtl"] .m-sub a{border-left:0;border-right:2px solid var(--line);padding:10px 16px 10px 2px}
 [dir="rtl"] .m-sub a:hover{border-right-color:var(--ink)}
-[dir="rtl"] .site-footer h4::after{left:auto;right:0}
+[dir="rtl"] .site-footer h2::after{left:auto;right:0}
 [dir="rtl"] .card::after{transform-origin:right}
 [dir="rtl"] .visual-badge{right:auto;left:-16px}
 [dir="rtl"] .to-top{right:auto;left:24px}
@@ -1340,6 +1357,14 @@ a,button,input,select,textarea,summary,.mobile-bar a,.chat-launcher{
 /* RTL: the card's accent underline and the spec table read from the right */
 [dir="rtl"] .product-card::after{transform-origin:right}
 [dir="rtl"] .spec-row dt{text-align:right}
+
+/* The hero's aside is an h2 for the same reason -- it sits directly under the
+   page h1 -- but it is not a section heading and must not take h2's uppercase
+   display treatment. */
+.hero-card h2{
+  color:#fff;font-size:1.28rem;margin-bottom:6px;
+  font-family:var(--display);text-transform:none;letter-spacing:.01em;
+}
 
 /* Kept last in the file: the chat widget's own textarea rule is declared
    further up at equal specificity, so this has to come after it to win.
