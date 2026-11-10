@@ -1,0 +1,20 @@
+{
+  "slug": "hikvision-8mp-dome-camera",
+  "published": true,
+  "order": 50,
+  "category": "surveillance",
+  "brands": [
+    "Hikvision"
+  ],
+  "image": "/assets/img/products/pasted-image-1794298273126.png",
+  "image_alt_en": "Hikvision 8MP Dome Camera",
+  "image_alt_ar": "كاميره هيكفيجن ٨ مجابيكسل دووم",
+  "name_en": "Hikvision 8MP Dome Camera",
+  "name_ar": "كاميره هيكفيجن ٨ مجابيكسل دووم",
+  "summary_en": "Hikvision  8MP AcuSense Fixed Dome Network Camera with Built-In Microphone",
+  "summary_ar": "كاميرا مراقبة شبكية من هيكفيجن، بتصميم قُبّة ثابتة وبدقة 8 ميجابكسل، مزودة بتقنية AcuSense وميكروفون مدمج.",
+  "description_en": "-High quality imaging with 8 MP resolution\n-Clear imaging against strong backlight due to 120 dB true WDR technology\n-Efficient H.265+ compression technology\n-Focus on human and vehicle targets classification based on deep learning\n-Built-in microphone for real-time audio security\n-Water and dust resistant (IP67) and vandal-resistant (IK10)",
+  "description_ar": "-تصوير عالي الجودة بدقة 8 ميجابكسل.\n-صورة واضحة حتى مع الإضاءة الخلفية القوية بفضل تقنية WDR الحقيقية بمدى 120 ديسيبل.\n-تقنية ضغط فيديو فعّالة H.265+.\n-تصنيف الأشخاص والمركبات باستخدام تقنية التعلم العميق.\n-ميكروفون مدمج لتوفير مراقبة صوتية مباشرة.\n-مقاومة للماء والغبار وفق معيار IP67، ومقاومة للتخريب وفق معيار IK1",
+  "features": [],
+  "specs": []
+}
