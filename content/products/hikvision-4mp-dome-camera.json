@@ -1,0 +1,20 @@
+{
+  "slug": "hikvision-4mp-dome-camera",
+  "published": true,
+  "order": 50,
+  "category": "surveillance",
+  "brands": [
+    "Hikvision"
+  ],
+  "image": "https://www.google.com/aclk?sa=L&ai=DChsSEwjMi7_w8PyXAxWLnYMHHSnxNrIYACICCAEQTRoCZWY&co=1&gclid=Cj0KCQiA-8XXBhDaARIsADnEOrAZQZXnZL9-duKCMbVx2RRftKMCOb_r0X9P62IXjfKD0mBmwset-48aAh-1EALw_wcB&cid=CAASWeRoOaT_CvuGom_HtPXeUVUHLHu1WyIwPWuu_zBIZ_8BoXJIZvmrkJBHBLMNQM80S7oepnoGXFaaO1sUlCRJVWo5noYpuyIH-n7inhpucsxJljEdvqv6lpeY&cce=1&sig=AOD64_1_JC3T90O3_oUzbvC3r1UZQR3LVA&ctype=5&q=&ved=2ahUKEwio7Ljw8PyXAxUw-QIHHZ0vGKQQ8w4oAHoECHoQAQ&adurl=",
+  "image_alt_en": "Hikvision 4MP",
+  "image_alt_ar": "كاميره هيك فيجن ٤ ميجابيكسل",
+  "name_en": "Hikvision 4MP Dome Camera",
+  "name_ar": "كاميره هيك فيجن ٤ ميجابيكسل دووم",
+  "summary_en": "HIK Vision 4 MP Smart Hybrid Light Fixed Dome Network Camera",
+  "summary_ar": "كاميرا مراقبة من هيكفيجن بتصميم قُبّة ثابتة، بدقة 4 ميجابكسل، مزودة بإضاءة ذكية تجمع بين الأشعة تحت الحمراء والإضاءة البيضاء.",
+  "description_en": "-High quality imaging with 4 MP resolution\n-Support Human and Vehicle Detection\n-Smart Hybrid Light: advanced technology with long range\n-Built-in microphone for real-time audio security\n-Efficient H.265+ compression technology\n-Support on-board storage up to 512 GB (SD card slot) (Optional)\n-Water and dust resistant (IP67) and vandal resistant (IK08)",
+  "description_ar": "- تصوير عالي الجودة بدقة 4 ميجابكسل.\n- يدعم اكتشاف الأشخاص والمركبات.\n- تقنية Smart Hybrid Light متطورة بمدى إضاءة طويل.\n- ميكروفون مدمج لتوفير مراقبة صوتية مباشرة.\n- تقنية ضغط فعّالة H.265+.\n- يدعم التخزين الداخلي عبر بطاقة ذاكرة بسعة تصل إلى 512 جيجابايت (اختيارية).\n- مقاوم للماء والغبار وفق معيار IP67، ومقاوم للتخريب وفق معيار IK08.",
+  "features": [],
+  "specs": []
+}
