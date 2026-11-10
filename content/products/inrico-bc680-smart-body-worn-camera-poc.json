@@ -1,0 +1,20 @@
+{
+  "slug": "inrico-bc680-smart-body-worn-camera-poc",
+  "published": true,
+  "order": 50,
+  "category": "surveillance",
+  "brands": [
+    "Inrico"
+  ],
+  "image": "/assets/img/products/pasted-image-1794300770918.png",
+  "image_alt_en": "Inrico BC680",
+  "image_alt_ar": "Inrico BC680",
+  "name_en": "BC680",
+  "name_ar": "BC680",
+  "summary_en": "BC680 smart body-worn camera with PoC push-to-talk, live video streaming, and one-touch recording for security and field operations.",
+  "summary_ar": "كاميرا محمولة على الجسم من إنريكو، مزودة باتصال لاسلكي فوري PoC، وبث مباشر للفيديو، وميزة التسجيل بلمسة واحدة.",
+  "description_en": "-Android 12 with a 2.4-inch touchscreen.\n-Dual-camera system supports video calls and recording at the same time.\n-Records video at up to 2.7K at 30 fps.\n-4G LTE and Wi-Fi connectivity for live video streaming.\n-PoC push-to-talk with a 3W speaker and AI noise cancellation.\n-Infrared night vision and GPS/GLONASS positioning.\n-Removable 3,400 mAh battery supports up to 10 hours of continuous recording.\n-Supports a TF memory card up to 512 GB.\n-IP68-rated and built to MIL-STD-810H standards.",
+  "description_ar": "- تعمل بنظام Android 12، وتحتوي على شاشة لمس مقاس 2.4 بوصة.\n- نظام كاميرتين يتيح إجراء مكالمات الفيديو والتسجيل في الوقت نفسه.\n- تسجل الفيديو بدقة تصل إلى 2.7K بمعدل 30 إطارًا في الثانية.\n- تدعم الاتصال بشبكات 4G LTE وWi‑Fi للبث المباشر.\n- مزودة بخاصية الاتصال الفوري PoC، ومكبر صوت بقوة 3 واط، وتقنية تقليل الضوضاء بالذكاء الاصطناعي.\n- تدعم الرؤية الليلية بالأشعة تحت الحمراء وتحديد الموقع عبر GPS وGLONASS.\n- بطارية قابلة للإزالة بسعة 3400 مللي أمبير، وتدعم التسجيل المتواصل لمدة تصل إلى 10 ساعات.\n- تدعم بطاقة ذاكرة TF بسعة تصل إلى 512 جيجابايت.\n- مقاومة للماء والغبار بمعيار IP68، ومصممة وفق معيار MIL‑STD‑810H.",
+  "features": [],
+  "specs": []
+}
