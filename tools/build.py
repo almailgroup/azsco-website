@@ -195,7 +195,9 @@ def load_products():
             continue
         data["slug"] = slug
         items.append(data)
-    items.sort(key=lambda d: (d.get("order", 999), d["slug"]))
+    # Featured first, then the explicit order, then the slug so the sequence is
+    # stable when two products share an order number.
+    items.sort(key=lambda d: (not d.get("featured", False), d.get("order", 999), d["slug"]))
     return items
 
 
@@ -1042,6 +1044,11 @@ PRODUCTS_PAGE = {
     "survey": ("Every quote starts with a free site survey.",
                "كل عرض سعر يبدأ بمعاينة مجانية للموقع."),
     "related_h": ("Other systems", "أنظمة أخرى"),
+    "model_label": ("Model", "الطراز"),
+    "apps_h": ("Where it is used", "أين يُستخدم"),
+    "faq_h": ("Common questions", "أسئلة شائعة"),
+    "datasheet": ("Download the datasheet (PDF)", "تحميل ورقة المواصفات (PDF)"),
+    "gallery_h": ("More images", "صور إضافية"),
     "back": ("All products", "جميع المنتجات"),
     "cta": ("Not sure which system fits your site?",
             "لست متأكداً أي نظام يناسب موقعك؟"),
@@ -1871,7 +1878,7 @@ def build_about(lang):
       <p class="eyebrow">{t(A["faq_eyebrow"], lang)}</p>
       <h2>{t(A["faq_h2"], lang)}</h2>
     </div>
-    <div style="max-width:840px;margin:0 auto">
+    <div class="acc-group">
 {FAQ_HTML}
     </div>
   </div>
@@ -2158,8 +2165,12 @@ def product_card(lang, item):
     brands = item.get("brands") or []
     brand_line = ("" if not brands else
                   f'<p class="product-brands" dir="ltr">{" &middot; ".join(html.escape(b) for b in brands)}</p>')
-    if item.get("image"):
-        media = (f'<div class="product-thumb"><img src="{html.escape(item["image"])}" '
+    badge = pt(item, "badge", lang)
+    badge_html = f'<span class="product-badge">{badge}</span>' if badge else ""
+    shots = [g for g in (item.get("gallery") or []) if isinstance(g, dict) and g.get("image")]
+    thumb = item.get("image") or (shots[0]["image"] if shots else "")
+    if thumb:
+        media = (f'<div class="product-thumb"><img src="{html.escape(thumb)}" '
                  f'alt="{html.escape(pt(item, "image_alt", lang) or pt(item, "name", lang))}" '
                  f'loading="lazy" decoding="async"></div>')
     else:
@@ -2167,7 +2178,7 @@ def product_card(lang, item):
         # instead of leaving a collapsed hole in the grid.
         media = f'<div class="product-thumb product-thumb--empty">{product_icon(item)}</div>'
     return f'''      <article class="card product-card reveal" data-category="{html.escape(item.get("category",""))}">
-        {media}
+        {media}{badge_html}
         <h3><a href="{href}">{pt(item, "name", lang)}</a></h3>
         <p>{pt(item, "summary", lang)}</p>
         {brand_line}
@@ -2246,9 +2257,74 @@ def build_product(lang, item):
 {chr(10).join(f'          <span class="chip">{html.escape(b)}</span>' for b in brands)}
         </div>'''
 
-    if item.get("image"):
-        visual = (f'<div class="product-hero-img"><img src="{html.escape(item["image"])}" '
-                  f'alt="{html.escape(pt(item, "image_alt", lang) or name)}" decoding="async"></div>')
+    # Model / part number. Always left-to-right: it is a code, not prose, and
+    # would otherwise be reordered on the Arabic page.
+    model = (item.get("model") or "").strip()
+    model_html = "" if not model else (
+        f'<p class="product-model">{t(P["model_label"], lang)}: '
+        f'<span dir="ltr">{html.escape(model)}</span></p>')
+
+    applications = item.get("applications") or []
+    apps_html = "" if not applications else '''
+        <h2>{h}</h2>
+        <div class="chips">
+{rows}
+        </div>'''.format(
+        h=t(P["apps_h"], lang),
+        rows="\n".join(f'          <span class="chip">{pair_text(a, lang)}</span>'
+                       for a in applications))
+
+    datasheet = (item.get("datasheet") or "").strip()
+    sheet_html = "" if not datasheet else (
+        f'<a class="btn btn-outline btn-on-light" href="{html.escape(datasheet)}" '
+        f'target="_blank" rel="noopener">{I["file"]} {t(P["datasheet"], lang)}</a>')
+
+    gallery = [g for g in (item.get("gallery") or []) if isinstance(g, dict) and g.get("image")]
+    gallery_html = "" if not gallery else '''
+<section class="section section--alt">
+  <div class="wrap">
+    <div class="sec-head center reveal"><h2>{h}</h2></div>
+    <div class="grid grid-3 product-gallery">
+{rows}
+    </div>
+  </div>
+</section>'''.format(
+        h=t(P["gallery_h"], lang),
+        rows="\n".join(
+            '      <figure class="gallery-item reveal"><img src="{src}" alt="{alt}" '
+            'loading="lazy" decoding="async"></figure>'.format(
+                src=html.escape(g["image"]),
+                alt=html.escape(pt(g, "alt", lang) or pt(item, "name", lang)))
+            for g in gallery))
+
+    faqs = [f for f in (item.get("faqs") or []) if isinstance(f, dict) and pt(f, "q", lang)]
+    faq_html = "" if not faqs else '''
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head center reveal"><h2>{h}</h2></div>
+    <div class="acc-group">
+{rows}
+    </div>
+  </div>
+</section>'''.format(
+        h=t(P["faq_h"], lang),
+        rows="\n".join(
+            '''      <div class="acc{open} reveal">
+        <button class="acc-btn" type="button">{q}<span class="pm">{plus}</span></button>
+        <div class="acc-panel"><div class="inner">{a}</div></div>
+      </div>'''.format(open=" is-open" if i == 0 else "", plus=I["plus"],
+                        q=pt(f, "q", lang), a=pt(f, "a", lang))
+            for i, f in enumerate(faqs)))
+
+    # Fall back to the first gallery image before the icon: someone who uploads
+    # photos only to the gallery should not get a placeholder at the top.
+    hero_src = item.get("image") or (gallery[0]["image"] if gallery else "")
+    hero_alt = (pt(item, "image_alt", lang)
+                or (pt(gallery[0], "alt", lang) if gallery and not item.get("image") else "")
+                or name)
+    if hero_src:
+        visual = (f'<div class="product-hero-img"><img src="{html.escape(hero_src)}" '
+                  f'alt="{html.escape(hero_alt)}" decoding="async"></div>')
     else:
         visual = f'<div class="visual-frame"><div style="color:#fff;width:150px;max-width:55%">{product_icon(item)}</div></div>'
 
@@ -2269,12 +2345,15 @@ def build_product(lang, item):
   <div class="wrap">
     <div class="split">
       <div class="reveal">
+        {model_html}
         <p>{pt(item, "description", lang)}</p>
 {feat_html}
+{apps_html}
 {spec_html}
 {brand_html}
         <div class="btn-row">
           <a class="btn btn-dark" href="{link(lang, "contact.html")}?product={item["slug"]}">{t(P["quote"], lang)} {I["arrow"]}</a>
+          {sheet_html}
           <a class="btn btn-outline" href="{link(lang, "products.html")}">{t(P["back"], lang)}</a>
         </div>
         <p class="product-note">{t(P["survey"], lang)}</p>
@@ -2283,11 +2362,16 @@ def build_product(lang, item):
     </div>
   </div>
 </section>
+{gallery_html}
+{faq_html}
 {related}
 {cta(lang, (P["cta"], P["cta_p"]))}
 '''
-    title = f'{name} | {t(SITE_NAME, lang)}'
-    page(lang, product_fname(item["slug"]), title, pt(item, "summary", lang), body)
+    # Search-listing overrides, so a product can be given a sharper title or
+    # description for search than the one that reads best on the page itself.
+    title = pt(item, "seo_title", lang) or f'{name} | {t(SITE_NAME, lang)}'
+    desc = pt(item, "seo_desc", lang) or pt(item, "summary", lang)
+    page(lang, product_fname(item["slug"]), title, desc, body)
 
 
 def build_privacy(lang):

@@ -43,6 +43,15 @@ One JSON file per product. The filename is the slug, and the slug is the URL:
 | `description_en` / `description_ar` | — | the body of the product page |
 | `features` | — | list of `{"en": "...", "ar": "..."}` |
 | `specs` | — | list of `{"label_en","label_ar","value_en","value_ar"}` |
+| `featured` | — | `true` lists the product before all others, whatever its order |
+| `badge_en` / `_ar` | — | short label in the card's corner, e.g. New (24 chars max) |
+| `model` | — | model or part number; always rendered left-to-right |
+| `gallery` | — | list of `{"image","alt_en","alt_ar"}`; the first stands in as the main photo if `image` is empty |
+| `datasheet` | — | path to a PDF under `/assets/docs/`; adds a download button |
+| `applications` | — | list of `{"en","ar"}`, shown as tags under "Where it is used" |
+| `faqs` | — | list of `{"q_en","q_ar","a_en","a_ar"}`, shown as an expandable list |
+| `seo_title_en` / `_ar` | — | overrides the browser/search title; keep under ~60 chars |
+| `seo_desc_en` / `_ar` | — | overrides the search description; keep under ~155 chars |
 
 Arabic is not optional. A product with no Arabic falls back to English on the
 Arabic site, which looks broken to half the audience.

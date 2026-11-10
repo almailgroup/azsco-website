@@ -612,6 +612,8 @@ li{margin-bottom:.45em}
 /* ==========================================================================
    Accordion (FAQ)
    ========================================================================== */
+/* Accordions read badly at full section width; this is the column they sit in. */
+.acc-group{max-width:840px;margin:0 auto}
 .acc{border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;background:#fff}
 .acc + .acc{margin-top:14px}
 .acc-btn{
@@ -1004,6 +1006,39 @@ a,button,input,select,textarea,summary,.mobile-bar a,.chat-launcher{
   .topbar,.site-header,.mobile-nav,.backdrop,.to-top,.whatsapp-fab,.mobile-bar,.cta,.site-footer{display:none!important}
   body{padding-bottom:0}
   body{color:#000}
+}
+
+/* --- product extras: badge, model, gallery, datasheet button ------------- */
+.product-badge{
+  position:absolute;top:14px;inset-inline-end:14px;z-index:2;
+  background:var(--grey-950);color:#fff;
+  font-size:.66rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  padding:6px 11px;border-radius:999px;
+}
+[dir="rtl"] .product-badge{letter-spacing:0;text-transform:none}
+
+.product-model{
+  font-size:.86rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 14px;
+}
+[dir="rtl"] .product-model{letter-spacing:0;text-transform:none}
+
+/* The datasheet link sits in a row with a dark button on a light background,
+   so it needs the light-background outline rather than the hero's white one. */
+.btn-on-light{border-color:var(--line);color:var(--ink)}
+.btn-on-light:hover{background:var(--grey-950);border-color:var(--grey-950);color:#fff}
+.btn-on-light svg{width:17px;height:17px}
+
+.product-gallery{gap:20px}
+.gallery-item{
+  margin:0;border:1px solid var(--line);border-radius:var(--radius-lg);
+  overflow:hidden;background:#fff;
+}
+.gallery-item img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover}
+
+@media (max-width:640px){
+  .product-gallery{gap:14px}
+  .product-badge{top:10px;inset-inline-end:10px;font-size:.62rem;padding:5px 9px}
 }
 
 /* These are h3 so the document outline never skips a level, but they are small

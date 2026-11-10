@@ -78,9 +78,29 @@ def check_products():
         for key in ("features", "specs"):
             if key in data and not isinstance(data[key], list):
                 problems.append(f"{name}: {key} must be a list")
-        image = data.get("image") or ""
-        if image and not os.path.exists(os.path.join(ROOT, image.lstrip("/"))):
-            problems.append(f"{name}: image {image} does not exist")
+        # Every file the product points at must actually be in the repository;
+        # the CMS can save a reference whose upload did not complete.
+        refs = [("image", data.get("image") or "")]
+        refs += [("datasheet", data.get("datasheet") or "")]
+        for i, shot in enumerate(data.get("gallery") or []):
+            if isinstance(shot, dict):
+                refs.append((f"gallery[{i}]", shot.get("image") or ""))
+        for label, ref in refs:
+            if ref and not os.path.exists(os.path.join(ROOT, ref.lstrip("/"))):
+                problems.append(f"{name}: {label} {ref} does not exist")
+
+        # A badge is a corner label, not a sentence; an over-long one overflows
+        # the card on a phone.
+        for field in ("badge_en", "badge_ar"):
+            if len(str(data.get(field, ""))) > 24:
+                problems.append(f"{name}: {field} is too long for a card badge "
+                                f"({len(data[field])} chars, 24 max)")
+
+        for i, entry in enumerate(data.get("faqs") or []):
+            if not isinstance(entry, dict):
+                problems.append(f"{name}: faqs[{i}] is not an object")
+            elif not str(entry.get("q_en", "")).strip() or not str(entry.get("a_en", "")).strip():
+                problems.append(f"{name}: faqs[{i}] needs an English question and answer")
     return problems
 
 

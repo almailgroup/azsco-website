@@ -59,14 +59,37 @@ collections:
           - {label: 'Access Control', value: access}
           - {label: 'Communications', value: comms}
         # CMS-CATEGORIES:END
+      - {name: featured, label: 'Feature this product', widget: boolean, default: false,
+         required: false, hint: 'Featured products are listed before all others, whatever their sort order.'}
+      - {name: badge_en, label: 'Card badge (English, optional)', widget: string, required: false,
+         hint: 'A short label in the corner of the card, e.g. New. Two or three words at most.'}
+      - {name: badge_ar, label: 'Card badge (Arabic, optional)', widget: string, required: false}
       - {name: brands, label: 'Brands (optional)', widget: list, required: false,
          hint: 'One per entry, e.g. Hikvision. Shown on the card and the product page.'}
+      - {name: model, label: 'Model or part number (optional)', widget: string, required: false,
+         hint: 'Shown above the description. Always displayed left-to-right, including on the Arabic page.'}
 
       - {name: image, label: 'Photo (optional)', widget: image, required: false,
          hint: 'Shown at roughly 600×450. Please resize before uploading — a photo straight from a camera will slow the page down.'}
       - {name: image_alt_en, label: 'Photo description (English)', widget: string, required: false,
          hint: 'For screen readers and search engines. Describe what the photo shows.'}
       - {name: image_alt_ar, label: 'Photo description (Arabic)', widget: string, required: false}
+
+      - name: gallery
+        label: 'More images (optional)'
+        widget: list
+        required: false
+        label_singular: Image
+        hint: 'Shown in a grid below the product. Resize before uploading.'
+        fields:
+          - {name: image, label: Image, widget: image}
+          - {name: alt_en, label: 'Description (English)', widget: string, required: false}
+          - {name: alt_ar, label: 'Description (Arabic)', widget: string, required: false}
+
+      # PDFs go to their own folder rather than in with the product photos.
+      - {name: datasheet, label: 'Datasheet PDF (optional)', widget: file, required: false,
+         media_folder: /assets/docs, public_folder: /assets/docs,
+         hint: 'Adds a download button next to Request a Quote.'}
 
       - {name: name_en, label: 'Name (English)', widget: string}
       - {name: name_ar, label: 'Name (Arabic)', widget: string}
@@ -97,3 +120,36 @@ collections:
           - {name: label_ar, label: 'Label (Arabic)', widget: string}
           - {name: value_en, label: 'Value (English)', widget: string}
           - {name: value_ar, label: 'Value (Arabic)', widget: string}
+
+      - name: applications
+        label: 'Where it is used (optional)'
+        widget: list
+        required: false
+        label_singular: Use
+        summary: '{{en}}'
+        hint: 'Shown as tags, e.g. Banks, Warehouses, Residential compounds.'
+        fields:
+          - {name: en, label: English, widget: string}
+          - {name: ar, label: Arabic, widget: string}
+
+      - name: faqs
+        label: 'Common questions (optional)'
+        widget: list
+        required: false
+        label_singular: Question
+        summary: '{{q_en}}'
+        hint: 'Appears as an expandable list on the product page, and helps the page rank for real questions people search.'
+        fields:
+          - {name: q_en, label: 'Question (English)', widget: string}
+          - {name: q_ar, label: 'Question (Arabic)', widget: string}
+          - {name: a_en, label: 'Answer (English)', widget: text}
+          - {name: a_ar, label: 'Answer (Arabic)', widget: text}
+
+      # Optional overrides for how the page appears in search results. Left
+      # empty, the name and summary above are used, which is usually right.
+      - {name: seo_title_en, label: 'Search title (English, optional)', widget: string, required: false,
+         hint: 'Keep under about 60 characters or Google cuts it off. Leave empty to use the product name.'}
+      - {name: seo_title_ar, label: 'Search title (Arabic, optional)', widget: string, required: false}
+      - {name: seo_desc_en, label: 'Search description (English, optional)', widget: text, required: false,
+         hint: 'Keep under about 155 characters. Leave empty to use the summary.'}
+      - {name: seo_desc_ar, label: 'Search description (Arabic, optional)', widget: text, required: false}
