@@ -1,0 +1,20 @@
+{
+  "slug": "inrico-s350-5g-rugged-smart-poc-radio",
+  "published": true,
+  "order": 50,
+  "category": "comms",
+  "brands": [
+    "inrico"
+  ],
+  "image": "/assets/img/products/pasted-image-1794301924877.png",
+  "image_alt_en": "inrico-s350-5g-rugged-smart-poc-radio",
+  "image_alt_ar": "inrico-s350-5g-rugged-smart-poc-radio",
+  "name_en": "S350",
+  "name_ar": "S350",
+  "summary_en": "Inrico S350 rugged smart PoC radio with 5G connectivity, high-resolution cameras, and dual PTT buttons.",
+  "summary_ar": "جهاز اتصال لاسلكي ذكي ومتين من إنريكو، يدعم شبكات 5G، مزود بكاميرات عالية الدقة وزرّي اتصال فوري.",
+  "description_en": "- Supports 5G and MCPTT for mission-critical communications.\n- 6.3-inch high-resolution touchscreen, readable in sunlight and usable with gloves or wet fingers.\n- Three cameras: 8 MP front and 64 MP + 16 MP rear.\n- Runs Android 13, with 6 or 8 GB RAM and 128 or 256 GB internal storage, depending on the version.\n- Removable 6,000 mAh battery; optional 8,000 mAh battery.\n- Dual PTT buttons, a 3 W loudspeaker, and an AI noise-cancellation microphone.\n- Supports dual-frequency positioning, GPS, GLONASS, Galileo, and NFC.\n- IP68 water and dust resistance; built to MIL‑STD‑810H standards and tested for drops from up to 1.5 m.",
+  "description_ar": "-يدعم شبكات 5G واتصال MCPTT للاتصالات الحرجة.\n-شاشة لمس عالية الدقة مقاس 6.3 بوصة، تعمل مع القفازات والأصابع المبللة وتظل واضحة تحت الشمس.\n-ثلاث كاميرات: أمامية بدقة 8 ميجابكسل وخلفيتان بدقة 64 و16 ميجابكسل.\n-نظام Android 13، مع ذاكرة 6 أو 8 جيجابايت RAM وتخزين داخلي 128 أو 256 جيجابايت حسب الإصدار.\n-بطارية قابلة للإزالة بسعة 6000 مللي أمبير، مع خيار بطارية 8000 مللي أمبير.\n-مزود بزرّي اتصال PTT على الجانبين، ومكبر صوت بقوة 3 واط وميكروفون لتقليل الضوضاء بالذكاء الاصطناعي.\n-يدعم تحديد الموقع ثنائي التردد، وGPS وGLONASS وGalileo وNFC.\n-مقاوم للماء والغبار بمعيار IP68، ومصمم وفق معيار MIL‑STD‑810H، ويتحمل السقوط من ارتفاع 1.5 متر.",
+  "features": [],
+  "specs": []
+}
