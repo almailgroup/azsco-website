@@ -1,0 +1,20 @@
+{
+  "slug": "inrico-t310-4g-smart-poc-radio",
+  "published": true,
+  "order": 50,
+  "category": "comms",
+  "brands": [
+    "inrico"
+  ],
+  "image": "/assets/img/products/pasted-image-1794302141029.png",
+  "image_alt_en": "inrico-t310-4g-smart-poc-radio",
+  "image_alt_ar": "inrico-t310-4g-smart-poc-radio",
+  "name_en": "T310",
+  "name_ar": "T310",
+  "summary_en": "Inrico T310 smart PoC radio with 4G connectivity, a numeric keypad, touchscreen, and built-in flashlight.",
+  "summary_ar": "جهاز اتصال لاسلكي ذكي من إنريكو يدعم شبكات 4G، مزود بلوحة أرقام وشاشة لمس ومصباح يدوي مدمج.",
+  "description_en": "-Supports PoC push-to-talk communication over 4G networks.\n-Features a 2.4-inch touchscreen and easy-to-use numeric keypad.\n-Runs Android 8.1.\n-Supports Wi-Fi, Bluetooth, GPS, and GLONASS.\n-Optional NFC and optional 8 MP rear camera.\n-Built-in LED flashlight and 2 W speaker.\n-3,400 mAh battery with up to 8 hours of operating time.\n-IP65-rated for water and dust resistance; withstands drops from up to 1.2 m.",
+  "description_ar": "-يدعم الاتصال الفوري PoC عبر شبكات 4G.\n-شاشة لمس مقاس 2.4 بوصة ولوحة أرقام سهلة الاستخدام.\n-يعمل بنظام Android 8.1.\n-يدعم Wi‑Fi وBluetooth وتحديد الموقع عبر GPS وGLONASS.\n-يدعم تقنية NFC وكاميرا خلفية بدقة 8 ميجابكسل، وكلاهما اختياري.\n-مزود بمصباح LED ومكبر صوت بقوة 2 واط.\n-بطارية بسعة 3400 مللي أمبير، ومدة تشغيل تصل إلى 8 ساعات.\n-مقاوم للماء والغبار بمعيار IP65، ويتحمل السقوط من ارتفاع 1.2 متر.",
+  "features": [],
+  "specs": []
+}
