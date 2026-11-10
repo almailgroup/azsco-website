@@ -1,0 +1,20 @@
+{
+  "slug": "wanway-h18p-4g-adas-dms-dashcam",
+  "published": true,
+  "order": 50,
+  "category": "comms",
+  "brands": [
+    "WanWay"
+  ],
+  "image": "/assets/img/products/pasted-image-1794304445828.png",
+  "image_alt_en": "WanWay H18P",
+  "image_alt_ar": "WanWay H18P",
+  "name_en": "H18P",
+  "name_ar": "H18P",
+  "summary_en": "WanWay H18P is a 4G vehicle dashcam that combines video recording with ADAS road monitoring and DMS driver monitoring.",
+  "summary_ar": "كاميرا مركبات ذكية من WanWay تدعم 4G، وتجمع بين تسجيل الفيديو ومراقبة السائق والطريق عبر تقنيتي ADAS وDMS.",
+  "description_en": "- Supports up to 3 cameras: one 1080p camera and two 720p cameras.\n- Supports 4G connectivity and in-cabin monitoring.\n- Includes ADAS driver-assistance and DMS driver-monitoring functions.\n- Provides alerts for acceleration, deceleration, sharp turns, and collisions.\n- Supports real-time vehicle positioning and route playback.\n- Supports a TF memory card up to 512 GB.\n- Operates on 9–32 V DC vehicle power, with intelligent power management and low energy consumption.",
+  "description_ar": "- تدعم توصيل ما يصل إلى 3 كاميرات: كاميرا بدقة 1080p وكاميرتان بدقة 720p.\n- تدعم شبكة 4G ومراقبة مقصورة المركبة.\n- تتضمن تقنيتي ADAS لمساعدة السائق وDMS لمراقبة حالته.\n- ترسل تنبيهات عند التسارع أو التباطؤ أو الانعطاف الحاد أو الاصطدام.\n- تدعم تحديد موقع المركبة مباشرةً وعرض سجل مسار الرحلة.\n- تدعم بطاقة ذاكرة TF بسعة تصل إلى 512 جيجابايت.\n- تعمل بجهد مركبات 9–32 فولت، مع إدارة ذكية للطاقة واستهلاك منخفض.",
+  "features": [],
+  "specs": []
+}
