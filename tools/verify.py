@@ -44,8 +44,15 @@ class Balance(HTMLParser):
 
 
 def check_products():
-    """The CMS writes these files, so they are the least trusted input here."""
+    """The CMS writes these files, so they are the least trusted input here.
+
+    Returns (problems, warnings). Only problems fail the build: this gate sits
+    between someone pressing Save and the site updating, so it must stop broken
+    pages and nothing else. Blocking a publish over something that renders
+    perfectly well just means the edit never goes live.
+    """
     problems = []
+    warnings = []
     directory = os.path.join(ROOT, "content", "products")
     if not os.path.isdir(directory):
         return problems
@@ -86,8 +93,18 @@ def check_products():
             if isinstance(shot, dict):
                 refs.append((f"gallery[{i}]", shot.get("image") or ""))
         for label, ref in refs:
-            if ref and not os.path.exists(os.path.join(ROOT, ref.lstrip("/"))):
-                problems.append(f"{name}: {label} {ref} does not exist")
+            if not ref:
+                continue
+            if ref.startswith(("http://", "https://", "//")):
+                # Renders fine, so it does not block publishing -- but the image
+                # is being served from someone else's site, which can vanish,
+                # change, or be withdrawn without notice.
+                host = ref.split("/")[2] if "//" in ref else ref
+                warnings.append(f"{name}: {label} is hotlinked from {host} rather "
+                                f"than uploaded. Upload it so the page does not "
+                                f"depend on another site staying up.")
+            elif not os.path.exists(os.path.join(ROOT, ref.lstrip("/"))):
+                problems.append(f"{name}: {label} {ref} is missing from the repository")
 
         # A badge is a corner label, not a sentence; an over-long one overflows
         # the card on a phone.
@@ -101,7 +118,7 @@ def check_products():
                 problems.append(f"{name}: faqs[{i}] is not an object")
             elif not str(entry.get("q_en", "")).strip() or not str(entry.get("a_en", "")).strip():
                 problems.append(f"{name}: faqs[{i}] needs an English question and answer")
-    return problems
+    return problems, warnings
 
 
 def pages():
@@ -148,14 +165,17 @@ def check_pages():
 
 
 def main():
-    product_problems = check_products()
+    product_problems, warnings = check_products()
     count, page_problems = check_pages()
     problems = product_problems + page_problems
 
     print(f"checked {len(os.listdir(os.path.join(ROOT, 'content', 'products')))} "
           f"product files and {count} pages")
+    for warning in warnings:
+        print(f"  warning: {warning}")
     if not problems:
-        print("OK — tags balanced, every link resolves, products valid")
+        print("OK — tags balanced, every link resolves, products valid"
+              + (f" ({len(warnings)} warning(s) above)" if warnings else ""))
         return 0
     print(f"\n{len(problems)} problem(s):")
     for problem in problems[:40]:
