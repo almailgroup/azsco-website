@@ -1,0 +1,20 @@
+{
+  "slug": "inrico-s200-smart-poc-radio",
+  "published": true,
+  "order": 50,
+  "category": "surveillance",
+  "brands": [
+    "inrico"
+  ],
+  "image": "/assets/img/products/pasted-image-1794301260928.png",
+  "image_alt_en": "inrico S200",
+  "image_alt_ar": "inrico S200",
+  "name_en": "S200",
+  "name_ar": "S200",
+  "summary_en": "Inrico S200 smart PoC radio with 4G connectivity, dual cameras, and a one-touch SOS button—ideal for security teams and field operations.",
+  "summary_ar": "جهاز اتصال لاسلكي ذكي من إنريكو يعمل عبر شبكات 4G، مزود بكاميرتين وزر استغاثة، مناسب لفرق الأمن والعمل الميداني.",
+  "description_en": "- 3.1-inch HD touchscreen, readable in direct sunlight.\n- 2 MP front camera and 13 MP rear camera.\n- Supports PoC push-to-talk over 4G, Wi-Fi, and Bluetooth.\n- Dual microphones with noise cancellation and a powerful speaker for clear communication.\n- 3,800 mAh battery provides up to 16 hours of talk time.\n- GPS and GLONASS positioning, plus NFC for security patrols.\n- One-touch SOS button for emergencies.\n- Runs Android 10 and supports an optional memory card up to 128 GB.\n- IP54-rated for water and dust resistance; withstands drops from up to 1.2 m.",
+  "description_ar": "-شاشة لمس عالية الوضوح مقاس 3.1 بوصة، واضحة حتى تحت أشعة الشمس.\n-كاميرا أمامية بدقة 2 ميجابكسل وخلفية بدقة 13 ميجابكسل.\n-يدعم الاتصال الفوري PoC عبر شبكات 4G، مع Wi‑Fi وBluetooth.\n-مزود بميكروفونين لتقليل الضوضاء ومكبر صوت قوي لتواصل واضح.\n-بطارية بسعة 3800 مللي أمبير، توفر حتى 16 ساعة من التحدث.\n-يدعم تحديد الموقع عبر GPS وGLONASS، وتقنية NFC للجولات الأمنية.\n-زر استغاثة SOS بضغطة واحدة.\n-يعمل بنظام Android 10، ويدعم بطاقة ذاكرة اختيارية حتى 128 جيجابايت.\n-مقاوم للماء والغبار بمعيار IP54، ويتحمل السقوط من ارتفاع يصل إلى 1.2 متر.",
+  "features": [],
+  "specs": []
+}
